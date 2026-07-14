@@ -1,0 +1,261 @@
+<div class="container mt-5 mb-5">
+  <h2 class="text-center text-primary mb-5 fw-bold">
+    <i class="fa-solid fa-shield-halved me-2"></i>Gestion des Validateurs
+  </h2>
+
+  <!-- Section Recherche -->
+  <div class="card mb-5 p-4 shadow-sm border-0 rounded-4">
+    <h5 class="fw-semibold mb-4">Recherche et Filtres</h5>
+    <div class="row g-3">
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchName"
+          placeholder="Nom"
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchMatricule"
+          placeholder="Matricule"
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchZone"
+          placeholder="Zone"
+        />
+      </div>
+      <div class="col-md-3">
+        <select
+          class="form-select rounded-pill border-primary"
+          [(ngModel)]="filterStatus"
+        >
+          <option value="">Tous les statuts</option>
+          <option value="active">Actif</option>
+          <option value="inactive">Désactivé</option>
+        </select>
+      </div>
+    </div>
+    <div class="mt-4 d-flex gap-3 justify-content-end">
+      <button class="btn btn-primary px-4 rounded-pill" (click)="rechercherValidators()">
+        <i class="fa-solid fa-magnifying-glass me-1"></i> Rechercher
+      </button>
+      <button class="btn btn-outline-secondary px-4 rounded-pill" (click)="resetRecherche()">
+        <i class="fa-solid fa-rotate-left me-1"></i> Réinitialiser
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Liste des validateurs -->
+  <div *ngIf="!loading">
+    <h3 class="text-center mb-4 fw-bold">Liste des Validateurs Supérieurs Hiérarchiques</h3>
+
+    <!-- Empty state -->
+    <div *ngIf="validators.length === 0" class="text-center py-5 text-muted">
+      <i class="fa-solid fa-user-slash fa-2x mb-3"></i>
+      <p>Aucun validateur trouvé.</p>
+    </div>
+
+    <div *ngIf="validators.length > 0" class="table-responsive">
+      <table class="table table-bordered table-hover text-center align-middle mb-0">
+        <thead class="table-primary text-primary">
+          <tr>
+            <th>Zone</th>
+            <th>Validateur</th>
+            <th>Matricule</th>
+            <th>Rôle</th>
+            <th>Employés dans la zone</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let validator of getValidatorsPage()">
+            <td>{{ validator.zone }}</td>
+            <td class="fw-semibold">{{ validator.fullname }}</td>
+            <td><code>{{ validator.matricule }}</code></td>
+            <td><span class="badge bg-primary text-white">{{ validator.role }}</span></td>
+            <td>{{ validator.employeeCount }}</td>
+            <td>
+              <span [class]="'badge ' + getStatusClass(validator.active)">
+                <i class="fa-solid me-1" [class]="validator.active ? 'fa-circle-check' : 'fa-circle-xmark'"></i>
+                {{ getStatusBadge(validator.active) }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <div class="actions-group">
+                <button
+                  class="btn btn-primary btn-sm"
+                  (click)="openChangeModal(validator)"
+                  [disabled]="!validator.active"
+                  title="Changer ce validateur"
+                >
+                  <i class="fa-solid fa-arrows-rotate me-1"></i> Changer
+                </button>
+                <button
+                  class="btn btn-sm"
+                  [class]="validator.active ? 'btn-outline-warning' : 'btn-outline-success'"
+                  (click)="toggleStatus(validator)"
+                  [title]="validator.active ? 'Désactiver ce compte' : 'Activer ce compte'"
+                >
+                  <i class="fa-solid" [class]="validator.active ? 'fa-ban' : 'fa-check'"></i>
+                  {{ validator.active ? 'Désactiver' : 'Activer' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav *ngIf="totalPages > 1" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">Précédent</a>
+        </li>
+        <li *ngFor="let page of [].constructor(totalPages); let i = index" class="page-item" [class.active]="i + 1 === currentPage">
+          <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">{{ i + 1 }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">Suivant</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL — Changement de Validateur
+     ============================================================ -->
+<div *ngIf="showModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-card">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h5 class="modal-title">
+        <i class="fa-solid fa-arrows-rotate me-2 text-primary"></i>
+        Changer de Validateur
+      </h5>
+      <button class="btn-close" (click)="closeModal()" aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Information notice -->
+      <div class="alert alert-info small mb-4 py-2 px-3">
+        <i class="fa-solid fa-circle-info me-1"></i>
+        <strong>Important :</strong> Cette opération est <strong>atomique</strong> — si une erreur survient,
+        rien ne sera modifié. Elle prend effet <strong>immédiatement</strong> après confirmation.
+      </div>
+
+      <!-- Current validator info -->
+      <div class="validator-info mb-4">
+        <div class="info-row">
+          <span class="info-label">Validateur actuel :</span>
+          <span class="info-value fw-bold">{{ selectedValidator?.fullname }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Zone :</span>
+          <span class="info-value">{{ selectedValidator?.zone }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Rôle actuel :</span>
+          <span class="info-value text-primary">{{ selectedValidator?.role }}</span>
+        </div>
+      </div>
+
+      <!-- New validator dropdown -->
+      <div class="form-group">
+        <label for="newValidator" class="form-label fw-semibold">
+          Sélectionner le remplaçant (même zone uniquement) :
+        </label>
+        <select
+          id="newValidator"
+          class="form-select rounded-pill border-primary"
+          [(ngModel)]="selectedNewValidatorId"
+        >
+          <option value="" disabled selected>-- Choisir un employé --</option>
+          <option *ngFor="let emp of availableEmployees" [value]="emp.id">
+            {{ emp.fullname }} ({{ emp.matricule }})
+          </option>
+        </select>
+        <small class="form-text text-muted mt-1 d-block">
+          <i class="fa-solid fa-circle-info me-1"></i>
+          Seuls les employés de la zone <strong>{{ selectedValidator?.zone }}</strong> sont affichés.
+          Les validateurs existants en sont exclus.
+        </small>
+
+        <!-- Empty state alert -->
+        <div *ngIf="availableEmployees.length === 0" class="alert alert-warning mt-2 py-2 px-3 small rounded-3">
+          <i class="fa-solid fa-triangle-exclamation me-1"></i>
+          Aucun employé disponible dans la zone <strong>{{ selectedValidator?.zone }}</strong>
+          pour remplacer ce validateur.
+        </div>
+      </div>
+
+      <!-- Live consequence preview — appears only once a replacement is selected -->
+      <div class="alert-consequence mt-3" *ngIf="selectedNewValidatorId">
+        <div class="consequence-title">
+          <i class="fa-solid fa-circle-check text-success me-1"></i>
+          Ce qui va se passer (opération en une seule transaction) :
+        </div>
+        <ul class="consequence-list">
+          <li>L'employé sélectionné reçoit le rôle <strong>Validateur Supérieur Hiérarchique</strong></li>
+          <li>
+            <strong>{{ selectedValidator?.fullname }}</strong> devient un employé normal
+            <span class="text-muted">(rôle → Employé)</span>
+          </li>
+          <li>
+            Les deux restent dans la zone <strong>{{ selectedValidator?.zone }}</strong>
+            — la zone ne change <em>jamais</em>
+          </li>
+          <li>
+            L'ancien validateur <strong class="text-danger">perd immédiatement</strong>
+            l'accès à la validation et ne peut plus se connecter
+          </li>
+          <li>
+            Le nouveau validateur <strong class="text-success">peut se connecter et valider immédiatement</strong>
+          </li>
+          <li>
+            Si une erreur survient côté serveur, <strong>aucun changement n'est appliqué</strong>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-outline-secondary rounded-pill" (click)="closeModal()">
+        <i class="fa-solid fa-xmark me-1"></i> Annuler
+      </button>
+      <button
+        class="btn btn-primary rounded-pill"
+        (click)="confirmChangeValidator()"
+        [disabled]="changingValidator || !selectedNewValidatorId || availableEmployees.length === 0"
+      >
+        <span *ngIf="changingValidator" class="spinner-border spinner-border-sm me-2"></span>
+        <i *ngIf="!changingValidator" class="fa-solid fa-arrows-rotate me-1"></i>
+        {{ changingValidator ? 'Traitement en cours...' : 'Confirmer le changement' }}
+      </button>
+    </div>
+
+  </div>
+</div>

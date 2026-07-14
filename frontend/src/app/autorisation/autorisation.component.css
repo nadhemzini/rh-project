@@ -1,0 +1,131 @@
+.is-invalid {
+    border: 1px solid red;
+  }
+
+
+.toast {
+  border-radius: 0.75rem;
+}
+
+.toast .btn-close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+}
+
+.toast-close-btn:hover {
+  color: white;
+}
+
+textarea.form-control {
+  resize: none;
+  border-radius: 0.5rem;
+}
+
+button.btn-sm {
+  min-width: 80px;
+}
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.custom-toast {
+  max-width: 350px;
+  z-index: 1055;
+  animation: slideInUp 0.5s ease forwards;
+  box-shadow: var(--shadow-lg);
+    top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: auto;
+  right: auto;
+}
+
+
+
+
+  @media (max-width: 576px) {
+  .table-responsive {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch; /* inertie sur iOS */
+  width: 100%;
+  display: block;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+}
+
+
+}
+@media (max-width: 576px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.4rem;
+    white-space: nowrap;
+  }
+
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .pagination {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pagination .page-item {
+    flex: 0 0 auto;
+  }
+
+  .pagination::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .pagination::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 10px;
+  }
+
+  .pagination::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .card-title,
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 0.85rem;
+  }
+
+  .alert {
+    font-size: 0.85rem;
+  }
+}

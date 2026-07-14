@@ -1,0 +1,78 @@
+@media (max-width: 576px) {
+  .table-responsive {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch; /* inertie sur iOS */
+  width: 100%;
+  display: block;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+}
+
+
+}
+@media (max-width: 576px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.4rem;
+    white-space: nowrap;
+  }
+
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .pagination {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pagination .page-item {
+    flex: 0 0 auto;
+  }
+
+  .pagination::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .pagination::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 10px;
+  }
+
+  .pagination::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .card-title,
+ 
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 0.85rem;
+  }
+
+  .alert {
+    font-size: 0.85rem;
+  }
+}

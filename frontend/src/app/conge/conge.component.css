@@ -1,0 +1,207 @@
+@media (max-width: 576px) {
+  .table th,
+  .table td {
+    white-space: nowrap;       /* évite que le texte aille à la ligne */
+    font-size: 0.75rem;        /* texte un peu plus petit */
+    padding: 0.3rem 0.5rem;    /* moins d’espace autour du texte */
+  }
+
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .table thead {
+    font-size: 0.75rem;
+  }
+}
+@media (max-width: 576px) {
+  .pagination {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start !important;
+  }
+
+  .pagination .page-item {
+    flex: 0 0 auto;
+  }
+
+  .pagination::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  .pagination::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 10px;
+  }
+
+  .pagination::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+@media (max-width: 576px) {
+  .table-responsive {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch; /* inertie sur iOS */
+  width: 100%;
+  display: block;
+}
+
+/* Eviter le wrap sur les cellules */
+.table th,
+.table td {
+  white-space: nowrap;
+}
+
+  .btn-sm {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .pagination {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start !important;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 1rem;
+  }
+
+  .pagination .page-item {
+    flex: 0 0 auto;
+  }
+
+  .pagination::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .pagination::-webkit-scrollbar-thumb {
+    background-color: var(--muted);
+    border-radius: 10px;
+  }
+
+  .pagination::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .alert,
+  .card-title,
+
+  h4 {
+    font-size: 1rem !important;
+  }
+
+}
+@media (max-width: 576px) {
+  .table th,
+  .table td {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.4rem;
+  }
+}
+@media (max-width: 576px) {
+  .container {
+    max-width: 100% !important;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+/* Conteneur du toast/modale */
+.custom-toast {
+  position: fixed;       /* Fixé par rapport à la fenêtre */
+           /* Décalage à droite, modifiable pour changer la position horizontale */
+  width: 320px;          /* Largeur fixe */
+  background-color: var(--danger-alpha); /* Couleur de fond rouge clair (pour refus) */
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  z-index: 1200;
+  padding: 15px;
+  animation: fadeInUp 0.3s ease forwards;
+    top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: auto;
+  right: auto;
+}
+
+/* Animation simple de fade + translation */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Style du textarea */
+.custom-toast textarea {
+  width: 100%;
+  border: 2px solid #dc3545; /* Rouge Bootstrap */
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+/* Focus textarea */
+.custom-toast textarea:focus {
+  border-color: #b02a37;
+  outline: none;
+  box-shadow: 0 0 6px #b02a37;
+}
+
+/* Boutons sous la textarea */
+.custom-toast .btn {
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+}
+
+/* Bouton confirmer (rouge) */
+.custom-toast .btn-danger {
+  background-color: var(--danger);
+  border: none;
+  color: white;
+}
+
+.custom-toast .btn-danger:hover {
+  background-color: var(--danger-dark);
+}
+
+/* Bouton annuler (outline) */
+.custom-toast .btn-outline-light {
+  border: 1.5px solid white;
+  color: white;
+  background-color: transparent;
+}
+
+.custom-toast .btn-outline-light:hover {
+  background-color: white;
+  color: #dc3545;
+}
+
+/* Bouton fermer (croix) */
+.toast-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.toast-close-btn:hover {
+  opacity: 1;
+}

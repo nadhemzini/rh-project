@@ -1,0 +1,224 @@
+<div class="container mt-5 mb-5">
+  <!-- TITRE -->
+  <h2 class="text-center text-primary mb-5 fw-bold">Gestion des Anomalies Paie</h2>
+
+  <!-- RECHERCHE AVANCÉE -->
+  <div class="card mb-5 shadow-sm rounded-4 border-0">
+    <div class="card-body">
+      <h5 class="card-title mb-4 fw-semibold">Recherche avancée</h5>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Matricule</label>
+          <input
+            type="text"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchMatricule"
+            placeholder="Entrer le matricule"
+          />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Zone</label>
+          <input
+            type="text"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchZone"
+            placeholder="Entrer la zone"
+          />
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Type d’anomalie</label>
+          <select class="form-select rounded-pill border-primary" [(ngModel)]="searchTypeAnomalie">
+            <option value="">Tous types</option>
+             <option value="Prime Productivité">Prime Productivité</option>
+          <option value="Prime Merite">Prime Merite</option>
+          <option value="RIB">RIB</option>
+          <option value="Echelon"> Gategorie/Echelon</option>
+          <option value="Pointage oublié">Pointage oublié</option>
+          <option value="Nombre Heure Présence">Nombre Heure Présence</option>
+          <option value="Frais Convention optic/Graiet">Frais Convention optic/Graiet</option>
+          <option value="Note Mensuel">Note Mensuel</option>
+          <option value="Solde Congé">Solde Congé</option>
+          <option value="Avance">Avance</option>
+          <option value="Heure Allaitement">Heure Allaitement</option>
+          <option value="Fonction">Fonction</option>
+          <option value="Prime Présence Samedi 5DT">Prime Présence Samedi 5DT</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Statut</label>
+          <select class="form-select rounded-pill border-primary" [(ngModel)]="searchStatut">
+            <option value="">Tous statuts</option>
+            <option value="En attente">En attente</option>
+            <option value="Acceptée">Acceptée</option>
+            <option value="Refusée">Refusée</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex justify-content-end gap-3">
+        <button class="btn btn-primary px-4 rounded-pill" (click)="filtrerEtAfficherAnomalies()">Rechercher</button>
+        <button class="btn btn-outline-secondary px-4 rounded-pill" (click)="resetRecherche()">Réinitialiser</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <form (ngSubmit)="addAnomalie()" class="card p-4 shadow-sm mb-5 rounded-4 border-0">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Matricule employé</label>
+        <input
+          type="text"
+          [(ngModel)]="newAnomalie.employe.matricule"
+          (input)="remplirNomEtZone()"
+          name="matricule"
+          class="form-control rounded-pill border-primary"
+          placeholder="Ex: 1122"
+          required
+        />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Nom</label>
+        <input type="text" class="form-control" [value]="nomEmploye" disabled />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Zone</label>
+        <input type="text" class="form-control" [value]="zoneEmploye" disabled />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Description</label>
+        <input
+          [(ngModel)]="newAnomalie.description"
+          name="description"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Date</label>
+        <input
+          type="date"
+          [(ngModel)]="newAnomalie.dateAnomalie"
+          name="date"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Type d’anomalie</label>
+        <select
+          [(ngModel)]="newAnomalie.typeAnomalie"
+          name="typeAnomalie"
+          class="form-select rounded-pill border-primary"
+          required
+        >
+          <option value="Prime Productivité">Prime Productivité</option>
+          <option value="Prime Merite">Prime Merite</option>
+          <option value="RIB">RIB</option>
+          <option value="Echelon"> Gategorie/Echelon</option>
+          <option value="Pointage oublié">Pointage oublié</option>
+          <option value="Nombre Heure Présence">Nombre Heure Présence</option>
+          <option value="Frais Convention optic/Graiet">Frais Convention optic/Graiet</option>
+          <option value="Note Mensuel">Note Mensuel</option>
+          <option value="Solde Congé">Solde Congé</option>
+          <option value="Avance">Avance</option>
+          <option value="Heure Allaitement">Heure Allaitement</option>
+          <option value="Fonction">Fonction</option>
+          <option value="Prime Présence Samedi 5DT">Prime Présence Samedi 5DT</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div class="col-md-6" *ngIf="newAnomalie.typeAnomalie === 'Autre'">
+        <label class="form-label fw-semibold">Précisez l’anomalie</label>
+        <input
+          type="text"
+          [(ngModel)]="newAnomalie.autreType"
+          name="autreType"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary px-5 rounded-pill shadow-sm mt-3">Ajouter</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- TABLEAU -->
+  <div class="card p-4 shadow-sm rounded-4 border-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="fw-bold m-0">Liste des anomalies</h4>
+      <button class="btn btn-secondary btn-sm rounded-pill" (click)="generatePdf()"><i class="fa-solid fa-file-pdf me-1"></i> PDF</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center align-middle mb-0">
+        <thead class="table-primary text-primary">
+          <tr>
+            <th class="col-xs">Matricule</th>
+            <th class="col-md">Nom</th>
+            <th class="col-md">Zone</th>
+            <th class="col-md">Type d’anomalie</th>
+            <th class="col-lg">Description</th>
+            <th class="col-sm">Date</th>
+            <th class="col-md">Statut</th>
+            <th class="col-xl col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of anomaliesAffichees">
+            <td>{{ a.employe?.matricule }}</td>
+            <td>{{ a.employe?.fullname }}</td>
+            <td>{{ a.employe?.zone }}</td>
+            <td>{{ a.typeAnomalie }}</td>
+            <td>{{ a.description }}</td>
+            <td>{{ a.dateAnomalie }}</td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-warning text-dark': a.statut === 'En attente',
+                  'bg-success': a.statut === 'Acceptée',
+                  'bg-danger': a.statut === 'Refusée'
+                }"
+              >
+                {{ a.statut }}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                <button class="btn btn-danger btn-sm" (click)="deleteAnomalie(a.id)"><i class="fa-solid fa-trash me-1"></i> Supprimer</button>
+
+                <ng-container *ngIf="userRole?.toLowerCase() === 'responsable rh'">
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="changerStatut(a.id, 'Acceptée')"
+                    [disabled]="a.statut === 'Acceptée'"
+                  ><i class="fa-solid fa-check me-1"></i> Accepter</button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="changerStatut(a.id, 'Refusée')"
+                    [disabled]="a.statut === 'Refusée'"
+                  ><i class="fa-solid fa-xmark me-1"></i> Refuser</button>
+                </ng-container>
+
+                <button
+                  class="btn btn-warning btn-sm"
+                  (click)="modifier(a)"
+                  [disabled]="a.statut !== 'En attente'"
+                ><i class="fa-solid fa-pen me-1"></i> Modifier</button>
+
+                <button class="btn btn-secondary btn-sm" (click)="generatePdfPers(a)"><i class="fa-solid fa-file-pdf me-1"></i> PDF</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    
+  </div>
+</div>

@@ -1,0 +1,37 @@
+@media (max-width: 576px) {
+  h2, h3 {
+    font-size: 1.2rem;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .table th, .table td {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+
+  .form-select, .btn {
+    font-size: 0.9rem;
+  }
+
+  .card h5, .card h6, .card p {
+    font-size: 0.9rem;
+  }
+  .mt-header-fix {
+    margin-top: 100px; /* Si le header devient plus haut sur mobile */
+  }
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.1rem; /* taille un peu plus grande */
+  font-weight: 500;  /* un peu plus gras (optionnel) */
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: #4da6ff !important;
+
+}
+
+
+

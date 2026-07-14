@@ -1,0 +1,248 @@
+/* =====================================================
+   LOGIN PAGE — Fully isolated, standalone styles
+   These styles support BOTH light and dark themes via CSS variables
+   ===================================================== */
+
+/* ── Root: full-screen background using CSS variables ── */
+.login-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.25s ease;
+}
+
+/* ── Theme toggle button position ── */
+.login-theme-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+}
+
+/* ── Animated gradient blobs ── */
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.blob-1 {
+  width: 300px;
+  height: 300px;
+  background-color: var(--primary);
+  top: 10%;
+  left: 15%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.blob-2 {
+  width: 350px;
+  height: 350px;
+  background-color: var(--danger);
+  bottom: 15%;
+  right: 15%;
+  animation: float 10s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(-20px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ── Login Card ── */
+.login-card {
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  /* Override Bootstrap .card */
+  background: var(--bg-card) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-radius: 20px !important;
+  padding: 2.75rem !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.25s ease;
+  /* Override any global hover that might change bg */
+  transform: none;
+}
+
+/* Subtle lift on hover — do NOT change background */
+.login-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 32px 60px -10px rgba(0, 0, 0, 0.3) !important;
+  background: var(--bg-card) !important;
+}
+
+/* ── Title ── */
+.login-title {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ── Subtitle ── */
+.login-card .text-secondary {
+  color: var(--muted) !important;
+  font-size: 0.875rem;
+}
+
+/* ── Labels ── */
+.login-card .form-label {
+  color: var(--text) !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ── Input wrapper: icon + field ── */
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* The leading icon */
+.input-icon-wrapper > i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  z-index: 10;
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+/* Override Bootstrap .form-control for login inputs ONLY */
+.input-icon-wrapper input.form-control {
+  padding-left: 46px !important;
+  padding-right: 48px !important;
+  height: 52px !important;
+  background-color: var(--bg-input) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text) !important;
+  font-size: 0.9rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.25s;
+}
+
+/* High contrast placeholder */
+.input-icon-wrapper input.form-control::placeholder {
+  color: var(--muted) !important;
+  opacity: 1;
+}
+
+/* Focus state — bright blue outline for accessibility */
+.input-icon-wrapper input.form-control:focus {
+  background-color: var(--bg-input) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px var(--primary-alpha) !important;
+  outline: none !important;
+  color: var(--text) !important;
+}
+
+/* ── Password toggle eye button ── */
+.eye-toggle-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  z-index: 10;
+  padding: 4px;
+  line-height: 1;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+  height: auto !important;
+  border-radius: 4px !important;
+}
+
+.eye-toggle-btn:hover {
+  color: var(--text);
+}
+
+/* ── Forgot password link ── */
+.login-card .text-primary {
+  color: var(--primary) !important;
+  font-size: 0.8rem !important;
+}
+.login-card .text-primary:hover {
+  color: var(--primary-hover) !important;
+}
+
+/* ── Submit button ── */
+.btn-login-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover)) !important;
+  color: #fff !important;
+  height: 50px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 14px var(--primary-alpha) !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .5rem !important;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-login-gradient:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary)) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px var(--primary-alpha) !important;
+}
+
+.btn-login-gradient:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px var(--primary-alpha) !important;
+}
+
+/* ── Error alert ── */
+.login-card .alert {
+  background-color: var(--danger-alpha) !important;
+  border: 1px solid var(--danger) !important;
+  color: var(--danger) !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 0.84rem !important;
+}
+
+/* ── Animations ── */
+.fade-in {
+  animation: loginFadeIn 0.3s ease forwards;
+}
+.slide-up {
+  animation: loginSlideUp 0.3s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes loginFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes loginSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

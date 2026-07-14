@@ -1,0 +1,571 @@
+/* =========================================================
+   GLOBAL STYLES — KKT Digital RH
+   NOTE: All dashboard layout styles are scoped to .rh-layout
+   or .rh-main to avoid polluting the login page.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', system-ui, sans-serif;
+
+  /* Backgrounds */
+  --bg:       #f8fafc;
+  --bg-card:  #ffffff;
+  --bg-sidebar: #0f172a;
+  --border-sidebar: rgba(255,255,255,.06);
+  --text-sidebar: #94a3b8;
+  --text-sidebar-hover: #e2e8f0;
+  --bg-primary: #f8fafc;
+
+  /* Text */
+  --text:     #0f172a;
+  --muted:    #64748b;
+
+  /* Border */
+  --border:   #e2e8f0;
+
+  /* Forms & Tables */
+  --bg-input: #ffffff;
+  --bg-table-header: #f8fafc;
+  --bg-table-hover:  #f1f5f9;
+
+  /* Brand */
+  --primary:       #2563eb;
+  --primary-dark:  #1d4ed8;
+  --primary-alpha: rgba(37,99,235,.15);
+  --primary-hover: #3b82f6;
+  --primary-glow:  rgba(37,99,235,.25);
+
+  --success:       #10b981;
+  --success-dark:  #059669;
+  --success-alpha: rgba(16,185,129,.15);
+
+  --warning:       #f59e0b;
+  --warning-dark:  #d97706;
+  --warning-alpha: rgba(245,158,11,.15);
+
+  --danger:        #ef4444;
+  --danger-dark:   #dc2626;
+  --danger-alpha:  rgba(239,68,68,.15);
+
+  --info:          #0ea5e9;
+  --info-dark:     #0369a1;
+  --info-alpha:    rgba(14,165,233,.15);
+
+  /* Radii */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.05);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.07);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --bg:       #0f172a;       /* slate-900 */
+  --bg-card:  #1e293b;  /* slate-800 */
+  --bg-sidebar: #020617; /* slate-950 */
+  --border-sidebar: #1e293b;
+  --text-sidebar: #94a3b8;
+  --text-sidebar-hover: #f8fafc;
+  --bg-primary: #0f172a;
+
+  /* Text */
+  --text:     #f8fafc;     /* slate-50 */
+  --muted:    #94a3b8;    /* slate-400 */
+
+  /* Border */
+  --border:   #334155;   /* slate-700 */
+
+  /* Forms & Tables */
+  --bg-input: #0f172a;   /* slate-900 */
+  --bg-table-header: #0f172a;
+  --bg-table-hover:  #334155;
+
+  /* Brand / Accents */
+  --primary:       #3b82f6; /* brighter blue for dark mode */
+  --primary-dark:  #2563eb;
+  --primary-alpha: rgba(59,130,246,.2);
+  --primary-hover: #60a5fa;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.5);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,.45);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.35);
+}
+
+/* ── Base — MINIMAL to avoid breaking login page ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar          { width: 5px; height: 5px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ==========================================================
+   DASHBOARD SCOPE
+   ALL styles below are scoped to .rh-main (authenticated)
+   so they NEVER leak into login/reset pages
+   ========================================================== */
+
+.rh-main {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.rh-main h1, .rh-main h2, .rh-main h3,
+.rh-main h4, .rh-main h5, .rh-main h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Cards ── */
+.rh-main .card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-xs) !important;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.rh-main .card:hover {
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-1px);
+}
+
+/* ── Form Controls — SCOPED to dashboard only ── */
+.rh-main .form-control,
+.rh-main .form-select {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: .56rem .875rem !important;
+  font-size: .875rem !important;
+  background: var(--bg-input) !important;
+  color: var(--text) !important;
+  transition: border-color .15s, box-shadow .15s;
+}
+.rh-main .form-control:focus,
+.rh-main .form-select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-alpha) !important;
+  outline: none !important;
+}
+
+/* ── Buttons — SCOPED ── */
+.rh-main .btn {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: .8rem;
+  height: 34px;
+  padding: 0 .85rem;
+  border-radius: var(--radius-pill) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  white-space: nowrap;
+  transition: background .15s, transform .12s, box-shadow .15s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.rh-main .btn i { font-size: .82rem; line-height: 1; }
+.rh-main .btn:active { transform: translateY(0) !important; }
+.rh-main .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.rh-main .btn-primary   { background: var(--primary) !important; color: #fff !important; }
+.rh-main .btn-primary:hover:not(:disabled)   { background: var(--primary-dark) !important; transform: translateY(-1px); box-shadow: 0 3px 10px var(--primary-alpha); }
+
+.rh-main .btn-success   { background: var(--success) !important; color: #fff !important; }
+.rh-main .btn-success:hover:not(:disabled)   { background: var(--success-dark) !important; transform: translateY(-1px); box-shadow: 0 3px 10px var(--success-alpha); }
+
+.rh-main .btn-danger    { background: var(--danger) !important; color: #fff !important; }
+.rh-main .btn-danger:hover:not(:disabled)    { background: var(--danger-dark) !important; transform: translateY(-1px); box-shadow: 0 3px 10px var(--danger-alpha); }
+
+.rh-main .btn-warning   { background: var(--warning) !important; color: #fff !important; }
+.rh-main .btn-warning:hover:not(:disabled)   { background: var(--warning-dark) !important; transform: translateY(-1px); box-shadow: 0 3px 10px var(--warning-alpha); }
+
+.rh-main .btn-info      { background: #0ea5e9 !important; color: #fff !important; }
+.rh-main .btn-info:hover:not(:disabled)      { background: #0284c7 !important; transform: translateY(-1px); }
+
+.rh-main .btn-light     { background: var(--bg) !important; border: 1px solid var(--border) !important; color: var(--text) !important; }
+.rh-main .btn-light:hover:not(:disabled)     { background: var(--bg-table-hover) !important; }
+
+.rh-main .btn-outline-secondary { background: transparent !important; border: 1px solid var(--border) !important; color: var(--muted) !important; }
+.rh-main .btn-outline-secondary:hover:not(:disabled) { background: var(--bg) !important; color: var(--text) !important; }
+
+.rh-main .btn-outline-danger { background: transparent !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; }
+.rh-main .btn-outline-danger:hover:not(:disabled) { background: var(--danger) !important; color: #fff !important; }
+
+.rh-main .btn-outline-primary { background: transparent !important; border: 1px solid var(--primary) !important; color: var(--primary) !important; }
+.rh-main .btn-outline-primary:hover:not(:disabled) { background: var(--primary) !important; color: #fff !important; }
+
+.rh-main .btn-sm { height: 30px !important; font-size: .76rem !important; padding: 0 .7rem !important; }
+.rh-main .btn-lg { height: 44px !important; font-size: .95rem !important; padding: 0 1.5rem !important; }
+
+/* ── Badges — SCOPED ── */
+.rh-main .badge {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: .7rem;
+  padding: .3em .7em;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+.rh-main .bg-success { background: var(--success-alpha) !important; color: var(--success-dark) !important; }
+.rh-main .bg-danger  { background: var(--danger-alpha) !important; color: var(--danger-dark) !important; }
+.rh-main .bg-warning { background: var(--warning-alpha) !important; color: var(--warning-dark) !important; }
+.rh-main .bg-info    { background: var(--info-alpha) !important; color: var(--info-dark) !important; }
+.rh-main .bg-primary { background: var(--primary-alpha) !important; color: var(--primary-dark) !important; }
+.rh-main .badge.bg-warning.text-dark { color: var(--warning-dark) !important; }
+
+/* ── Override Bootstrap table-primary class ── */
+.table-primary {
+  --bs-table-bg: var(--bg-table-header) !important;
+  --bs-table-color: var(--muted) !important;
+  background-color: var(--bg-table-header) !important;
+  color: var(--muted) !important;
+}
+.table-primary th {
+  background-color: var(--bg-table-header) !important;
+  color: var(--muted) !important;
+}
+
+/* ── Override Bootstrap text-dark class ── */
+.text-dark {
+  color: var(--text) !important;
+}
+
+/* ── Override Bootstrap text-primary class ── */
+.text-primary {
+  color: var(--primary) !important;
+}
+
+/* ── Override Bootstrap table classes ── */
+.table {
+  --bs-table-bg: var(--bg-card) !important;
+  --bs-table-color: var(--text) !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text) !important;
+}
+.table td,
+.table th {
+  background-color: var(--bg-card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+.table-hover tbody tr:hover td {
+  background-color: var(--bg-table-hover) !important;
+}
+.table-striped > tbody > tr:nth-of-type(odd) > td,
+.table-striped > tbody > tr:nth-of-type(odd) > th {
+  background-color: var(--bg-table-hover) !important;
+}
+
+/* ── Override Bootstrap form classes ── */
+.form-control {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.form-control::placeholder {
+  color: var(--muted) !important;
+  opacity: 0.7;
+}
+.form-control:focus {
+  background-color: var(--bg-input) !important;
+  border-color: var(--primary) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 0.25rem var(--primary-alpha) !important;
+}
+.form-select {
+  background-color: var(--bg-input) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.form-select:focus {
+  background-color: var(--bg-input) !important;
+  border-color: var(--primary) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 0.25rem var(--primary-alpha) !important;
+}
+
+/* ── Override Bootstrap card classes ── */
+.card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.card-header {
+  background-color: var(--bg-table-header) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.card-body {
+  background-color: var(--bg-card) !important;
+  color: var(--text) !important;
+}
+
+/* ── Override Bootstrap button classes ── */
+.btn-light {
+  background-color: var(--bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.btn-light:hover {
+  background-color: var(--bg-table-hover) !important;
+  color: var(--text) !important;
+}
+
+/* ── Alerts ── */
+.rh-main .bg-danger-subtle  { background: var(--danger-alpha) !important; }
+.rh-main .bg-success-subtle { background: var(--success-alpha) !important; }
+.rh-main .bg-warning-subtle { background: var(--warning-alpha) !important; }
+.rh-main .bg-info-subtle    { background: var(--info-alpha) !important; }
+
+/* ── Pagination ── */
+.rh-main .pagination { gap: .25rem; }
+.rh-main .page-item .page-link {
+  border-radius: var(--radius-sm) !important;
+  border-color: var(--border) !important;
+  color: var(--primary) !important;
+  font-size: .82rem;
+  padding: .38rem .65rem;
+  transition: background .15s;
+}
+.rh-main .page-item.active .page-link {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+}
+.rh-main .page-item.disabled .page-link { color: var(--muted) !important; opacity: .6; }
+
+/* ================================================================
+   TABLE SYSTEM — The definitive, no-hack approach
+   Rules:
+   1. Actions column is a NORMAL column (NOT sticky)
+   2. Wrapper provides overflow-x:auto for horizontal scrolling
+   3. Buttons are inside a flex div, NOT on the <td> itself
+   4. Generous min-widths prevent squishing
+   ================================================================ */
+
+/* Table Card Wrapper */
+.rh-main .table-responsive,
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-xs);
+  /* DO NOT use overflow:hidden — it would clip scrollbar and shadows */
+}
+
+/* The table itself */
+.rh-main .table {
+  width: max-content;   /* Allow table to be as wide as needed */
+  min-width: 100%;      /* At minimum fill the wrapper */
+  margin-bottom: 0 !important;
+  border-collapse: collapse !important;  /* Required for correct cell borders */
+  table-layout: auto;
+  white-space: nowrap; /* Prevent text wrapping inside cells */
+}
+
+/* Header */
+.rh-main .table thead th {
+  background-color: var(--bg-table-header) !important;
+  color: var(--muted) !important;
+  font-weight: 600;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .875rem 1rem !important;
+  border-bottom: 2px solid var(--border) !important;
+  border-right: 1px solid var(--border) !important;
+  white-space: nowrap;
+  vertical-align: middle !important;
+}
+.rh-main .table thead th:last-child { border-right: none !important; }
+
+/* Body cells */
+.rh-main .table tbody td {
+  padding: .75rem 1rem !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-right: 1px solid var(--border) !important;
+  font-size: .84rem;
+  color: var(--text);
+}
+.rh-main .table tbody td:last-child { border-right: none !important; }
+.rh-main .table tbody tr:last-child td { border-bottom: none !important; }
+
+/* Row hover */
+.rh-main .table-hover tbody tr:hover td {
+  background-color: var(--bg-table-hover) !important;
+}
+
+/* ── Column width helpers ── */
+/* Small columns */
+.rh-main .table .col-xs { width: 65px;  min-width: 65px;  }
+.rh-main .table .col-sm { width: 100px; min-width: 100px; }
+.rh-main .table .col-md { width: 140px; min-width: 120px; }
+.rh-main .table .col-lg { width: 200px; min-width: 160px; }
+.rh-main .table .col-xl { width: 260px; min-width: 200px; }
+
+/* ── ACTIONS COLUMN — Normal column, generous width ── */
+/*
+  The actions column is NOT sticky. Instead we give it enough
+  min-width so all buttons fit comfortably, and let the table
+  scroll horizontally when needed.
+*/
+.rh-main .table .col-actions,
+.rh-main .table th.col-actions {
+  min-width: 360px;
+  width: 360px;
+  text-align: center;
+}
+
+.rh-main .table td.actions-cell {
+  min-width: 360px;
+  width: 360px;
+  padding: .5rem .75rem !important;
+}
+
+/* ── Action button group inside the td ── */
+/*
+  Python script wrapped all action buttons in <div class="actions-group">
+  We style that wrapper here.
+*/
+.actions-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .3rem;
+}
+
+/* Safety net: if a td still has d-flex (legacy), restore table-cell */
+.rh-main .table td.d-flex {
+  display: table-cell !important;
+}
+
+/* ── Animations ── */
+.fade-in  { animation: fadeIn  .3s ease forwards; }
+.slide-up { animation: slideUp .35s cubic-bezier(.16,1,.3,1) forwards; }
+
+@keyframes fadeIn  { from { opacity: 0; }              to { opacity: 1; }             }
+@keyframes slideUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Toast stack ── */
+.toast-stack {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  max-width: 360px;
+  width: calc(100vw - 3rem);
+  pointer-events: none;
+}
+
+.toast-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .85rem 1.1rem;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  border-left: 4px solid var(--primary);
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--text);
+  animation: toastIn .25s cubic-bezier(.16,1,.3,1) forwards;
+  pointer-events: all;
+}
+
+.toast-item.success { border-left-color: var(--success); }
+.toast-item.success i { color: var(--success); }
+.toast-item.error   { border-left-color: var(--danger); }
+.toast-item.error   i { color: var(--danger); }
+.toast-item.warning { border-left-color: var(--warning); }
+.toast-item.warning i { color: var(--warning); }
+.toast-item.info    { border-left-color: var(--primary); }
+.toast-item.info    i { color: var(--primary); }
+.toast-msg { flex: 1; }
+
+@keyframes toastIn {
+  from { transform: translateX(110%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ── Confirm modal ── */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,.35);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.confirm-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0,0,0,.15);
+  text-align: center;
+  animation: confirmIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+
+.confirm-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--danger-alpha);
+  color: var(--danger);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin: 0 auto 1rem;
+}
+
+.confirm-title  { font-weight: 700; color: var(--text); margin-bottom: .5rem; }
+.confirm-body   { font-size: .875rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.confirm-actions { display: flex; gap: .75rem; justify-content: center; }
+
+@keyframes confirmIn {
+  from { transform: scale(.92); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}

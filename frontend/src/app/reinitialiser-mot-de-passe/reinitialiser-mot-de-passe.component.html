@@ -1,0 +1,93 @@
+<div class="container d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card p-5 shadow-lg rounded-4" style="width: 450px; border: none;">
+    <div class="text-center mb-4">
+      <img src="assets/KKT.png" alt="Logo" width="150" class="mb-3" />
+      <h2 class="fw-bold text-primary">Réinitialisation</h2>
+      <p class="text-muted">Entrez votre matricule pour réinitialiser votre mot de passe</p>
+    </div>
+
+    <form (ngSubmit)="changerMotDePasse()">
+      <!-- Matricule -->
+      <div class="mb-3">
+        <label class="form-label">Matricule</label>
+        <input
+          type="text"
+          [(ngModel)]="identifiant"
+          name="identifiant"
+          class="form-control form-control-lg rounded-3"
+          placeholder="ex : 12345"
+          required
+        />
+      </div>
+
+      <!-- Nouveau mot de passe -->
+     <!-- Nouveau mot de passe -->
+<div class="mb-3 position-relative">
+  <label class="form-label">Nouveau mot de passe</label>
+  <input
+    [type]="showPassword ? 'text' : 'password'"
+    [(ngModel)]="nouveauMotDePasse"
+    name="nouveauMotDePasse"
+    (input)="getPasswordStrength()"
+    class="form-control form-control-lg rounded-3 pe-5"
+    placeholder="Mot de passe fort"
+    required
+  />
+  <div class="mt-1">
+    <small [ngClass]="{
+      'text-danger': passwordStrength === 'faible',
+      'text-warning': passwordStrength === 'moyen',
+      'text-success': passwordStrength === 'fort'
+    }">
+      Force : {{ passwordStrength || '–' }}
+    </small>
+    <div class="progress mt-1">
+      <div class="progress-bar"
+           [ngClass]="{
+             'bg-danger': passwordStrength === 'faible',
+             'bg-warning': passwordStrength === 'moyen',
+             'bg-success': passwordStrength === 'fort'
+           }"
+           role="progressbar"
+           [style.width]="
+             passwordStrength === 'faible' ? '33%' :
+             passwordStrength === 'moyen' ? '66%' :
+             passwordStrength === 'fort' ? '100%' : '0%'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation mot de passe -->
+<div class="mb-3 position-relative">
+  <label class="form-label">Confirmer le mot de passe</label>
+  <input
+    [type]="showConfirmPassword ? 'text' : 'password'"
+    [(ngModel)]="confirmationMotDePasse"
+    name="confirmationMotDePasse"
+    class="form-control form-control-lg rounded-3 pe-5"
+    placeholder="Répéter le mot de passe"
+    required
+  />
+
+</div>
+
+
+      <!-- Bouton -->
+      <button type="submit" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold">
+        🔐 Réinitialiser le mot de passe
+      </button>
+
+      <!-- Messages -->
+      <p *ngIf="message" class="text-success mt-3 text-center fw-semibold">{{ message }}</p>
+      <p *ngIf="erreur" class="text-danger mt-3 text-center fw-semibold">{{ erreur }}</p>
+    </form>
+
+    <!-- Lien retour -->
+    <div class="text-center mt-4">
+      <a routerLink="/login" class="text-muted small text-decoration-none">
+        🔙 Retour à la connexion
+      </a>
+    </div>
+  </div>
+</div>

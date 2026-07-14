@@ -1,0 +1,88 @@
+<div class="login-wrapper px-3">
+  <!-- Theme toggle button -->
+  <div class="login-theme-toggle">
+    <label class="theme-switch" for="themeCheckboxLogin" title="Changer de thème">
+      <input type="checkbox" id="themeCheckboxLogin" [checked]="currentTheme === 'dark'" (change)="toggleTheme()" />
+      <div class="slider round">
+        <i class="fa-solid fa-moon icon-moon"></i>
+        <i class="fa-solid fa-sun icon-sun"></i>
+      </div>
+    </label>
+  </div>
+
+  <!-- Interactive Blobs in the background -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <!-- Center Card -->
+  <div class="card login-card fade-in">
+    <!-- Header/Logo area -->
+    <div class="text-center mb-4 pb-2">
+      <div class="mb-3 d-inline-block p-2 rounded-4" style="background: var(--bg-table-hover); border: 1px solid var(--border);">
+        <!-- Icon replacing image since we want a modern SaaS emblem -->
+        <div class="bg-primary text-white rounded-4 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
+          <i class="fa-solid fa-cubes-stacked fs-3"></i>
+        </div>
+      </div>
+      <h2 class="login-title mb-1">Bienvenue</h2>
+      <p class="text-secondary fs-7 m-0">Gestion RH &bull; Connectez-vous à votre compte</p>
+    </div>
+
+    <!-- Login Form -->
+    <form (ngSubmit)="login()" autocomplete="off">
+      
+      <!-- Matricule Input -->
+      <div class="mb-3">
+        <label for="matricule" class="form-label text-white opacity-75 fs-8 fw-semibold mb-2">MATRICULE</label>
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-user-tag"></i>
+          <input
+            type="text"
+            id="matricule"
+            [(ngModel)]="matricule"
+            name="matricule"
+            class="form-control rounded-4"
+            placeholder="Entrez votre matricule"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label for="motdepasse" class="form-label text-white opacity-75 fs-8 fw-semibold m-0">MOT DE PASSE</label>
+          <a [routerLink]="['/reinitialiser-mot-de-passe']" class="text-decoration-none fs-8 text-primary fw-medium">
+            Mot de passe oublié ?
+          </a>
+        </div>
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-lock"></i>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="motdepasse"
+            [(ngModel)]="motdepasse"
+            name="motdepasse"
+            class="form-control rounded-4"
+            placeholder="Saisissez votre mot de passe"
+            required
+          />
+          <!-- Password toggle visibility icon -->
+          <button type="button" class="eye-toggle-btn" (click)="togglePasswordVisibility()" title="Afficher/masquer">
+            <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-login-gradient w-100 rounded-pill mb-3">
+        Se connecter <i class="fa-solid fa-arrow-right-to-bracket ms-1.5"></i>
+      </button>
+
+      <!-- Error alert messages -->
+      <div *ngIf="errorMessage" class="alert bg-danger-subtle text-danger rounded-4 py-2.5 px-3 fs-8 text-center fw-medium border-0 mt-3 slide-up">
+        <i class="fa-solid fa-circle-exclamation me-1.5"></i> {{ errorMessage }}
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,266 @@
+<div class="container mt-5 mb-5">
+  <!-- TITRE -->
+  <h2 class="text-center text-primary mb-5 fw-bold">Demande de document administratif</h2>
+
+  <!-- RECHERCHE -->
+ <!-- RECHERCHE -->
+<div class="card mb-5 shadow-sm rounded-4 border-0">
+  <div class="card-body">
+    <h5 class="card-title mb-4 fw-semibold">Recherche</h5>
+
+    <div class="row g-3">
+      <div class="col-md-4 col-lg-3">
+        <label class="form-label fw-semibold">Matricule :</label>
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchMatricule"
+          placeholder="Entrer le matricule"
+        />
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <label class="form-label fw-semibold">Nom :</label>
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchNom"
+          placeholder="Entrer le nom"
+        />
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <label class="form-label fw-semibold">Zone :</label>
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchZone"
+          placeholder="Entrer la zone"
+        />
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <label for="searchTypeDocument" class="form-label fw-semibold">Type de document</label>
+        <select
+          id="searchTypeDocument"
+          [(ngModel)]="searchTypeDocument"
+          class="form-select rounded-pill border-primary"
+        >
+          <option value="">-- Tous les types --</option>
+          <option value="Attestation de travail">Attestation de travail</option>
+          <option value="RNE">RNE</option>
+          <option value="CNSS">CNSS</option>
+          <option value="Attestation de salaire">Attestation de salaire</option>
+          <option value="Fiche de paie">Fiche de paie</option>
+          <option value="Attestation d'impôt sur le revenu">Attestation d'impôt sur le revenu</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <label class="form-label fw-semibold">Statut :</label>
+        <select
+          class="form-select rounded-pill border-primary"
+          [(ngModel)]="searchStatut"
+        >
+          <option value="">Tous</option>
+          <option value="En attente">En attente</option>
+          <option value="Acceptée">Acceptée</option>
+          <option value="Refusée">Refusée</option>
+        </select>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end mt-3 gap-3">
+        <button
+          class="btn btn-primary px-4 rounded-pill shadow-sm"
+          (click)="filtrerEtAfficherDemandes()"
+        >
+          Rechercher
+        </button>
+        <button
+          class="btn btn-outline-secondary px-4 rounded-pill"
+          (click)="resetRecherche()"
+        >
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- FORMULAIRE -->
+  <form
+    [formGroup]="form"
+    (ngSubmit)="envoyer()"
+    class="card p-4 shadow-sm mb-5 rounded-4 border-0"
+  >
+    <div class="row g-4">
+      <div class="col-sm-6 col-md-4">
+        <label for="typeDocument" class="form-label fw-semibold"
+          >Type de document</label
+        >
+        <select
+          id="typeDocument"
+          formControlName="typeDocument"
+          class="form-select rounded-pill border-primary"
+          required
+        >
+          <option value="" disabled selected>-- Sélectionnez un type --</option>
+          <option value="Attestation de travail">Attestation de travail</option>
+          <option value="RNE">RNE</option>
+          <option value="CNSS">CNSS</option>
+          <option value="Attestation de salaire">Attestation de salaire</option>
+          <option value="Fiche de paie">Fiche de paie</option>
+          <option value="Attestation d'impôt sur le revenu">
+            Attestation d'impôt sur le revenu
+          </option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="col-sm-6 col-md-4" *ngIf="form.get('typeDocument')?.value === 'Autre'">
+        <label for="typeDocumentAutre" class="form-label fw-semibold"
+          >Précisez le type de document</label
+        >
+        <input
+          id="typeDocumentAutre"
+          formControlName="typeDocumentAutre"
+          class="form-control rounded-pill border-primary"
+          placeholder="Décrivez ici"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label for="matricule" class="form-label fw-semibold">Matricule</label>
+        <input
+          id="matricule"
+          formControlName="matricule"
+          class="form-control rounded-pill border-primary"
+          placeholder="Ex: 1122"
+          required
+        />
+        <div
+          *ngIf="nomEmploye"
+          class="form-text text-success mt-2 fw-semibold"
+        >
+          Nom : {{ nomEmploye }}
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label for="remarque" class="form-label fw-semibold"
+          >Remarque (facultatif)</label
+        >
+        <textarea
+          id="remarque"
+          formControlName="remarque"
+          class="form-control rounded-3 border-primary"
+          rows="3"
+          placeholder="Ajoutez une remarque ici..."
+        ></textarea>
+      </div>
+
+      <div class="col-12 text-center mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary px-5 rounded-pill shadow-sm"
+          [disabled]="form.invalid"
+        >
+          Envoyer
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- MESSAGES -->
+  <div
+    *ngIf="successMessage"
+    class="alert alert-success text-center fs-5 fw-semibold"
+  >
+    {{ successMessage }}
+  </div>
+  <div
+    *ngIf="errorMessage"
+    class="alert alert-danger text-center fs-5 fw-semibold"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <!-- LISTE DES DEMANDES -->
+  <div class="card p-4 shadow-sm rounded-4 border-0">
+    <h3 class="mb-4 text-center fw-bold">Liste des demandes</h3>
+    <div class="table-responsive">
+      <table
+        class="table table-bordered table-striped text-center align-middle mb-0"
+      >
+        <thead class="table-primary text-primary">
+          <tr>
+            <th class="col-xs">Matricule</th>
+            <th class="col-md">Nom</th>
+            <th class="col-md">Zone</th>
+            <th class="col-md">Type de document</th>
+            <th class="col-sm">Date de demande</th>
+            <th class="col-lg">Remarque</th>
+            <th class="col-md">Statut</th>
+            <th class="col-xl col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let demande of demandes"
+            [class.table-active]="demande.statut === 'En attente'"
+            style="cursor: default;"
+          >
+            <td>{{ demande.employe.matricule }}</td>
+            <td>{{ demande.employe.fullname }}</td>
+            <td>{{ demande.employe.zone || '-' }}</td>
+            <td>{{ demande.typeDocument }}</td>
+            <td>{{ demande.dateDemande | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ demande.remarque || '-' }}</td>
+            <td>
+              <span
+                [ngClass]="{
+                  'badge bg-warning text-dark': demande.statut === 'En attente',
+                  'badge bg-success': demande.statut === 'Acceptée',
+                  'badge bg-danger': demande.statut === 'Refusée'
+                }"
+                >{{ demande.statut }}</span
+              >
+            </td>
+            <td 
+              class="actions-cell flex-md-row"
+            ><div class="actions-group">
+              <button
+                class="btn btn-warning btn-sm"
+                (click)="remplirFormulairePourEdition(demande)"
+                [disabled]="demande.statut === 'Acceptée'"
+              ><i class="fa-solid fa-pen me-1"></i> Modifier</button>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                (click)="supprimer(demande.id)"
+              ><i class="fa-solid fa-trash me-1"></i> Supprimer</button>
+
+              <ng-container *ngIf="userRole === 'Responsable RH'">
+                <button
+                  class="btn btn-success btn-sm"
+                  (click)="changerStatut(demande.id, 'Acceptée')"
+                  [disabled]="demande.statut === 'Acceptée'"
+                ><i class="fa-solid fa-check me-1"></i> Accepter</button>
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="changerStatut(demande.id, 'Refusée')"
+                  [disabled]="demande.statut === 'Refusée'"
+                ><i class="fa-solid fa-xmark me-1"></i> Refuser</button>
+              </ng-container>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    
+  </div>
+</div>

@@ -1,0 +1,189 @@
+<!-- =====================================================
+     GUEST LAYOUT — Login / Password Reset
+     Only full-screen, no sidebar, no navbar
+     ===================================================== -->
+<ng-container *ngIf="!showDashboardLayout">
+  <div class="guest-fullscreen">
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>
+
+<!-- =====================================================
+     AUTHENTICATED LAYOUT — Sidebar + Main Content
+     Only visible after successful login on a real route
+     ===================================================== -->
+<ng-container *ngIf="showDashboardLayout">
+  <div class="rh-layout">
+
+    <!-- ── MOBILE TOPBAR (hidden on lg+) ── -->
+    <header class="mobile-topbar d-flex d-lg-none align-items-center justify-content-between px-3">
+      <button (click)="toggleSidebar()" class="btn-topbar-toggle" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <span class="mobile-brand">KKT DIGITAL</span>
+      <div class="d-flex align-items-center gap-3">
+        <!-- Mobile Theme toggle -->
+        <label class="theme-switch" for="themeCheckboxMobile" title="Changer de thème">
+          <input type="checkbox" id="themeCheckboxMobile" [checked]="currentTheme === 'dark'" (change)="toggleTheme()" />
+          <div class="slider round">
+            <i class="fa-solid fa-moon icon-moon"></i>
+            <i class="fa-solid fa-sun icon-sun"></i>
+          </div>
+        </label>
+        <div class="avatar-circle-xs">{{ getInitials() }}</div>
+      </div>
+    </header>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="rh-sidebar" [class.is-open]="sidebarActive" aria-label="Navigation principale">
+
+      <!-- Brand -->
+      <div class="sidebar-brand">
+        <div>
+          <div class="sidebar-brand-name">KKT DIGITAL</div>
+          <div class="sidebar-brand-sub">Gestion RH · 2025</div>
+        </div>
+        <button (click)="toggleSidebar()" class="btn-sidebar-close d-lg-none" aria-label="Fermer le menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav" aria-label="Menu principal">
+        <a class="sidebar-link" routerLink="/dashboard" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-chart-pie"></i><span>Dashboard</span>
+        </a>
+
+        <a *ngIf="userRole === 'Responsable RH'"
+           class="sidebar-link" routerLink="/employes" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-users"></i><span>Employés</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Chef d\'equipe','GARDIEN','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique','Agent de qualite','TECH sup maintenance'].includes(userRole)"
+           class="sidebar-link" routerLink="/conges" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-calendar-day"></i><span>Congés</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Chef d\'equipe','GARDIEN','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique','Agent de qualite','TECH sup maintenance'].includes(userRole)"
+           class="sidebar-link" routerLink="/autorisations" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-user-shield"></i><span>Autorisations</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Chef d\'equipe','GARDIEN','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique','Agent de qualite','TECH sup maintenance'].includes(userRole)"
+           class="sidebar-link" routerLink="/document" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-file-invoice-dollar"></i><span>Documents</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Chef d\'equipe','GARDIEN','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique','Agent de qualite','TECH sup maintenance'].includes(userRole)"
+           class="sidebar-link" routerLink="/salaire" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-wallet"></i><span>Avances</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Chef d\'equipe','GARDIEN','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique','Agent de qualite','TECH sup maintenance'].includes(userRole)"
+           class="sidebar-link" routerLink="/pointage" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-clock-rotate-left"></i><span>Pointage</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Chef d\'equipe','GARDIEN','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique','Agent de qualite','TECH sup maintenance'].includes(userRole)"
+           class="sidebar-link" routerLink="/anomalies-paie" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-calculator"></i><span>Paie</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Agent de qualite','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique'].includes(userRole)"
+           class="sidebar-link" routerLink="/emission" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-plane-departure"></i><span>Ordre de Mission</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Agent de qualite','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique'].includes(userRole)"
+           class="sidebar-link" routerLink="/doctour" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-stethoscope"></i><span>Infirmerie</span>
+        </a>
+
+        <a *ngIf="['Responsable RH','Validateur Supérieur Hiérarchique','Sécurité','Agent de qualite','Directeur ','Spécialiste import/export','Responsable Production','Chef Service Cable','Responsable Qualité','Responsable Unité de production','Chef Service couture','Responsable AV','Chef service technique'].includes(userRole)"
+           class="sidebar-link" routerLink="/punition" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-triangle-exclamation"></i><span>Interrogatoire</span>
+        </a>
+
+        <a *ngIf="userRole === 'Responsable RH'"
+           class="sidebar-link" routerLink="/gestion-validateurs" routerLinkActive="active" (click)="sidebarActive=false">
+          <i class="fa-solid fa-user-check"></i><span>Gestion des Validateurs</span>
+        </a>
+      </nav>
+
+      <!-- User profile at bottom -->
+      <div class="sidebar-profile">
+        <div class="avatar-circle">{{ getInitials() }}</div>
+        <div class="profile-info">
+          <div class="profile-name" [title]="userFullname">{{ userFullname }}</div>
+          <div class="profile-role" [title]="userRole">{{ userRole }}</div>
+        </div>
+        <button (click)="logout()" class="btn-logout" title="Se déconnecter">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Backdrop for mobile sidebar -->
+    <div class="sidebar-backdrop d-lg-none"
+         [class.is-visible]="sidebarActive"
+         (click)="toggleSidebar()"
+         aria-hidden="true">
+    </div>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="rh-main">
+      <!-- ── GLOBAL NAVBAR ── -->
+      <header class="global-navbar d-none d-lg-flex align-items-center justify-content-end px-4 py-2">
+        <div class="d-flex align-items-center gap-3">
+          <!-- Animated theme toggle switch -->
+          <div class="theme-switch-wrapper">
+            <span class="theme-label-text me-2">{{ currentTheme === 'light' ? 'Mode Sombre' : 'Mode Clair' }}</span>
+            <label class="theme-switch" for="themeCheckbox" title="Changer de thème">
+              <input type="checkbox" id="themeCheckbox" [checked]="currentTheme === 'dark'" (change)="toggleTheme()" />
+              <div class="slider round">
+                <i class="fa-solid fa-moon icon-moon"></i>
+                <i class="fa-solid fa-sun icon-sun"></i>
+              </div>
+            </label>
+          </div>
+        </div>
+      </header>
+      <div class="rh-page-inner">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+
+  </div>
+</ng-container>
+
+<!-- =====================================================
+     GLOBAL OVERLAYS (toasts + confirm) — always rendered
+     ===================================================== -->
+
+<!-- Toast stack -->
+<div class="toast-stack" role="status" aria-live="polite">
+  <div *ngFor="let toast of toasts"
+       class="toast-item"
+       [ngClass]="toast.type">
+    <i *ngIf="toast.type==='success'" class="fa-solid fa-circle-check"></i>
+    <i *ngIf="toast.type==='error'"   class="fa-solid fa-circle-xmark"></i>
+    <i *ngIf="toast.type==='warning'" class="fa-solid fa-triangle-exclamation"></i>
+    <i *ngIf="toast.type==='info'"    class="fa-solid fa-circle-info"></i>
+    <span class="toast-msg">{{ toast.message }}</span>
+  </div>
+</div>
+
+<!-- Confirmation modal -->
+<div *ngIf="confirmState" class="confirm-overlay" role="dialog" aria-modal="true">
+  <div class="confirm-card">
+    <div class="confirm-icon">
+      <i class="fa-solid fa-circle-exclamation"></i>
+    </div>
+    <h5 class="confirm-title">Confirmation requise</h5>
+    <p class="confirm-body">{{ confirmState.message }}</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline-secondary" (click)="confirmState.resolve(false)">Annuler</button>
+      <button class="btn btn-danger"           (click)="confirmState.resolve(true)">Confirmer</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,220 @@
+<div class="container mt-5 mb-5">
+  <h2 class="text-center text-primary mb-5 fw-bold">Gestion des Employés</h2>
+
+  <!-- Section Recherche -->
+  <div class="card mb-5 p-4 shadow-sm border-0 rounded-4">
+    <h5 class="fw-semibold mb-4">Recherche</h5>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchMatricule"
+          placeholder="Matricule"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchNom"
+          placeholder="Nom"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          [(ngModel)]="searchZone"
+          placeholder="Zone"
+        />
+      </div>
+    </div>
+    <div class="mt-4 d-flex gap-3 justify-content-end">
+      <button class="btn btn-primary px-4 rounded-pill" (click)="rechercherEmployes()">Rechercher</button>
+      <button class="btn btn-outline-secondary px-4 rounded-pill" (click)="resetRecherche()">Réinitialiser</button>
+    </div>
+  </div>
+
+  <!-- Formulaire ajout/modification employé -->
+  <form
+    (ngSubmit)="isEditing ? enregistrerModification() : ajouterEmploye()"
+    class="card p-4 mb-5 shadow-sm border-0 rounded-4"
+  >
+    <h5 class="fw-semibold mb-4">
+      {{ isEditing ? 'Modifier un employé' : 'Ajouter un employé' }}
+    </h5>
+    <div class="row g-4">
+      <div class="col-sm-6 col-md-4">
+        <input
+          type="text"
+          [(ngModel)]="employeForm.fullname"
+          name="nomField"
+          placeholder="Nom Complet"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <input
+          type="text"
+          [(ngModel)]="employeForm.zone"
+          name="zoneField"
+          placeholder="Zone"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+  <input
+    type="password"
+    [(ngModel)]="employeForm.motdepasse"
+    name="motdepasseField"
+    placeholder="Mot de passe"
+    class="form-control rounded-pill border-primary"
+    required
+  />
+</div>
+
+
+      <div class="col-sm-6 col-md-4">
+        <input
+          type="text"
+          [(ngModel)]="employeForm.matricule"
+          name="matriculeField"
+          placeholder="Matricule"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <select
+          id="roleSelect"
+          [(ngModel)]="employeForm.role"
+          name="roleField"
+          class="form-select rounded-pill border-primary"
+          required
+        >
+          <option value="" disabled selected>-- Choisir un rôle --</option>
+          <option value="EMPLOYE">OUVRIER(E)</option>
+          <option value="Responsable RH">Responsable RH</option>
+          <option value="Chef d'equipe">Chef d'equipe</option>
+          <option value="Responsable Hierarchique">Agent de contrôle</option>
+          <option value="Technicien Méthode">Technicien Méthode</option>
+          <option value="Responsable Qualité">Responsable Qualité</option>
+          <option value="Agent de qualite">Agent de qualite</option>
+          <option value="Magasinier">Magasinier</option>
+          <option value="Ingenieur Methode">Ingenieur Methode</option>
+          <option value="AGENT DE CONTROLE TI">AGENT DE CONTROLE TI</option>
+          <option value="Responsable Production">Responsable Production</option>
+          <option value="Assistante de production">Assistante de production</option>
+          <option value="Chauffeur">Chauffeur</option>
+          <option value="Chef de Groupe">Chef de Groupe</option>
+          <option value="CHEF PROD. CABLE SE">CHEF PROD. CABLE SE</option>
+          <option value="Chef Service Cable">Chef Service Cable</option>
+          <option value="Chef Service couture">Chef Service couture</option>
+          <option value="Chef service logistique">Chef service logistique</option>
+          <option value="Couturiere">Couturiere</option>
+          <option value="Couturiere permanant">Couturiere permanant</option>
+          <option value="Formatrice">Formatrice</option>
+          <option value="GARDIEN">GARDIEN</option>
+          <option value="Validateur Supérieur Hiérarchique">Validateur Supérieur Hiérarchique</option>
+          <option value="Infirmiére">Infirmiére</option>
+          <option value="Operateur sur machine">Operateur sur machine</option>
+          <option value="ouvrier qualifier">ouvrier qualifier</option>
+          <option value="OUVRIER(E) PERMANANT">OUVRIER(E) PERMANANT</option>
+          <option value="Production and Procedure">Production and Procedure</option>
+          <option value="Responsable AV">Responsable AV</option>
+          <option value="Responsable Unité de production">Responsable Unité de production</option>
+          <option value="Spécialiste import/export">Spécialiste import/export</option>
+           <option value="Tech maintenance-Pro">Tech maintenance-Pro</option>
+           <option value="TECH sup maintenance">TECH sup maintenance</option>
+           <option value="Technicien de qualite">Technicien de qualite</option>
+           <option value="Tournante">Tournante</option>
+        </select>
+      </div>
+
+      <div class="col-12 text-center mt-4">
+        <button type="submit" class="btn btn-success px-5 rounded-pill shadow-sm">
+          {{ isEditing ? 'Modifier' : 'Ajouter' }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary ms-3 px-4 rounded-pill"
+          (click)="resetForm()"
+          *ngIf="isEditing"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Liste des employés -->
+  <h3 class="text-center mb-4 fw-bold">Liste des Employés</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center align-middle mb-0">
+      <thead class="table-primary text-primary">
+        <tr>
+          <th class="col-xs">ID</th>
+          <th class="col-xs">Matricule</th>
+          <th class="col-md">Nom Complet</th>
+          <th class="col-md">Zone</th>
+          <th class="col-md">Rôle</th>
+          <th class="col-xl col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employe of getEmployesPage()">
+          <td>{{ employe.id }}</td>
+          <td>{{ employe.matricule }}</td>
+          <td>{{ employe.fullname }}</td>
+          <td>{{ employe.zone }}</td>
+          <td>{{ employe.role }}</td>
+          <td  class="actions-cell"><div class="actions-group">
+            <button class="btn btn-warning btn-sm" (click)="modifierEmploye(employe)"><i class="fa-solid fa-pen me-1"></i> Modifier</button>
+            <button class="btn btn-outline-danger btn-sm" (click)="supprimerEmploye(employe.id)"><i class="fa-solid fa-trash me-1"></i> Supprimer</button>
+          </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center align-items-center mt-4 gap-3" *ngIf="totalPages > 1">
+    <button
+      class="btn btn-outline-primary rounded-pill px-4"
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+    >
+      <i class="fa-solid fa-chevron-left me-1"></i> Précédent
+    </button>
+
+    <div class="pagination-numbers d-flex gap-2">
+      <button
+        *ngFor="let page of getPages()"
+        class="btn rounded-pill px-3"
+        [class.btn-primary]="page === currentPage"
+        [class.btn-outline-primary]="page !== currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+    </div>
+
+    <button
+      class="btn btn-outline-primary rounded-pill px-4"
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+    >
+      Suivant <i class="fa-solid fa-chevron-right ms-1"></i>
+    </button>
+  </div>
+
+  <div class="text-center mt-3 text-muted" *ngIf="totalPages > 1">
+    Page {{ currentPage }} sur {{ totalPages }} ({{ employes.length }} employés)
+  </div>
+</div>

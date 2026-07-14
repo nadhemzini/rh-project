@@ -1,0 +1,352 @@
+<div class="container mt-5 mb-5">
+
+  <!-- TITRE -->
+  <h2 class="text-center text-primary mb-5 fw-bold">Gestion des Congés</h2>
+
+  <!-- RECHERCHE -->
+  <div class="card mb-5 shadow-sm rounded-4 border-0">
+    <div class="card-body">
+      <h5 class="card-title mb-4 fw-semibold">Recherche</h5>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Matricule:</label>
+          <input
+            type="text"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchMatricule"
+            placeholder="Entrer le matricule"
+          />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Année:</label>
+          <input
+            type="number"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchAnnee"
+            placeholder="Ex: 2025"
+          />
+        </div>
+        <div class="col-md-3">
+  <label class="form-label fw-semibold">Mois :</label>
+        <select class="form-select rounded-pill border-primary" [(ngModel)]="searchMois">
+  <option value="">Tous</option>
+  <option *ngFor="let mois of moisList; let i = index" [value]="i + 1">
+    {{ mois }}
+  </option>
+</select>
+
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Statut:</label>
+          <select
+            class="form-select rounded-pill border-primary"
+            [(ngModel)]="searchStatut"
+          >
+            <option value="">Tous</option>
+            <option value="En attente">En attente</option>
+            <option value="Accepté">Accepté</option>
+            <option value="Refusé">Refusé</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Zone:</label>
+          <input
+            type="text"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchZone"
+            placeholder="Entrer la zone"
+          />
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex gap-3 justify-content-end">
+        <button
+          class="btn btn-primary px-4 rounded-pill shadow-sm"
+          (click)="rechercherConges()"
+        >
+          Rechercher
+        </button>
+        <button
+          class="btn btn-outline-secondary px-4 rounded-pill"
+          (click)="resetRecherche()"
+        >
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE CONGÉ -->
+  <form
+
+    (ngSubmit)="isEditing ? enregistrerModification() : ajouterConge()"
+    class="card p-4 shadow-sm mb-5 rounded-4 border-0"
+  >
+    <h5 class="mb-4 fw-semibold">{{ isEditing ? 'Modifier un congé' : 'Ajouter un congé' }}</h5>
+
+    <div class="row g-4">
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Date début:</label>
+        <input
+          type="date"
+          [(ngModel)]="congeForm.dateDebut"
+          (change)="calculerNombreDeJours()"
+          (input)="dateDebutError = false"
+          name="dateDebut"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Date fin:</label>
+        <input
+          type="date"
+          [(ngModel)]="congeForm.dateFin"
+          (change)="calculerNombreDeJours()"
+          (input)="dateFinError = false"
+          name="dateFin"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-md-10" *ngIf="nombreJours > 0">
+        <div class="alert alert-info text-center fs-6 fw-semibold">
+          Nombre de jours demandés : <strong>{{ nombreJours }}</strong> jour(s)
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Type:</label>
+        <input
+          type="text"
+          [(ngModel)]="congeForm.type"
+          (input)="typeError = false"
+          name="type"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Matricule Employé:</label>
+        <input
+          type="text"
+          [(ngModel)]="congeForm.employe.matricule"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="chargerNomEmployeParMatricule()"
+          name="matriculeEmploye"
+          class="form-control rounded-pill border-primary"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Nom complet :</label>
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          [value]="congeForm.employe.fullname"
+          readonly
+        />
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Zone :</label>
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          [value]="congeForm.employe.zone"
+          readonly
+        />
+      </div>
+
+      <div class="col-12 text-center mt-4">
+        <button
+          type="submit"
+          class="btn btn-success px-5 rounded-pill shadow-sm"
+          [disabled]="isSubmitting"
+        >
+          {{ isSubmitting ? 'En cours...' : (isEditing ? 'Modifier' : 'Ajouter') }}
+        </button>
+        <button
+          *ngIf="isEditing"
+          type="button"
+          (click)="resetForm()"
+          class="btn btn-outline-secondary ms-3 rounded-pill"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- EXPORT PDF -->
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-danger rounded-pill px-4 shadow-sm" (click)="exporterPDF()">
+      Exporter la liste en PDF
+    </button>
+  </div>
+<!-- TEMPORAIRE pour debug -->
+<div class="alert alert-info">
+  Rôle utilisateur actuel : {{ userRole }}
+</div>
+
+  <!-- LISTE DES CONGÉS -->
+  <h4 class="text-center mb-4 fw-bold">Liste des Congés</h4>
+  <div class="table-responsive">
+
+    <table class="table table-bordered table-hover text-center align-middle mb-0">
+      <thead class="table-primary text-primary">
+        <tr>
+           <th class="col-xs">Matricule</th>
+          <th class="col-sm">Date Début</th>
+          <th class="col-sm">Date Fin</th>
+          <th class="col-md">Type</th>
+          <th class="col-md">Nom Complet</th>
+          <th class="col-md">Zone</th>
+
+          <th class="col-lg">Motif Refus</th>
+          <th class="col-md">Resp. Hiérarchique</th>
+          <th class="col-md">Resp. RH</th>
+          <th class="col-md">Statut Global</th>
+          <th class="col-xl col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let conge of getCongesPage()"
+          class="align-middle"
+          style="cursor: default;"
+        >
+          <td>{{ conge.employe?.matricule }}</td>
+          <td>{{ conge.dateDebut }}</td>
+          <td>{{ conge.dateFin }}</td>
+          <td>{{ conge.type }}</td>
+          <td>{{ conge.employe?.fullname }}</td>
+          <td>{{ conge.employe?.zone }}</td>
+
+           <td>
+  <span *ngIf="conge.statut === 'Refusé'">
+    {{ conge.motifRefus || '-' }}
+  </span>
+  <span *ngIf="conge.statut !== 'Refusé'" class="text-muted">-</span>
+</td>
+          <td>{{ conge.validationResponsableHierarchique }}</td>
+          <td>{{ conge.validationResponsableRH }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'badge bg-warning text-dark': conge.statut === 'En attente',
+                'badge bg-success': conge.statut === 'Accepté',
+                'badge bg-danger': conge.statut === 'Refusé'
+              }"
+              >{{ conge.statut }}</span
+            >
+          </td>
+          <td  class="actions-cell"><div class="actions-group">
+            <button
+  *ngIf="
+    (userRole === 'Responsable RH' || userRole === 'Validateur Supérieur Hiérarchique' ||
+    (isResponsableHierarchique() && (
+      userRole.toLowerCase() === 'directeur' ||
+      !(conge.employe?.zone?.toLowerCase().startsWith('administration'))
+    )))
+  "
+  (click)="modifierConge(conge)"
+  class="btn btn-sm btn-warning rounded-pill"
+><i class="fa-solid fa-pen me-1"></i> Modifier</button>
+
+<button
+  *ngIf="
+    (userRole === 'Responsable RH' || userRole === 'Validateur Supérieur Hiérarchique' ||
+    (isResponsableHierarchique() && (
+      userRole.toLowerCase() === 'directeur' ||
+      !(conge.employe?.zone?.toLowerCase().startsWith('administration'))
+    )))
+  "
+  (click)="supprimerConge(conge.id)"
+  class="btn btn-sm btn-danger rounded-pill"
+><i class="fa-solid fa-trash me-1"></i> Supprimer</button>
+            <button
+              (click)="exporterPDFPersonel(conge)"
+              class="btn btn-sm btn-outline-danger rounded-pill"
+            ><i class="fa-solid fa-file-pdf me-1"></i> PDF</button>
+
+
+<!-- Cas 1bis : Responsable RH valide en tant que hiérarchique -->
+<!-- Cas 1 : Hiérarchique ou Directeur (dont RH seulement pour sa propre zone) -->
+<ng-container
+  *ngIf="
+    conge.validationResponsableHierarchique === 'En attente' &&
+    (
+      isDirecteur() ||
+      (
+        isResponsableHierarchique() &&
+        !isZoneAdministration(conge.employe?.zone) &&
+        (
+          userRole !== 'Responsable RH' || isZoneRH(conge.employe?.zone)
+        )
+      )
+    )
+  "
+>
+  <button (click)="changerStatut(conge.id, userRole, 'Accepté')" class="btn btn-sm btn-success rounded-pill"><i class="fa-solid fa-check me-1"></i> Accepter</button>
+  <button (click)="changerStatut(conge.id, userRole, 'Refusé')" class="btn btn-sm btn-danger rounded-pill"><i class="fa-solid fa-xmark me-1"></i> Refuser</button>
+</ng-container>
+
+
+
+
+
+
+<!-- Cas 2 : Responsable RH valide comme RH -->
+<ng-container *ngIf="  userRole === 'Responsable RH' &&
+    conge.validationResponsableRH === 'En attente' &&
+    conge.validationResponsableHierarchique !== 'En attente'">
+  <button (click)="changerStatut(conge.id, userRole, 'Accepté')" class="btn btn-sm btn-success"><i class="fa-solid fa-check me-1"></i> Accepter (RH)</button>
+  <button (click)="changerStatut(conge.id, userRole, 'Refusé')" class="btn btn-sm btn-danger"><i class="fa-solid fa-xmark me-1"></i> Refuser (RH)</button>
+</ng-container>
+
+
+          </div></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- PAGINATION -->
+  
+
+</div>
+<!-- Toast Refus Congé -->
+<div
+  class="position-fixed bottom-0 end-0 p-3 custom-toast"
+  *ngIf="showToastRefusConge"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+>
+  <div class="toast show align-items-center text-bg-danger border-0">
+    <div class="d-flex flex-column p-3">
+      <textarea
+        [(ngModel)]="motifRefusConge"
+        class="form-control mb-3"
+        rows="3"
+        placeholder="Motif du refus"
+      ></textarea>
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-sm btn-danger" (click)="confirmerRefusConge()">Confirmer</button>
+        <button class="btn btn-sm btn-outline-light" (click)="annulerRefusConge()">Annuler</button>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="btn-close btn-close-white me-2 m-auto toast-close-btn"
+      aria-label="Close"
+      (click)="annulerRefusConge()"
+    ></button>
+  </div>
+</div>

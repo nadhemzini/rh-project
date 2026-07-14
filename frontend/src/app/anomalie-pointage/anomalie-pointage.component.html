@@ -1,0 +1,215 @@
+<div class="container mt-5 mb-5">
+  <!-- TITRE -->
+  <h2 class="text-center text-primary mb-5 fw-bold">Signaler une anomalie de pointage</h2>
+
+  <!-- Recherche avancée -->
+  <div class="card mb-5 shadow-sm rounded-4 border-0">
+    <div class="card-body">
+      <h5 class="card-title mb-4 fw-semibold">Recherche avancée</h5>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Matricule</label>
+          <input
+            type="text"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchMatricule"
+            placeholder="Entrer le matricule"
+          />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Type d'anomalie</label>
+          <select
+            class="form-select rounded-pill border-primary"
+            [(ngModel)]="searchTypeAnomalie"
+          >
+            <option value="">Tous</option>
+            <option value="ENTREE">Pointage d'entrée oublié</option>
+            <option value="SORTIE">Pointage de sortie oublié</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Zone</label>
+          <input
+            type="text"
+            class="form-control rounded-pill border-primary"
+            [(ngModel)]="searchZone"
+            placeholder="Entrer la zone"
+          />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Statut</label>
+          <select
+            class="form-select rounded-pill border-primary"
+            [(ngModel)]="searchStatut"
+          >
+            <option value="">Tous</option>
+            <option value="En attente">En attente</option>
+            <option value="Acceptée">Acceptée</option>
+            <option value="Refusée">Refusée</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex gap-3 justify-content-end">
+        <button
+          class="btn btn-primary px-4 rounded-pill shadow-sm"
+          (click)="filtrerEtAfficherAnomalies()"
+        >
+          Rechercher
+        </button>
+        <button
+          class="btn btn-outline-secondary px-4 rounded-pill"
+          (click)="resetRecherche()"
+        >
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <form
+    [formGroup]="form"
+    (ngSubmit)="envoyer()"
+    class="card p-4 shadow-sm mb-5 rounded-4 border-0"
+  >
+    <div class="row g-4">
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Matricule</label>
+        <input
+          type="text"
+          class="form-control rounded-pill border-primary"
+          formControlName="matricule"
+          placeholder="Ex: 1122"
+        />
+        <div *ngIf="nomEmploye" class="text-success mt-2 fw-semibold">
+          Nom : {{ nomEmploye }}
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <label class="form-label fw-semibold">Type d'anomalie</label>
+        <select
+          class="form-select rounded-pill border-primary"
+          formControlName="typeAnomalie"
+          required
+        >
+          <option value="ENTREE">Pointage d'entrée oublié</option>
+          <option value="SORTIE">Pointage de sortie oublié</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-semibold">Remarque</label>
+        <textarea
+          class="form-control rounded-3 border-primary"
+          formControlName="remarque"
+          rows="3"
+          placeholder="Ajoutez une remarque ici..."
+        ></textarea>
+      </div>
+
+      <div class="col-12 text-center mt-4">
+        <button
+          class="btn btn-primary px-5 rounded-pill shadow-sm"
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          Envoyer
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Messages -->
+  <div
+    *ngIf="successMessage"
+    class="alert alert-success text-center fs-5 fw-semibold"
+  >
+    {{ successMessage }}
+  </div>
+  <div
+    *ngIf="errorMessage"
+    class="alert alert-danger text-center fs-5 fw-semibold"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <!-- LISTE DES ANOMALIES -->
+  <div class="card p-4 shadow-sm rounded-4 border-0 mt-4">
+    <h3 class="text-center mb-4 fw-bold">Liste des anomalies signalées</h3>
+
+
+
+    <!-- Tableau -->
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center align-middle mb-0">
+        <thead class="table-primary text-primary">
+          <tr>
+            <th class="col-xs">Matricule</th>
+            <th class="col-md">Nom</th>
+            <th class="col-md">Zone</th>
+            <th class="col-md">Type</th>
+            <th class="col-lg">Remarque</th>
+            <th class="col-sm">Date</th>
+            <th class="col-md">Statut</th>
+            <th class="col-xl col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let a of anomalies"
+            class="align-middle"
+            [class.table-active]="a.statut === 'En attente'"
+            style="cursor: default;"
+            >
+            <td>{{ a.employe?.matricule }}</td>
+            <td>{{ a.employe?.fullname }}</td>
+            <td>{{ a.employe?.zone || '-' }}</td>
+            <td>{{ a.typeAnomalie }}</td>
+            <td>{{ a.remarque || '-' }}</td>
+            <td>{{ a.dateDemande | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              <span
+                [ngClass]="{
+                  'badge bg-warning text-dark': a.statut === 'En attente',
+                  'badge bg-success': a.statut === 'Acceptée',
+                  'badge bg-danger': a.statut === 'Refusée'
+                }"
+                >{{ a.statut }}</span
+              >
+            </td>
+            <td  class="actions-cell flex-md-row"><div class="actions-group">
+              <button
+                *ngIf="userRole === 'Responsable RH'"
+                class="btn btn-success btn-sm"
+                (click)="changerStatut(a.id, 'Acceptée')"
+                [disabled]="a.statut === 'Acceptée'"
+              ><i class="fa-solid fa-check me-1"></i> Accepter</button>
+              <button
+                *ngIf="userRole === 'Responsable RH'"
+                class="btn btn-danger btn-sm"
+                (click)="changerStatut(a.id, 'Refusée')"
+                [disabled]="a.statut === 'Refusée'"
+              ><i class="fa-solid fa-xmark me-1"></i> Refuser</button>
+
+              <button
+                class="btn btn-warning btn-sm"
+                (click)="modifier(a)"
+                [disabled]="a.statut !== 'En attente'"
+              ><i class="fa-solid fa-pen me-1"></i> Modifier</button>
+
+              <button
+                class="btn btn-outline-danger btn-sm"
+                (click)="supprimer(a.id)"
+              ><i class="fa-solid fa-trash me-1"></i> Supprimer</button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    
+  </div>
+</div>

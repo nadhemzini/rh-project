@@ -1,0 +1,78 @@
+<div class="container mt-4">
+   <h2 class="text-center text-primary mb-5 fw-bold">Demande des Attestation de TITULARISATION</h2>
+  <form [formGroup]="form" (ngSubmit)="voirPDF()" class="row g-3 bg-light p-4 border rounded shadow">
+
+   <div class="col-12 col-md-4">
+      <label class="form-label">Genre du déclarant :</label>
+      <select formControlName="genre" class="form-select">
+        <option value="Mr">Mr</option>
+        <option value="Mme">Mme</option>
+        <option value="Mlle">Mlle</option>
+      </select>
+    </div>
+
+   <div class="col-12 col-md-4">
+      <label class="form-label">Nom du déclarant :</label>
+      <input formControlName="nom" class="form-control" />
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Qualité (poste) du déclarant :</label>
+      <input formControlName="qualiteDeclarant" class="form-control" />
+    </div>
+<div class="col-12 col-md-4">
+  <label class="form-label">Genre de l'attesté(e) :</label>
+  <select formControlName="genreAtteste" class="form-select">
+    <option value="Mr">Mr</option>
+    <option value="Mme">Mme</option>
+    <option value="Mlle">Mlle</option>
+  </select>
+</div>
+<div class="col-12 col-md-4">
+  <label class="form-label">Matricule de l'attesté(e) :</label>
+  <input formControlName="matricule" class="form-control" placeholder="Ex: 12345" />
+</div>
+
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Nom complet de l'attesté(e) :</label>
+     <input formControlName="nomAtteste" class="form-control" readonly />
+
+
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Numéro CIN :</label>
+      <input formControlName="cin" class="form-control" />
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Date de naissance :</label>
+      <input formControlName="dateNaissance" type="date" class="form-control" />
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Date de recrutement :</label>
+      <input formControlName="dateRecrutement" type="date" class="form-control" />
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Poste de l'attesté(e) :</label>
+      <input formControlName="qualiteTravail" class="form-control" readonly />
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Fait à :</label>
+      <input formControlName="lieu" class="form-control" />
+    </div>
+
+    <div class="col-12 col-md-4">
+      <label class="form-label">Date du jour :</label>
+      <input formControlName="dateActuelle" type="date" class="form-control" />
+    </div>
+
+    <div class="col-12 text-center mt-4">
+      <button type="submit" class="btn btn-primary">Voir PDF</button>
+    </div>
+  </form>
+</div>
