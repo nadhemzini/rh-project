@@ -52,7 +52,7 @@ public class AutorisationService {
         String zone = employe.getZone() != null ? employe.getZone().trim().toLowerCase() : "";
 
         List<String> emailsResponsables = new ArrayList<>();
-        if (zone.startsWith("administration")) {
+        if (zone.startsWith("Direction")) {
             emailsResponsables = List.of(
                     "sabri.chaarana@topnet.tn",
                     "seifeddine.Kmilete@topnet.tn"

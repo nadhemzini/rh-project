@@ -1,6 +1,6 @@
 <div class="container mt-5 mb-5">
   <h2 class="text-center text-primary mb-5 fw-bold">
-    <i class="fa-solid fa-shield-halved me-2"></i>Gestion des Validateurs
+    <i class="fa-solid fa-shield-halved me-2"></i>Gestion des Validateurs et Sécurité
   </h2>
 
   <!-- Section Recherche -->
@@ -87,7 +87,7 @@
             <td>{{ validator.zone }}</td>
             <td class="fw-semibold">{{ validator.fullname }}</td>
             <td><code>{{ validator.matricule }}</code></td>
-            <td><span class="badge bg-primary text-white">{{ validator.role }}</span></td>
+            <td><span class="badge" [ngClass]="getRoleBadgeClass(validator.role)">{{ validator.role }}</span></td>
             <td>{{ validator.employeeCount }}</td>
             <td>
               <span [class]="'badge ' + getStatusClass(validator.active)">
@@ -101,7 +101,7 @@
                   class="btn btn-primary btn-sm"
                   (click)="openChangeModal(validator)"
                   [disabled]="!validator.active"
-                  title="Changer ce validateur"
+                  title="Changer ce {{ validator.role?.toLowerCase() }}"
                 >
                   <i class="fa-solid fa-arrows-rotate me-1"></i> Changer
                 </button>
@@ -148,7 +148,7 @@
     <div class="modal-header">
       <h5 class="modal-title">
         <i class="fa-solid fa-arrows-rotate me-2 text-primary"></i>
-        Changer de Validateur
+        Changer de {{ selectedValidator?.role }}
       </h5>
       <button class="btn-close" (click)="closeModal()" aria-label="Fermer">
         <i class="fa-solid fa-xmark"></i>
@@ -165,10 +165,10 @@
         rien ne sera modifié. Elle prend effet <strong>immédiatement</strong> après confirmation.
       </div>
 
-      <!-- Current validator info -->
+      <!-- Current validator/security info -->
       <div class="validator-info mb-4">
         <div class="info-row">
-          <span class="info-label">Validateur actuel :</span>
+          <span class="info-label">{{ selectedValidator?.role }} actuel :</span>
           <span class="info-value fw-bold">{{ selectedValidator?.fullname }}</span>
         </div>
         <div class="info-row">
@@ -181,7 +181,7 @@
         </div>
       </div>
 
-      <!-- New validator dropdown -->
+      <!-- New validator/security dropdown -->
       <div class="form-group">
         <label for="newValidator" class="form-label fw-semibold">
           Sélectionner le remplaçant (même zone uniquement) :
@@ -217,7 +217,7 @@
           Ce qui va se passer (opération en une seule transaction) :
         </div>
         <ul class="consequence-list">
-          <li>L'employé sélectionné reçoit le rôle <strong>Validateur Supérieur Hiérarchique</strong></li>
+          <li>L'employé sélectionné reçoit le rôle <strong>{{ selectedValidator?.role }}</strong></li>
           <li>
             <strong>{{ selectedValidator?.fullname }}</strong> devient un employé normal
             <span class="text-muted">(rôle → Employé)</span>
@@ -227,11 +227,11 @@
             — la zone ne change <em>jamais</em>
           </li>
           <li>
-            L'ancien validateur <strong class="text-danger">perd immédiatement</strong>
-            l'accès à la validation et ne peut plus se connecter
+            L'ancien {{ selectedValidator?.role?.toLowerCase() }} <strong class="text-danger">perd immédiatement</strong>
+            l'accès et ne peut plus se connecter
           </li>
           <li>
-            Le nouveau validateur <strong class="text-success">peut se connecter et valider immédiatement</strong>
+            Le nouveau {{ selectedValidator?.role?.toLowerCase() }} <strong class="text-success">peut se connecter et agir immédiatement</strong>
           </li>
           <li>
             Si une erreur survient côté serveur, <strong>aucun changement n'est appliqué</strong>

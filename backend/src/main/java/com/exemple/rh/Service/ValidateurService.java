@@ -17,12 +17,14 @@ public class ValidateurService {
     private EmployeRepository employeRepository;
 
     private static final String VALIDATOR_ROLE = "Validateur Supérieur Hiérarchique";
+    private static final String SECURITY_ROLE = "Sécurité";
+    private static final List<String> MANAGEMENT_ROLES = Arrays.asList(VALIDATOR_ROLE, SECURITY_ROLE);
 
     public List<Map<String, Object>> getAllValidators() {
         List<Employe> allEmployees = employeRepository.findAll();
         
         Map<String, List<Employe>> validatorsByZone = allEmployees.stream()
-                .filter(emp -> VALIDATOR_ROLE.equalsIgnoreCase(emp.getRole()))
+                .filter(emp -> MANAGEMENT_ROLES.stream().anyMatch(role -> role.equalsIgnoreCase(emp.getRole())))
                 .collect(Collectors.groupingBy(emp -> emp.getZone() != null ? emp.getZone() : "Non défini"));
         
         List<Map<String, Object>> result = new ArrayList<>();
@@ -53,7 +55,7 @@ public class ValidateurService {
 
     public List<Employe> getEmployeesByZone(String zone) {
         return employeRepository.findByZone(zone).stream()
-                .filter(emp -> !VALIDATOR_ROLE.equalsIgnoreCase(emp.getRole()))
+                .filter(emp -> !MANAGEMENT_ROLES.stream().anyMatch(role -> role.equalsIgnoreCase(emp.getRole())))
                 .collect(Collectors.toList());
     }
 
@@ -69,18 +71,22 @@ public class ValidateurService {
             throw new RuntimeException("Le remplaçant doit appartenir à la même zone.");
         }
         
-        if (!VALIDATOR_ROLE.equalsIgnoreCase(oldValidator.getRole())) {
-            throw new RuntimeException("L'ancien employé n'a pas un rôle de validateur");
+        boolean oldIsManagement = MANAGEMENT_ROLES.stream().anyMatch(role -> role.equalsIgnoreCase(oldValidator.getRole()));
+        if (!oldIsManagement) {
+            throw new RuntimeException("L'ancien employé n'a pas un rôle de validateur ou sécurité");
         }
         
-        if (VALIDATOR_ROLE.equalsIgnoreCase(newValidator.getRole())) {
-            throw new RuntimeException("Le nouvel employé est déjà un validateur.");
+        boolean newIsManagement = MANAGEMENT_ROLES.stream().anyMatch(role -> role.equalsIgnoreCase(newValidator.getRole()));
+        if (newIsManagement) {
+            throw new RuntimeException("Le nouvel employé est déjà un validateur ou sécurité.");
         }
 
+        String targetRole = oldValidator.getRole();
+        
         oldValidator.setRole("Employé");
         employeRepository.save(oldValidator);
         
-        newValidator.setRole(VALIDATOR_ROLE);
+        newValidator.setRole(targetRole);
         if (newValidator.getMatricule() == null || newValidator.getMatricule().trim().isEmpty()) {
             String generatedMatricule = "EMP" + newValidator.getId();
             newValidator.setMatricule(generatedMatricule);
@@ -96,6 +102,7 @@ public class ValidateurService {
         result.put("oldValidator", oldValidator.getFullname());
         result.put("newValidator", newValidator.getFullname());
         result.put("zone", oldValidator.getZone());
+        result.put("role", targetRole);
         
         return result;
 

@@ -116,12 +116,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--bg-sidebar);
-  opacity: 0.5;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1050;
+  z-index: 1040;
 }
 
 .modal-card {
@@ -132,6 +131,8 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+  z-index: 1050;
+  position: relative;
 }
 
 .modal-header {
@@ -139,7 +140,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--border);
 }
 
 .modal-title {
@@ -153,7 +154,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #6c757d;
+  color: var(--muted);
   padding: 0;
   width: 2rem;
   height: 2rem;
@@ -178,7 +179,7 @@
   justify-content: flex-end;
   gap: 0.5rem;
   padding: 1.5rem;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--border);
 }
 
 .validator-info {
@@ -199,11 +200,11 @@
 
 .info-label {
   font-weight: 600;
-  color: #495057;
+  color: var(--muted);
 }
 
 .info-value {
-  color: #212529;
+  color: var(--text);
 }
 
 .form-group {
@@ -214,13 +215,44 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #495057;
+  color: var(--text);
 }
 
 .form-text {
   display: block;
   margin-top: 0.25rem;
   font-size: 0.875rem;
+}
+
+/* Alert Consequence Styles */
+.alert-consequence {
+  background-color: var(--success-alpha);
+  border: 1px solid var(--success);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.consequence-title {
+  font-weight: 600;
+  color: var(--success-dark);
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.consequence-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.consequence-list li {
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.consequence-list li:last-child {
+  margin-bottom: 0;
 }
 
 /* Badge Styles */

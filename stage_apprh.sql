@@ -1,1078 +1,435 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
+-- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 04 août 2025 à 17:08
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: stage_apprh
+-- ------------------------------------------------------
+-- Server version	8.0.46
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Base de données : `stage_apprh`
+-- Table structure for table `anomalie_paie`
 --
 
--- --------------------------------------------------------
-
---
--- Structure de la table `anomalie_paie`
---
-
+DROP TABLE IF EXISTS `anomalie_paie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `anomalie_paie` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date_anomalie` date DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL,
+  `statut` varchar(255) DEFAULT NULL,
   `type_anomalie` varchar(255) DEFAULT NULL,
-  `statut` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKbglujf7qbduuo2rvvcbl8muic` (`employe_id`),
+  CONSTRAINT `FKbglujf7qbduuo2rvvcbl8muic` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `anomalie_paie`
+-- Dumping data for table `anomalie_paie`
 --
 
-INSERT INTO `anomalie_paie` (`id`, `date_anomalie`, `description`, `employe_id`, `type_anomalie`, `statut`) VALUES
-(1, '2025-07-01', '', 448, 'Avance', 'Acceptée'),
-(2, '2025-07-01', 'knzdcjnksc', 552, 'Pointage oublié', 'Refusée'),
-(3, '2025-07-02', 'knzdcjnksc', 448, 'RIB', 'En attente'),
-(4, '2025-07-02', 'knzdcjnksc', 448, 'Prime', 'En attente'),
-(5, '2025-07-02', 'knzdcjnksc', 448, 'Avance', 'En attente'),
-(6, '2025-07-02', 'knzdcjnksc', 448, 'Pointage oublié', 'En attente'),
-(7, '2025-07-02', 'knzdcjnksc', 448, 'Nombre Heure', 'Refusée'),
-(10, '2025-07-02', '', 448, 'Avance', 'En attente');
-
--- --------------------------------------------------------
+LOCK TABLES `anomalie_paie` WRITE;
+/*!40000 ALTER TABLE `anomalie_paie` DISABLE KEYS */;
+INSERT INTO `anomalie_paie` VALUES (1,NULL,'','En attente','',1),(2,NULL,'test','En attente','',452);
+/*!40000 ALTER TABLE `anomalie_paie` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `anomalie_pointage`
+-- Table structure for table `anomalie_pointage`
 --
 
+DROP TABLE IF EXISTS `anomalie_pointage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `anomalie_pointage` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `date_demande` date DEFAULT NULL,
   `remarque` varchar(255) DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
   `type_anomalie` enum('ENTREE','SORTIE') DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK12d69be0visqmdwqkkn0ofwjl` (`employe_id`),
+  CONSTRAINT `FK12d69be0visqmdwqkkn0ofwjl` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `anomalie_pointage`
+-- Dumping data for table `anomalie_pointage`
 --
 
-INSERT INTO `anomalie_pointage` (`id`, `date_demande`, `remarque`, `statut`, `type_anomalie`, `employe_id`) VALUES
-(1, '2025-06-27', 'GGG', 'Refusée', 'SORTIE', 448),
-(2, '2025-06-27', 'Je vous remercie par avance pour le traitement de ma situation de présence.', 'Acceptée', 'ENTREE', 552),
-(52, '2025-06-29', 'HHHH', 'En attente', 'SORTIE', 448),
-(102, '2025-07-02', '', 'En attente', 'SORTIE', 247);
-
--- --------------------------------------------------------
+LOCK TABLES `anomalie_pointage` WRITE;
+/*!40000 ALTER TABLE `anomalie_pointage` DISABLE KEYS */;
+INSERT INTO `anomalie_pointage` VALUES (1,'2026-07-08','j\'ai oublié le pointage d\'entrée je suis vraiment désolé ','Acceptée','ENTREE',466);
+/*!40000 ALTER TABLE `anomalie_pointage` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `anomalie_pointage_seq`
+-- Table structure for table `anomalie_pointage_seq`
 --
 
+DROP TABLE IF EXISTS `anomalie_pointage_seq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `anomalie_pointage_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `next_val` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `anomalie_pointage_seq`
+-- Dumping data for table `anomalie_pointage_seq`
 --
 
-INSERT INTO `anomalie_pointage_seq` (`next_val`) VALUES
-(201);
-
--- --------------------------------------------------------
+LOCK TABLES `anomalie_pointage_seq` WRITE;
+/*!40000 ALTER TABLE `anomalie_pointage_seq` DISABLE KEYS */;
+INSERT INTO `anomalie_pointage_seq` VALUES (51);
+/*!40000 ALTER TABLE `anomalie_pointage_seq` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `autorisation`
+-- Table structure for table `autorisation`
 --
 
+DROP TABLE IF EXISTS `autorisation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `autorisation` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date` date DEFAULT NULL,
-  `motif` varchar(255) DEFAULT NULL,
-  `statut` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL,
+  `direction` varchar(255) DEFAULT NULL,
   `heure_debut` time(6) DEFAULT NULL,
   `heure_fin` time(6) DEFAULT NULL,
-  `direction` varchar(255) DEFAULT NULL,
+  `motif` varchar(255) DEFAULT NULL,
+  `motif_refus` varchar(255) DEFAULT NULL,
+  `statut` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
   `validation_chef_securite` varchar(255) DEFAULT NULL,
   `validation_responsable_hierarchique` varchar(255) DEFAULT NULL,
   `validation_responsablerh` varchar(255) DEFAULT NULL,
-  `motif_refus` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKjim3049anb7j1xu8b2xidtt8k` (`employe_id`),
+  CONSTRAINT `FKjim3049anb7j1xu8b2xidtt8k` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `autorisation`
+-- Dumping data for table `autorisation`
 --
 
-INSERT INTO `autorisation` (`id`, `date`, `motif`, `statut`, `type`, `employe_id`, `heure_debut`, `heure_fin`, `direction`, `validation_chef_securite`, `validation_responsable_hierarchique`, `validation_responsablerh`, `motif_refus`) VALUES
-(62, '2025-07-04', 'Medicale', 'En attente', 'Heure', 448, '12:41:00.000000', NULL, 'Entrée', 'En attente', 'Accepté', 'Accepté', NULL),
-(63, '2025-08-07', 'Medicale', 'En attente', 'Heure', 175, '14:37:00.000000', '15:37:00.000000', 'Sortie', 'En attente', 'Accepté', 'En attente', NULL),
-(64, '2025-08-05', 'Medicale', 'En attente', 'Heure', 59, '16:44:00.000000', '17:44:00.000000', 'Sortie', 'En attente', 'En attente', 'En attente', NULL);
-
--- --------------------------------------------------------
+LOCK TABLES `autorisation` WRITE;
+/*!40000 ALTER TABLE `autorisation` DISABLE KEYS */;
+INSERT INTO `autorisation` VALUES (3,'2026-07-10','Entrée','00:27:00.000000',NULL,'anything',NULL,'Accepté','Heure','Accepté','Accepté','Accepté',362),(4,'2026-07-10','Entrée','00:27:00.000000',NULL,'anything',NULL,'Accepté','Heure','Accepté','Accepté','Accepté',362),(5,'2026-07-10','Entrée','00:27:00.000000',NULL,'anything',NULL,'Accepté','Heure','Accepté','Accepté','Accepté',362),(6,'2027-02-02','Entrée','10:10:00.000000',NULL,'anything',NULL,'Accepté','Heure','Accepté','Accepté','Accepté',2),(7,'2026-07-10','Entrée','13:48:00.000000',NULL,'anything',NULL,'Accepté','Heure','Accepté','Accepté','Accepté',38);
+/*!40000 ALTER TABLE `autorisation` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `avance_salaire`
+-- Table structure for table `avance_salaire`
 --
 
+DROP TABLE IF EXISTS `avance_salaire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `avance_salaire` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `date_demande` date DEFAULT NULL,
   `matricule` varchar(255) DEFAULT NULL,
   `montant` double DEFAULT NULL,
   `remarque` varchar(255) DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKaxd2m055u90ibyokeabca3df5` (`employe_id`),
+  CONSTRAINT `FKaxd2m055u90ibyokeabca3df5` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `avance_salaire`
+-- Dumping data for table `avance_salaire`
 --
 
-INSERT INTO `avance_salaire` (`id`, `date_demande`, `matricule`, `montant`, `remarque`, `statut`, `employe_id`) VALUES
-(1, '2025-06-27', NULL, 500, 'NFFF', 'En attente', 448),
-(2, '2025-06-27', NULL, 200, 'Urgent', 'Acceptée', 552),
-(52, '2025-06-27', NULL, 560, 'Urgent SVP', 'En attente', 448),
-(152, '2025-07-02', NULL, 100, '', 'En attente', 247),
-(153, '2025-07-02', NULL, 200, '', 'En attente', 448),
-(202, '2025-07-02', NULL, 200, '', 'En attente', 448);
-
--- --------------------------------------------------------
+LOCK TABLES `avance_salaire` WRITE;
+/*!40000 ALTER TABLE `avance_salaire` DISABLE KEYS */;
+INSERT INTO `avance_salaire` VALUES (1,'2026-07-09',NULL,150,'need it ','Acceptée',362);
+/*!40000 ALTER TABLE `avance_salaire` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `avance_salaire_seq`
+-- Table structure for table `avance_salaire_seq`
 --
 
+DROP TABLE IF EXISTS `avance_salaire_seq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `avance_salaire_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `next_val` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `avance_salaire_seq`
+-- Dumping data for table `avance_salaire_seq`
 --
 
-INSERT INTO `avance_salaire_seq` (`next_val`) VALUES
-(301);
-
--- --------------------------------------------------------
+LOCK TABLES `avance_salaire_seq` WRITE;
+/*!40000 ALTER TABLE `avance_salaire_seq` DISABLE KEYS */;
+INSERT INTO `avance_salaire_seq` VALUES (51);
+/*!40000 ALTER TABLE `avance_salaire_seq` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `conge`
+-- Table structure for table `conge`
 --
 
+DROP TABLE IF EXISTS `conge`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `conge` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date_debut` date DEFAULT NULL,
   `date_fin` date DEFAULT NULL,
+  `motif_refus` varchar(255) DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL,
   `validation_chef_securite` varchar(255) DEFAULT NULL,
   `validation_responsable_hierarchique` varchar(255) DEFAULT NULL,
   `validation_responsablerh` varchar(255) DEFAULT NULL,
-  `motif_refus` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKlqg9rybgeokq9ibtk7ymycjeq` (`employe_id`),
+  CONSTRAINT `FKlqg9rybgeokq9ibtk7ymycjeq` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `conge`
+-- Dumping data for table `conge`
 --
 
-INSERT INTO `conge` (`id`, `date_debut`, `date_fin`, `statut`, `type`, `employe_id`, `validation_chef_securite`, `validation_responsable_hierarchique`, `validation_responsablerh`, `motif_refus`) VALUES
-(34, '2025-06-29', '2025-07-29', 'Accepté', 'Conge Annuel', 190, 'Accepté', 'Accepté', 'Accepté', NULL),
-(37, '2025-07-02', '2025-07-04', 'Accepté', 'Annuel', 76, 'Accepté', 'Accepté', 'Accepté', NULL),
-(38, '2025-07-05', '2025-07-06', 'Refusé', 'Annuel', 76, 'En attente', 'Refusé', 'Accepté', NULL),
-(39, '2025-07-01', '2025-07-06', 'Accepté', 'medicale', 157, 'Accepté', 'Accepté', 'Accepté', NULL),
-(40, '2025-07-06', '2025-07-19', 'Accepté', 'Annuel', 543, 'Accepté', 'Accepté', 'Accepté', NULL),
-(41, '2025-07-04', '2025-07-06', 'Accepté', 'Annuel', 540, 'Accepté', 'Accepté', 'Accepté', NULL),
-(42, '2025-06-20', '2025-06-28', 'Accepté', '', 291, 'Accepté', 'Accepté', 'Accepté', NULL),
-(43, '2025-07-03', '2025-07-06', 'Accepté', 'Annuel', 83, 'Accepté', 'Accepté', 'Accepté', NULL),
-(44, '2025-07-03', '2025-07-06', 'Accepté', 'Annuel', 465, 'Accepté', 'Accepté', 'Accepté', NULL),
-(45, '2025-07-03', '2025-07-06', 'En attente', 'Annuel', 465, 'En attente', 'En attente', 'En attente', NULL),
-(46, '2025-07-03', '2025-07-06', 'Accepté', 'Annuel', 67, 'Accepté', 'Accepté', 'Accepté', NULL),
-(47, '2025-07-03', '2025-07-06', 'En attente', 'Annuel', 67, 'En attente', 'En attente', 'En attente', NULL),
-(48, '2025-07-03', '2025-07-06', 'Accepté', 'Annuel', 67, 'Accepté', 'Accepté', 'Accepté', NULL),
-(49, '2025-07-01', '2025-07-26', 'Accepté', 'Annuel', 138, 'Accepté', 'Accepté', 'Accepté', NULL),
-(50, '2025-07-03', '2025-07-26', 'Accepté', 'Annuel', 543, 'Accepté', 'Accepté', 'Accepté', NULL),
-(51, '2025-07-02', '2025-08-30', 'Accepté', '', 539, 'Accepté', 'Accepté', 'Accepté', NULL),
-(53, '2025-07-04', '2025-07-04', 'En attente', 'medicale', 452, 'En attente', 'Accepté', 'Accepté', NULL);
-
--- --------------------------------------------------------
+LOCK TABLES `conge` WRITE;
+/*!40000 ALTER TABLE `conge` DISABLE KEYS */;
+INSERT INTO `conge` VALUES (9,NULL,NULL,NULL,'Accepté','',NULL,'Accepté','Accepté',25),(10,'2026-07-09','2026-07-19',NULL,'Accepté','maladie',NULL,'Accepté','Accepté',25),(12,'2026-07-10','2026-07-10',NULL,'Accepté','maladie',NULL,'Accepté','Accepté',362),(13,'2026-07-11','2026-07-15',NULL,'Accepté','maladie',NULL,'Accepté','Accepté',2),(14,'2026-07-10','2026-07-17',NULL,'En attente','maladie',NULL,'Accepté','En attente',38);
+/*!40000 ALTER TABLE `conge` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `demande_document`
+-- Table structure for table `demande_document`
 --
 
+DROP TABLE IF EXISTS `demande_document`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `demande_document` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date_demande` date DEFAULT NULL,
   `remarque` varchar(255) DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
   `type_document` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKk7en0m3h6v29mfrumq4in9935` (`employe_id`),
+  CONSTRAINT `FKk7en0m3h6v29mfrumq4in9935` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `demande_document`
+-- Dumping data for table `demande_document`
 --
 
-INSERT INTO `demande_document` (`id`, `date_demande`, `remarque`, `statut`, `type_document`, `employe_id`) VALUES
-(2, '2025-06-26', NULL, 'Acceptée', 'Attestation de travail', 448),
-(4, '2025-06-26', 'J\'ai besoin de cette document le plus tot possible s\'il vous plait', 'En attente', 'Attestation de travail', 75),
-(5, '2025-06-26', 'Rien', 'En attente', 'Certificat de salaire', 76),
-(8, '2025-06-27', NULL, 'Acceptée', 'Attestation de travail', 179),
-(9, '2025-06-27', '', 'En attente', 'Relevé de carrière', 448),
-(10, '2025-07-02', 'NNBH', 'En attente', 'Attestation de travail', 102),
-(11, '2025-07-02', '', 'En attente', 'CNSS', 247);
-
--- --------------------------------------------------------
+LOCK TABLES `demande_document` WRITE;
+/*!40000 ALTER TABLE `demande_document` DISABLE KEYS */;
+INSERT INTO `demande_document` VALUES (1,'2026-07-09',NULL,'Acceptée','Attestation de travail',466);
+/*!40000 ALTER TABLE `demande_document` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `emission`
+-- Table structure for table `emission`
 --
 
+DROP TABLE IF EXISTS `emission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `emission` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date_debut` date DEFAULT NULL,
   `date_fin` date DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK77tfsv532c30rhdoatyk1cyqv` (`employe_id`),
+  CONSTRAINT `FK77tfsv532c30rhdoatyk1cyqv` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `emission`
+-- Dumping data for table `emission`
 --
 
-INSERT INTO `emission` (`id`, `date_debut`, `date_fin`, `statut`, `type`, `employe_id`) VALUES
-(1, '2025-07-13', '2025-07-15', 'En attente', 'Voyage à l\'étranger', 448),
-(2, '2025-07-13', '2025-07-15', 'Refusée', 'Formation', 448),
-(3, '2025-07-18', '2025-07-25', 'Acceptée', 'Formation', 448),
-(4, '2025-07-18', '2025-07-25', 'En attente', 'Client', 448),
-(5, '2025-07-18', '2025-07-25', 'En attente', 'Voyage à l\'étranger', 448);
-
--- --------------------------------------------------------
+LOCK TABLES `emission` WRITE;
+/*!40000 ALTER TABLE `emission` DISABLE KEYS */;
+INSERT INTO `emission` VALUES (1,NULL,NULL,'En attente','Voyage à l\'étranger',452);
+/*!40000 ALTER TABLE `emission` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `employe`
+-- Table structure for table `employe`
 --
 
+DROP TABLE IF EXISTS `employe`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employe` (
-  `id` bigint(255) NOT NULL,
-  `matricule` varchar(255) DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `fullname` varchar(255) DEFAULT NULL,
-  `zone` varchar(255) DEFAULT NULL,
+  `matricule` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `zone` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UKsewfj92skjm3geoc0usfber43` (`matricule`)
+) ENGINE=InnoDB AUTO_INCREMENT=477 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `employe`
+-- Dumping data for table `employe`
 --
 
-INSERT INTO `employe` (`id`, `matricule`, `fullname`, `zone`, `role`, `password`) VALUES
-(559, '1', 'Mohamed Sabri Chaarana', 'Direction', 'Directeur ', '1'),
-(560, '2', 'HEDYEOUI RIDHA', 'Direction', 'Chef service technique', '2'),
-(561, '7', 'BEL HADJ   JAMILA', 'Norsystec', 'ouvrier qualifier', NULL),
-(562, '9', 'KHELIFA   SIHEM', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(563, '12', 'EL GHOUL   NEDRA', 'Norsystec', 'Chef de Groupe', NULL),
-(564, '16', 'AOUIDIDI   NABIL', 'Norsystec', 'ouvrier qualifier', NULL),
-(565, '17', 'RABBOUHI   AFEF', 'Norsystec', 'Agent de contr?le', NULL),
-(566, '18', 'AYEDI   HAJER', 'Prod. Cable WH-E', 'Chef d\'equipe', NULL),
-(567, '19', 'MAJEBRI   MOUNIRA', 'Norsystec', 'Agent de contr?le', NULL),
-(568, '20', 'BELHADJ   SAMIA', 'Prod.Cable SET', 'Chef d\'equipe', NULL),
-(569, '21', 'MAJDOUB   ABDELMAJID', 'Maintenance', 'Chef service logisti', NULL),
-(570, '23', 'HALFEOUI   SELMA', 'Prod. Cable WH-E', 'Agent de contr?le', NULL),
-(571, '24', 'REBEG    HELA', 'Prod.Cable SET', 'Chef d\'equipe', NULL),
-(572, '26', 'BEN HNIA   HAYET', 'Norsystec', 'Chef d\'equipe', NULL),
-(573, '28', 'KHELIFI   AWATEF', 'Norsystec', 'Chef d\'equipe', NULL),
-(574, '29', 'KHELIFA   OLFA', 'Norsystec', 'Agent de contr?le', NULL),
-(575, '30', 'KHELIFI   FATHIA', 'Prod.Cable SET', 'Agent de contr?le', NULL),
-(576, '31', 'BEN NJIMA   AICHA', 'Prod. Cable WH-E', 'Agent de contr?le', NULL),
-(577, '36', 'MEHRITHI   SALAH', 'Ressources Huamines', 'ouvrier qualifier', NULL),
-(578, '42', 'BELHADJ   FOLLA', 'Prod.Cable SET', 'Chef d\'equipe', NULL),
-(579, '47', 'BEN AMOR   MONIA', 'Norsystec', 'Couturiere permanant', NULL),
-(580, '51', 'KHELIFI   MADIHA', 'Prod. Cable WH-E', 'ouvrier qualifier', NULL),
-(581, '53', 'ELTAIEF   MOUFIDA', 'Norsystec', 'Couturiere permanant', NULL),
-(582, '56', 'ZALFENI   AZIZA', 'Norsystec', 'Tournante', NULL),
-(583, '58', 'NASR   AHMED', 'Direction', 'Chef Service Cable', '58'),
-(584, '60', 'RAOUEFI   MONIA', 'Norsystec', 'Couturiere permanant', NULL),
-(585, '65', 'KHELIFA   NOUHA', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(586, '72', 'KHELIFI   NEJIA', 'Norsystec', 'Agent de contr?le', NULL),
-(587, '74', 'HAMDI   KHADIJA', 'Norsystec', 'Agent de contr?le', NULL),
-(588, '76', 'CHOUIGUI   SAWSSEN', 'Norsystec', 'Tournante', NULL),
-(589, '77', 'EL ARBI   SAWSSEN', 'Norsystec', 'OUVRIER(E)', NULL),
-(590, '83', 'LTAIEF   AMAL', 'Norsystec', 'Couturiere permanant', NULL),
-(591, '84', 'CHOUIGUI   AMIRA', 'Norsystec', 'Couturiere permanant', NULL),
-(592, '86', 'KAZBOURI   KHITEM', 'Prod. Cable WH-E', 'Chef d\'equipe', NULL),
-(593, '87', 'BEN HNIA   SONIA', 'Norsystec', 'Couturiere', NULL),
-(594, '88', 'BEN HNIA   NAJEH', 'Prod. Cable WH-E', 'Chef d\'equipe', NULL),
-(595, '90', 'BEN HNIA   HALIMA', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(596, '91', 'MAJDOUB   FRAJ', 'Maintenance', 'Tech maintenance-Pro', NULL),
-(597, '95', 'HAMDI   RADHIA', 'Prod. Cable WH-E', 'Agent de contr?le', NULL),
-(598, '100', 'KHELIFA    SONIA', 'Norsystec', 'Couturiere permanant', NULL),
-(599, '103', 'ABDEOUI   YOSRA', 'Norsystec', 'Formatrice', NULL),
-(600, '104', 'BOUKAMCHA   SONIA', 'Norsystec', 'Couturiere permanant', NULL),
-(601, '105', 'KESSEBI   MADIHA', 'Norsystec', 'Couturiere permanant', NULL),
-(602, '111', 'HRAIECH   NORHEN', 'Norsystec', 'Chef d\'equipe', NULL),
-(603, '112', 'ERRAIED   HADDA', 'Norsystec', 'Agent de contrôle', NULL),
-(604, '115', 'Ines BAHLOUL', 'Norsystec', 'Agent de contrôle', NULL),
-(605, '118', 'NAHERI   MARWEN', 'Logistique', 'Magasinier', NULL),
-(606, '122', 'DHAYA   IMEN', 'Norsystec', 'Agent de contrôle', NULL),
-(607, '128', 'BOUZAABIA   SALWA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(608, '129', 'RABBOUHI   NAZIHA', 'Prod. Cable WH-E', 'AGENT DE CONTROLE TI', NULL),
-(609, '136', 'BOURAOUI   FADOUA', 'Norsystec', 'ouvrier qualifier', NULL),
-(610, '137', 'ABID   AYMEN', 'Logistique', 'Magasinier', NULL),
-(611, '146', 'AOUNI   SIHEM', 'Norsystec', 'Couturiere', NULL),
-(612, '150', 'BEN SAAD   AFIFA', 'Norsystec', 'Couturiere permanant', NULL),
-(613, '152', 'AZIZI   NOURA', 'Norsystec', 'Agent de contrôle', NULL),
-(614, '154', 'HAMDI   SANA', 'Norsystec', 'Agent de contrôle', NULL),
-(615, '157', 'KHLIFA   DHEKRA', 'Prod. Cable WH-E', 'Agent de contrôle', NULL),
-(616, '159', 'SAADLI   MONIA', 'Norsystec', 'Agent de contrôle', NULL),
-(617, '160', 'BEL HADJ    EMNA', 'Norsystec', 'Agent de contrôle', NULL),
-(618, '161', 'BEN HNIA    SOUMAYA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(619, '164', 'AZIZI   SIHEM', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(620, '165', 'MESBEHI   LAMIA', 'Norsystec', 'Agent de contrôle', NULL),
-(621, '171', 'EJRIDI   FOUZIA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(622, '177', 'CHALBIA   FATMA', 'Norsystec', 'Chef d\'equipe', NULL),
-(623, '179', 'BOUZAABIA   ASMA', 'Prod. Cable WH-E', 'Agent de contrôle', NULL),
-(624, '180', 'BEN FRADJ   SAMIA', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(625, '187', 'KHLIFA   HANEN', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(626, '189', 'AZZOUZ   RADHIA', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(627, '193', 'EL HOUIJ BESSA   OUMAIMA', 'Norsystec', 'Tournante', NULL),
-(628, '194', 'BEN KHLIFA   NESRIN', 'Norsystec', 'Agent de contrôle', NULL),
-(629, '196', 'ROMDHAN   RIHAB', 'Norsystec', 'Agent de contrôle', NULL),
-(630, '197', 'BRAHEM   SAMIRA', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(631, '198', 'BOUGEZZI   LATIFA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(632, '199', 'AZZOUZ   SOUHIR', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(633, '201', 'BOUZAABIA    HAJER', 'Norsystec', 'AGENT DE CONTROLE TI', NULL),
-(634, '204', 'ABID   MAHER', 'Logistique', 'Magasinier', NULL),
-(635, '208', 'KAHLOUL   ASMA', 'Prod. Cable WH-E', 'Agent de contrôle', NULL),
-(636, '209', 'CHOUIGUI   SIWAR', 'Norsystec', 'Agent de contrôle', NULL),
-(637, '212', 'ZALFENI   YAMINA', 'Norsystec', 'Agent de contrôle', NULL),
-(638, '215', 'ABDELLAOUI   SABRINE', 'Norsystec', 'Agent de contrôle', NULL),
-(639, '218', 'DARBEL   SAHAR', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(640, '219', 'EL MANAA SLEMA   AFEF', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(641, '221', 'EL KHLIFI   THOURAIA', 'Norsystec', 'Assistante de produc', NULL),
-(642, '222', 'BEN FRAJ   INES', 'Qualité', 'Agent de qualite', NULL),
-(643, '223', 'HRAIECH   HAIFA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(644, '225', 'BERRI   HAIFA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(645, '226', 'ABID   MAROUA', 'Norsystec', 'Agent de contrôle', NULL),
-(646, '227', 'BOUMAIZA   CHAIMA', 'Norsystec', 'ouvrier qualifier', NULL),
-(647, '228', 'BALHADJ   BASMA', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(648, '229', 'BEN FRADJ   TAISIR', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(649, '302', 'BELHADJ   HAIFA', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(650, '304', 'KLII   LAMIA', 'Norsystec', 'Couturiere permanant', NULL),
-(651, '307', 'EKRAM   BEN SAAD', 'Norsystec', 'Agent de contrôle', NULL),
-(652, '311', 'KHLIFA   YASMINE', 'Qualité', 'Agent de qualite', NULL),
-(653, '316', 'BEN ABDELGHANI   WARDA', 'Prod. Cable WH-E', 'Agent de contrôle', NULL),
-(654, '323', 'HALFEOUI   IMEN', 'Norsystec', 'Agent de contrôle', NULL),
-(655, '324', 'CHOUIGUI   DORSAF', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(656, '326', 'KHLIFI   AWATEF 2', 'Norsystec', 'Couturiere permanant', NULL),
-(657, '328', 'KHLIFA   SANA', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(658, '330', 'HRAIECH   CHOUROUK', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(659, '333', 'TOUMIA   MAROUA', 'Norsystec', 'Agent de contrôle', NULL),
-(660, '335', 'DHEKRA HRAIECH', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(661, '336', 'GRIRA   NEDIA', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(662, '338', 'EL GHAMERI   IMEN', 'Norsystec', 'Couturiere', NULL),
-(663, '339', 'ELWETI   IMEN', 'Norsystec', 'OUVRIER(E)', NULL),
-(664, '342', 'SOUDENI   LAZHAR', 'Ressources Huamines', 'GARDIEN Titulaire', NULL),
-(665, '343', 'BOUKARMA ECHTIOUI   SIRINE', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(666, '344', 'HEDYEOUI   SAID', 'Ressources Huamines', 'GARDIEN Titulaire', NULL),
-(667, '346', 'BELHADJ MILED SARRA', 'Norsystec', 'Couturiere permanant', NULL),
-(668, '351', 'BILEL HAMDI', 'Norsystec', 'OUVRIER(E)', NULL),
-(669, '352', 'DHOUHA JARBOUA', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(670, '353', 'DORSAF ABDEOUI', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(671, '361', 'JIHEN EL MELKI', 'Prod. Cable WH-E', 'Agent de contrôle', NULL),
-(672, '362', 'SABRA AZIZI', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(673, '363', 'HENI AZZOUZ', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(674, '365', 'NAJOUA KHALFOUN', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(675, '366', 'NORHEN BEL HADJ', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(676, '368', 'HAJER KALBOUSI', 'Prod.Cable SET', 'Chef d\'equipe', NULL),
-(677, '369', 'NOURHEN ABDEOUI', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(678, '370', 'SABER ISSAOUI', 'Logistique', 'Operateur sur machin', NULL),
-(679, '371', 'MAROUA REBBEG', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(680, '374', 'FATIMA ZEMZMI', 'Prod.Cable SET', 'ouvrier qualifier', NULL),
-(681, '377', 'JAMEL ZAARAOUI', 'Maintenance', 'CHEF PROD. CABLE  SE', NULL),
-(682, '378', 'SIHEM SAOUDI', 'Prod. Cable WH-E', 'Couturiere', NULL),
-(683, '379', 'HIBA MDALLA', 'Direction', 'Responsable Qualité', '379'),
-(684, '380', 'SAIDA HAMDI', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(685, '381', 'AWATEF SLAMA', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(686, '382', 'KHAOULA KHIARI', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(687, '385', 'TAYSIR KASEM', 'Prod. Cable WH-E', 'OUVRIER(E) PERMANANT', NULL),
-(688, '387', 'AFEF BRINI', 'Direction', 'Responsable AV', '387'),
-(689, '388', 'FAHMI ABID', 'Logistique', 'Magasinier', NULL),
-(690, '391', 'MERIEM SOUIBGUI', 'Prod.Cable SET', 'OUVRIER(E) PERMANANT', NULL),
-(691, '394', 'MOUHAMED BEL HADJ', 'Logistique', 'Magasinier', NULL),
-(692, '395', 'AMIRA BEN HNIA', 'Norsystec', 'OUVRIER(E)', NULL),
-(693, '397', 'Fatma Hamdi', 'Norsystec', 'Couturiere permanant', NULL),
-(694, '402', 'Sana Chaar', 'Norsystec', 'Agent de contrôle', NULL),
-(695, '405', 'ZOUHOUR NASRI', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(696, '407', 'DALANDA KHEDHER', 'Norsystec', 'Couturiere permanant', NULL),
-(697, '408', 'HAJER AMMERI', 'Norsystec', 'Agent de contrôle', NULL),
-(698, '411', 'MAROUA BEN NJIMA', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(699, '412', 'SIHEM EL MHADHBI', 'Norsystec', 'Couturiere permanant', NULL),
-(700, '415', 'SALMA BOUASKAR', 'Norsystec', 'Couturiere permanant', NULL),
-(701, '418', 'ELHEM HOUIJ', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(702, '420', 'SIRINE BEN ABDEL GHANI', 'Norsystec', 'Couturiere', NULL),
-(703, '422', 'HEDIL CHOUIGI', 'Norsystec', 'Couturiere', NULL),
-(704, '424', 'SAMEH ZALFENI', 'Norsystec', 'AGENT DE CONTROLE TI', NULL),
-(705, '430', 'SABRIN ZAROUKI', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(706, '433', 'CHAIMA BEN NJIMA', 'Prod.Cable SET', 'Couturiere', NULL),
-(707, '437', 'HOUDA BEN HNIA', 'Norsystec', 'OUVRIER(E)', NULL),
-(708, '438', 'KAWTHAR HADEJI', 'Prod. Cable WH-E', 'Tournante', NULL),
-(709, '439', 'AHLEM EL ANEBI', 'Norsystec', 'OUVRIER(E)', NULL),
-(710, '441', 'NESRIN HADEJI', 'Norsystec', 'OUVRIER(E)', NULL),
-(711, '442', 'SAMEH ELOURIMI', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(712, '445', 'HANEN OUSIFI', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(713, '446', 'MARIEM BEN HNIA', 'Norsystec', 'Couturiere', NULL),
-(714, '447', 'CHAHRAZED BELHADJ', 'Norsystec', 'OUVRIER(E)', NULL),
-(715, '449', 'OUMAIMA BEMRI', 'Norsystec', 'Agent de contrôle', NULL),
-(716, '450', 'ATIKA ZALFENI', 'Norsystec', 'Couturiere permanant', NULL),
-(717, '453', 'RIHAB EL KHLIFI', 'Norsystec', 'Couturiere', NULL),
-(718, '454', 'SALSABIL ESHILI', 'Norsystec', 'Couturiere', NULL),
-(719, '457', 'ROUA HEDIEOUI', 'Norsystec', 'OUVRIER(E)', NULL),
-(720, '458', 'AYMEN ELLOUETI', 'Norsystec', 'Operateur sur machin', NULL),
-(721, '461', 'SAMIA BRAHEM', 'Prod.Cable SET', 'Tournante', NULL),
-(722, '466', 'RANIA ESSEDIK', 'Norsystec', 'Tournante', NULL),
-(723, '467', 'HNIA HAMDI', 'Norsystec', 'Couturiere', NULL),
-(724, '468', 'Ferjeni Bouallegue', 'Norsystec', 'Chef Service couture', NULL),
-(725, '469', 'SARRA EL BAGHDEDI', 'Norsystec', 'Couturiere permanant', NULL),
-(726, '470', 'Houda Ben Njima', 'Norsystec', 'Agent de contrôle', NULL),
-(727, '472', 'Yosra Nasri', 'Norsystec', 'Agent de contrôle', NULL),
-(728, '474', 'INES BEN KHLIFA', 'Norsystec', 'Couturiere permanant', NULL),
-(729, '475', 'HIBA HENI', 'Norsystec', 'Couturiere permanant', NULL),
-(730, '479', 'WAFA ZID', 'Prod.Cable SET', 'Couturiere permanant', NULL),
-(731, '482', 'WAJDI WECHTETI', 'Norsystec', 'Operateur sur machin', NULL),
-(732, '485', 'CHAIMA HALFEOUI', 'Norsystec', 'OUVRIER(E) PERMANANT', NULL),
-(733, '490', 'NAJEH MALLAT', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(734, '494', 'IKBEL MALLAT', 'Norsystec', 'OUVRIER(E)', NULL),
-(735, '499', 'Imen Mallat', 'Norsystec', 'Couturiere permanant', NULL),
-(736, '501', 'Takoua Labeoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(737, '502', 'Hanen Erezgui', 'Norsystec', 'Couturiere', NULL),
-(738, '506', 'Romdhana Zalfeni', 'Norsystec', 'Couturiere permanant', NULL),
-(739, '516', 'FEIZA CHEBBI', 'Qualité', 'Chef d\'equipe', NULL),
-(740, '517', 'OUMAIMA ECHTIOUI', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(741, '518', 'SAMAR HSIN', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(742, '519', 'SAMIA MANSRI', 'Norsystec', 'Agent de contrôle', NULL),
-(743, '525', 'Mounira Ammeri', 'Ressources Huamines', 'Femme de menage', NULL),
-(744, '527', 'Wafa Toumia', 'Norsystec', 'OUVRIER(E)', NULL),
-(745, '528', 'Asma Ezneti', 'Norsystec', 'OUVRIER(E)', NULL),
-(746, '529', 'Rafika Edabbebi', 'Norsystec', 'OUVRIER(E)', NULL),
-(747, '538', 'Maram Hamda', 'Norsystec', 'OUVRIER(E)', NULL),
-(748, '539', 'Malek Ben Njima', 'Norsystec', 'Operateur sur machin', NULL),
-(749, '544', 'Rim Barhoumi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(750, '547', 'Emna ElHendeoui', 'Prod.Cable SET', 'Couturiere', NULL),
-(751, '555', 'Ibtissem Ifeoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(752, '558', 'Ahmed Abid', 'Prod. Cable WH-E', 'Operateur sur machin', NULL),
-(753, '561', 'Imen Balghouthi', 'Norsystec', 'Agent de contrôle', NULL),
-(754, '566', 'Latifa Saidi', 'Norsystec', 'Agent de contrôle', NULL),
-(755, '570', 'Salwa Ben Hsin', 'Norsystec', 'OUVRIER(E)', NULL),
-(756, '573', 'Sabeh Mhamdi', 'Norsystec', 'OUVRIER(E)', NULL),
-(757, '576', 'Moez Bentiba', 'Direction', 'Responsable Production', '576'),
-(758, '577', 'Chirine Halfeoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(759, '582', 'Saida Gessmi', 'Norsystec', 'Couturiere', NULL),
-(760, '583', 'Naima Ismain', 'Norsystec', 'OUVRIER(E)', NULL),
-(761, '584', 'Fatma Erbeihi', 'Norsystec', 'OUVRIER(E)', NULL),
-(762, '594', 'Islem Daouehi', 'Norsystec', 'OUVRIER(E)', NULL),
-(763, '595', 'Amal El Khlifi', 'Norsystec', 'Agent de contrôle', NULL),
-(764, '597', 'Fouzia Hadeji', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(765, '605', 'Mouna Kahloul', 'Norsystec', 'Couturiere', NULL),
-(766, '606', 'Souhir Grira', 'Norsystec', 'Agent de contrôle', NULL),
-(767, '607', 'Yamina El Marzouki', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(768, '612', 'Nesrin Zrega Elajmi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(769, '614', 'Hanen Outai', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(770, '615', 'Souad khedher', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(771, '617', 'Rim Bouallegue', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(772, '618', 'Fathia Hamdi', 'Norsystec', 'Agent de contrôle', NULL),
-(773, '619', 'chayma Khlifa', 'Qualité', 'Agent de qualite', NULL),
-(774, '624', 'Fatma Hamdi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(775, '633', 'Rahma Sfaxi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(776, '637', 'Zmorda Elhadj Sghaier', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(777, '643', 'Lobna Abbes', 'Ressources Huamines', 'Femme de menage', NULL),
-(778, '644', 'Thouraya Ferjeoui', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(779, '648', 'Zaineb Elhnzouli', 'Norsystec', 'OUVRIER(E)', NULL),
-(780, '650', 'Fouzia Nasr', 'Norsystec', 'OUVRIER(E)', NULL),
-(781, '651', 'Nejma Gizeni', 'Norsystec', 'OUVRIER(E)', NULL),
-(782, '656', 'Jamila Elfakroun', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(783, '657', 'Maroua Ayedi', 'Norsystec', 'OUVRIER(E)', NULL),
-(784, '659', 'Kawthar Elkrifi', 'Prod. Cable WH-E', 'Agent de contrôle', NULL),
-(785, '667', 'Mouna Bouraoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(786, '668', 'Souhir Kahloun', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(787, '673', 'Rim Hadj Selem', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(788, '675', 'Latifa Hamdi', 'Norsystec', 'OUVRIER(E)', NULL),
-(789, '684', 'Haythem Said', 'Direction', 'Responsable Unité de production', '684'),
-(790, '688', 'Salwa Elsouli', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(791, '692', 'Rahma Hedyeoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(792, '695', 'Ahlem Bouasker', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(793, '697', 'Rami Ben Khlifa', 'Norsystec', 'OUVRIER(E)', NULL),
-(794, '701', 'Atef Harrabi', 'Logistique', 'Operateur sur machin', NULL),
-(795, '702', 'Hanen Gassoumi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(796, '704', 'Rihab Kahloul', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(797, '705', 'Nedia Mnasri', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(798, '712', 'Saliha Azouzi', 'Norsystec', 'OUVRIER(E)', NULL),
-(799, '713', 'Najet Abbessi', 'Norsystec', 'Couturiere', NULL),
-(800, '714', 'Soumaya Khlifa', 'Norsystec', 'OUVRIER(E)', NULL),
-(801, '715', 'Chaima Dergech', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(802, '717', 'Chayma Bouzaienne', 'Norsystec', 'OUVRIER(E)', NULL),
-(803, '718', 'Ranim El Ghoul', 'Norsystec', 'OUVRIER(E)', NULL),
-(804, '720', 'Wiem Elhanzouli', 'Norsystec', 'OUVRIER(E)', NULL),
-(805, '721', 'Warda Ifeoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(806, '725', 'Maysoun Ben Atya', 'Norsystec', 'OUVRIER(E)', NULL),
-(807, '727', 'Aymen Krifi', 'Qualité', 'Technicien de qualit', NULL),
-(808, '728', 'Maher Badrouch', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(809, '737', 'Radhya Mesbehi', 'Norsystec', 'Couturiere', NULL),
-(810, '739', 'Ghofran Elhraiech', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(811, '746', 'Zohra Ayed', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(812, '750', 'Fatma Aouicheoui', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(813, '751', 'wissal Chebi', 'Norsystec', 'Agent de contrôle', NULL),
-(814, '755', 'Sawssen Addeli', 'Norsystec', 'EMPLOYE', NULL),
-(815, '769', 'Wissal Ben Njima', 'Norsystec', 'OUVRIER(E)', NULL),
-(816, '775', 'Mouhamed Zeidi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(817, '776', 'Monjia Saadli', 'Norsystec', 'OUVRIER(E)', NULL),
-(818, '780', 'Fedya Zalfeni', 'Norsystec', 'Agent de contrôle', NULL),
-(819, '792', 'Wiem Zalfeni', 'Norsystec', 'Agent de contrôle', NULL),
-(820, '795', 'Rabiaa Thleijia', 'Norsystec', 'OUVRIER(E)', NULL),
-(821, '797', 'Amira Amara', 'Norsystec', 'OUVRIER(E)', NULL),
-(822, '809', 'Soukaina Tiehi', 'Norsystec', 'OUVRIER(E)', NULL),
-(823, '810', 'Amal Mighri', 'Norsystec', 'OUVRIER(E)', NULL),
-(824, '811', 'Med Amin Ben Abdelghani', 'Norsystec', 'OUVRIER(E)', NULL),
-(825, '812', 'Atef Addeli', 'Norsystec', 'OUVRIER(E)', NULL),
-(826, '814', 'Rebeh Elghnoudi', 'Norsystec', 'OUVRIER(E)', NULL),
-(827, '819', 'Awatef Barhoumi', 'Norsystec', 'OUVRIER(E)', NULL),
-(828, '821', 'Rahma Taamallah', 'Norsystec', 'Agent de contrôle', NULL),
-(829, '829', 'Chayma Abdelghani', 'Norsystec', 'Couturiere', NULL),
-(830, '830', 'Israa Essessi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(831, '833', 'Hajer Mtiraoui', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(832, '839', 'Rahma Elayari', 'Norsystec', 'Agent de contrôle', NULL),
-(833, '842', 'Omar Karmous', 'Norsystec', 'OUVRIER(E)', NULL),
-(834, '849', 'Jihen Chmangui', 'Norsystec', 'OUVRIER(E)', NULL),
-(835, '850', 'Amira Barhoumi', 'Norsystec', 'OUVRIER(E)', NULL),
-(836, '851', 'Amal Farhani', 'Norsystec', 'OUVRIER(E)', NULL),
-(837, '853', 'Afef Elkhlifi', 'Norsystec', 'OUVRIER(E)', NULL),
-(838, '854', 'Samia Harrabi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(839, '860', 'Achraf Gessem', 'Logistique', 'Magasinier', NULL),
-(840, '861', 'Nawres Isseoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(841, '866', 'Imen Abdellaoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(842, '871', 'Abdelmonem Zaidi', 'Prod. Cable WH-E', 'Operateur sur machin', NULL),
-(843, '873', 'Saida Taam', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(844, '879', 'Ala Abdeoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(845, '883', 'Molka Hlel', 'Norsystec', 'OUVRIER(E)', NULL),
-(846, '884', 'Amina Essid', 'Norsystec', 'Couturiere', NULL),
-(847, '885', 'Sami Najleoui', 'Maintenance', 'Tech maintenance-Pro', NULL),
-(848, '886', 'Amira Enajleoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(849, '888', 'Omar Edawdi', 'Norsystec', 'OUVRIER(E)', NULL),
-(850, '889', 'Asma Ezaliiti', 'Norsystec', 'OUVRIER(E)', NULL),
-(851, '890', 'Mouhamed Aziz Ameri', 'Logistique', 'Magasinier', NULL),
-(852, '891', 'Aida Enajleoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(853, '892', 'Imed Zeidi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(854, '893', 'Rihab Bougezzi', 'Prod.Cable SET', 'Operateur sur machin', NULL),
-(855, '894', 'Maroua Mesbehi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(856, '903', 'Soumaya Kechich', 'Prod.Cable SET', 'Agent de contrôle', NULL),
-(857, '905', 'Samia Sbaii', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(858, '912', 'Rafika Balghouthi', 'Norsystec', 'Couturiere', NULL),
-(859, '915', 'Najoua Elousifi', 'Norsystec', 'Couturiere', NULL),
-(860, '920', 'Hayfa Boujlida', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(861, '922', 'Zahra Aiechi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(862, '923', 'Rim Agoubi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(863, '926', 'Nahed Haddeji', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(864, '929', 'Intissar Fdhily', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(865, '931', 'Aya Khlifa', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(866, '933', 'Amir Elhaouem', 'Logistique', 'Magasinier', NULL),
-(867, '935', 'Bouthayna Ben hnia', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(868, '938', 'Ichrak Elhattab', 'Norsystec', 'OUVRIER(E)', NULL),
-(869, '939', 'Aya Omezzin Bel hadj', 'Norsystec', 'OUVRIER(E)', NULL),
-(870, '945', 'Houda Hanzouli', 'Norsystec', 'Couturiere', NULL),
-(871, '948', 'Narjes Ayedi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(872, '950', 'Mariem Elkemti', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(873, '952', 'Amal Ifeoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(874, '954', 'Mahmoud Azzouz', 'Logistique', 'Magasinier', NULL),
-(875, '958', 'Afef Debech', 'Norsystec', 'OUVRIER(E)', NULL),
-(876, '959', 'Jamila Ben Hsan', 'Norsystec', 'OUVRIER(E)', NULL),
-(877, '961', 'Sawssen Ben Hadj Mahmoud', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(878, '964', 'Zaineb Tayen', 'Norsystec', 'Agent de contrôle', NULL),
-(879, '966', 'Khouloud bouaskar', 'Norsystec', 'Couturiere', NULL),
-(880, '968', 'Manel Elouergmi', 'Norsystec', 'OUVRIER(E)', NULL),
-(881, '969', 'Senda Bouaskar', 'Norsystec', 'OUVRIER(E)', NULL),
-(882, '971', 'Gazi Baklouti', 'Norsystec', 'OUVRIER(E)', NULL),
-(883, '972', 'Henda Elhanzouli', 'Norsystec', 'Couturiere', NULL),
-(884, '975', 'Samah Dioueni', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(885, '978', 'Abir Elothmani', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(886, '980', 'Aiada Abdellaoui', 'Norsystec', 'Couturiere', NULL),
-(887, '982', 'Ikram Mesbehi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(888, '984', 'Med Ali Hraiech', 'Norsystec', 'Operateur sur machin', NULL),
-(889, '985', 'Racha Selimi', 'Norsystec', 'OUVRIER(E)', NULL),
-(890, '988', 'Molka Ben Ahmed', 'Norsystec', 'OUVRIER(E)', NULL),
-(891, '990', 'Yosra Nasri', 'Norsystec', 'OUVRIER(E)', NULL),
-(892, '995', 'Helmi Bouzaabia', 'Norsystec', 'OUVRIER(E)', NULL),
-(893, '996', 'Monia Zneki', 'Norsystec', 'OUVRIER(E)', NULL),
-(894, '999', 'Majda Dhifellaoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(895, '1001', 'Radhia Ftiti', 'Norsystec', 'OUVRIER(E)', NULL),
-(896, '1006', 'Sawssen Zaibi', 'Norsystec', 'OUVRIER(E)', NULL),
-(897, '1011', 'Sahar Elsaadli', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(898, '1015', 'Nermin Karmous', 'Norsystec', 'OUVRIER(E)', NULL),
-(899, '1018', 'Chiraz Elothmani', 'Norsystec', 'OUVRIER(E)', NULL),
-(900, '1025', 'Mouna Zaidi', 'Norsystec', 'OUVRIER(E)', NULL),
-(901, '1048', 'Sana Marzouki', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(902, '1049', 'Rakia Mbark', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(903, '1055', 'Samar Abdelghani', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(904, '1063', 'Amal Amaira', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(905, '1068', 'Amal Hamdi', 'Norsystec', 'OUVRIER(E)', NULL),
-(906, '1075', 'Yosr Bouzaabia', 'Norsystec', 'OUVRIER(E)', NULL),
-(907, '1077', 'Faten Ali', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(908, '1083', 'ADEM BEN HMIDA', 'Logistique', 'Operateur sur machin', NULL),
-(909, '1089', 'Samia Ksouda', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(910, '1091', 'Salma Mabrouki', 'Norsystec', 'OUVRIER(E)', NULL),
-(911, '1093', 'Elhem Abdellaoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(912, '1095', 'Jamila Dhaouedi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(913, '1111', 'Sana Souii', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(914, '1119', 'Hayet BEN SAAD', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(915, '1120', 'Hanin Labidi', 'Norsystec', 'OUVRIER(E)', NULL),
-(916, '1122', 'MAROUA MNED', 'Norsystec', 'OUVRIER(E)', NULL),
-(917, '1124', 'AMMAR HNAZLI', 'Norsystec', 'OUVRIER(E)', NULL),
-(918, '1125', 'YASSINE KHLIFA', 'Norsystec', 'OUVRIER(E)', NULL),
-(919, '1131', 'Ahlem Bannouri', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(920, '1133', 'Seifeddine Kmilete', 'Direction', 'Responsable RH', '1133'),
-(921, '1139', 'Asma Hbari', 'Norsystec', 'OUVRIER(E)', NULL),
-(922, '1141', 'Iselm Khobzi', 'Norsystec', 'OUVRIER(E)', NULL),
-(923, '1143', 'Sawssen Bouzaabia', 'Norsystec', 'OUVRIER(E)', NULL),
-(924, '1152', 'Houssemddine Bouasker', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(925, '1157', 'Omezzine Ben Hmida', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(926, '1158', 'Donia Karoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(927, '1161', 'Omar Ben Chaabane', 'Norsystec', 'OUVRIER(E)', NULL),
-(928, '1165', 'Sameh Bouzaabia', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(929, '1166', 'Jihene Bouzaabia', 'Norsystec', 'OUVRIER(E)', NULL),
-(930, '1167', 'Ons Ghribi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(931, '1168', 'Imen Ben Hafsia', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(932, '1171', 'Wafa Horchani', 'Norsystec', 'OUVRIER(E)', NULL),
-(933, '1173', 'Fattoum Yaacoubi', 'Norsystec', 'OUVRIER(E)', NULL),
-(934, '1175', 'Amel Chebli', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(935, '1176', 'Mohamed Sayari', 'Maintenance', 'TECH sup maintenance', NULL),
-(936, '1184', 'Jawaher Frioui', 'Norsystec', 'OUVRIER(E)', NULL),
-(937, '1185', 'Mohamed Aziz Khlifa', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(938, '1188', 'Hanadi Bouzaabia', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(939, '1189', 'Rihab Yaacoubi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(940, '1190', 'Thouraya Henchiri', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(941, '1192', 'Latifa Abdelghani', 'Norsystec', 'Couturiere', NULL),
-(942, '1193', 'Intissar Bouguezzi', 'Norsystec', 'OUVRIER(E)', NULL),
-(943, '1194', 'Hanen Abaidi', 'Norsystec', 'Couturiere', NULL),
-(944, '1195', 'Nassima Abdaoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(945, '1196', 'chaima Abdaoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(946, '1197', 'Fatma Mnissi', 'Norsystec', 'OUVRIER(E)', NULL),
-(947, '1202', 'Salma Khlifi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(948, '1206', 'Chaima Aini', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(949, '1207', 'Arwa Zitouni', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(950, '1208', 'Faiza Khlifi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(951, '1210', 'Marwa Ayed', 'Norsystec', 'OUVRIER(E)', NULL),
-(952, '1211', 'Souad Khlifi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(953, '1213', 'Wissem Ghazouani', 'Ressources Huamines', 'Chauffeur', NULL),
-(954, '1224', 'Imen Bouraoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(955, '1229', 'Amal Bouzaabia', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(956, '1231', 'Kawther Jaballah', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(957, '1232', 'Mariem Baccouche', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(958, '1233', 'Amani Fteiti', 'Norsystec', 'OUVRIER(E)', NULL),
-(959, '1236', 'Dhekra Khlifa', 'Norsystec', 'OUVRIER(E)', NULL),
-(960, '1241', 'Mariem Bouzaabia', 'Norsystec', 'OUVRIER(E)', NULL),
-(961, '1243', 'Rihab Baccouche', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(962, '1246', 'Takwa Zalfani', 'Norsystec', 'OUVRIER(E)', NULL),
-(963, '1247', 'Mariem Ben Njima', 'Norsystec', 'OUVRIER(E)', NULL),
-(964, '1255', 'Fatma Saoudi', 'Norsystec', 'EMPLOYE', NULL),
-(965, '1256', 'Nahida Kassebi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(966, '1258', 'Seifeddine Abbadi', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(967, '1261', 'Souha Fhima', 'Logistique', 'Agent Logistique', NULL),
-(968, '1262', 'Mayssa Ben Ali', 'Logistique', 'Agent Logistique', NULL),
-(969, '1264', 'Anwar Ben Aicha', 'Direction', 'ASSISTANTE DE DIRECT', NULL),
-(970, '1265', 'Sami Ben Saad', 'Prod.Cable SET', 'Operateur sur machin', NULL),
-(971, '1267', 'Oussama Khlifi', 'Prod.Cable SET', 'Operateur sur machin', NULL),
-(972, '1269', 'Wiem Jouini', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(973, '1271', 'Mariem Ben Hassen', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(974, '1272', 'Samar Toumi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(975, '1273', 'Ines Yahyaoui', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(976, '1274', 'Sana Rebhi', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(977, '1275', 'Chaima Guesem', 'Norsystec', 'OUVRIER(E)', NULL),
-(978, '1276', 'Sirine Ben Romdhane', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(979, '1278', 'Haifa Bouraoui', 'Norsystec', 'OUVRIER(E)', NULL),
-(980, '1280', 'Seifeddine Salem', 'Norsystec', 'OUVRIER(E)', NULL),
-(981, '1281', 'Mohamed Houcine Azzouz', 'Norsystec', 'OUVRIER(E)', NULL),
-(982, '1282', 'Chaima Hassini', 'Norsystec', 'Couturiere', NULL),
-(983, '1283', 'Jihen Bouasker', 'Norsystec', 'OUVRIER(E)', NULL),
-(984, '1284', 'Lina Hamdi', 'Norsystec', 'OUVRIER(E)', NULL),
-(985, '1286', 'Maroua Chaabani', 'Norsystec', 'OUVRIER(E)', NULL),
-(986, '1290', 'Tayma Khlifa', 'Norsystec', 'OUVRIER(E)', NULL),
-(987, '1292', 'Amal Houas', 'Prod. Cable WH-E', 'OUVRIER(E)', NULL),
-(988, '1293', 'Nadhem Hedyaoui', 'Prod.Cable SET', 'OUVRIER(E)', NULL),
-(989, '1295', 'Mohamed Mahmoud', 'Norsystec', 'OUVRIER(E)', NULL),
-(990, '1298', 'Mohamed Arif', 'Norsystec', 'OUVRIER(E)', NULL),
-(991, '1299', 'Fethi Hnazli', 'Norsystec', 'Operateur sur machin', NULL),
-(992, '1300', 'Mohaned Ben Njima', 'Norsystec', 'Operateur sur machin', NULL),
-(993, '1301', 'Nabil  Sayhi', 'Norsystec', 'OUVRIER(E)', NULL),
-(994, '1302', 'Zohra Jaouadi', 'Ressources Huamines', 'Femme de menage', NULL),
-(995, '1303', 'Raja Jeddi', 'Norsystec', 'OUVRIER(E)', NULL),
-(996, '1305', 'Syrine Bouattay', 'Méthode', 'Ingenieur Methode', NULL),
-(997, '1306', 'Chaima Allagui', 'Méthode', 'Ingenieur Methode', NULL),
-(998, '1309', 'Mariem Khabbacha', 'Qualité', 'Agent de qualite', NULL),
-(999, '1315', 'Ali Sghaier', 'Norsystec', 'OUVRIER(E)', NULL),
-(1000, '1320', 'Ibtissem TLILI', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1001, '1322', 'Ramzi Kheder', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1002, '1323', 'Samia Ezzi', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1003, '1324', 'Amal Hamdi', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1004, '1325', 'Henda Belgacem', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1005, '1327', 'Bouthaina Hamdi', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1006, '1328', 'Rabiaa Khlifi', 'Norsystec', 'EMPLOYE', NULL),
-(1007, '1373', 'Khalil Belghouthi', 'Logistique', 'EMPLOYE', NULL),
-(1008, '1376', 'Houssemddine Lakhal', 'Direction', 'Spécialiste import/export', '1376'),
-(1009, '1377', 'Mohamed Bouraoui Trabelsi', 'Maintenance', 'EMPLOYE', NULL),
-(1010, '1378', 'Makrem Selmi', 'Maintenance', 'EMPLOYE', NULL),
-(1011, '1380', 'Rania Romdhane', 'Logistique', 'EMPLOYE', NULL),
-(1012, '1382', 'Samah Haj Ali', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1013, '1383', 'Hanen Raisi', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1014, '1384', 'Monia Abboud', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1015, '1387', 'Kaisser Bouassida', 'Méthode', 'EMPLOYE', NULL),
-(1016, '1388', 'Sami Sagaama', 'Méthode', 'EMPLOYE', NULL),
-(1017, '1389', 'Marwa Bouzaabia', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1018, '1390', 'Yosra Loussifi', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1019, '1391', 'Ameni Amri', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1020, '1392', 'Radhia Ammar', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1021, '1393', 'Afef Aouichi', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1022, '1394', 'Hayet Chorfa', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1023, '1395', 'Hasna Bouyahya', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1024, '1396', 'Ridha Allouche', 'Ressources Huamines', 'GARDIEN', '1396'),
-(1025, '1399', 'Wissemeddine KHAYATI', 'Logistique', 'EMPLOYE', NULL),
-(1026, '1401', 'Sana Mhadhbi', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1027, '1402', 'Chaima Abdelghani', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1028, '1403', 'Maram Rached', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1029, '1405', 'Amina Bouraoui', 'Prod. Cable WH-E', 'EMPLOYE', NULL),
-(1030, '1406', 'Yassine Znagui', 'Ressources Huamines', 'EMPLOYE', NULL),
-(1031, '1408', 'Rabiaa Hamdi', 'Prod.Cable SET', 'EMPLOYE', NULL),
-(1032, '1409', 'Khaled Achour', 'Qualité', 'EMPLOYE', NULL),
-(1033, '1410', 'Karem Mahmoudi', 'Prod.Cable SET', 'EMPLOYE', NULL);
-
--- --------------------------------------------------------
+LOCK TABLES `employe` WRITE;
+/*!40000 ALTER TABLE `employe` DISABLE KEYS */;
+INSERT INTO `employe` VALUES (1,1,'Mohamed Sabri Chaarana','1','1','Validateur Supérieur Hiérarchique','Direction'),(2,1,'HEDYEOUI RIDHA','2','2','Validateur Supérieur Hiérarchique','Maintenance'),(3,1,'BEL HADJ JAMILA','7','NO_ACCOUNT','Employé','Norsystec'),(4,1,'KHELIFA SIHEM','9','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(5,1,'EL GHOUL NEDRA','12','NO_ACCOUNT','Employé','Norsystec'),(6,1,'AOUIDIDI NABIL','16','NO_ACCOUNT','Employé','Norsystec'),(7,1,'RABBOUHI AFEF','17','NO_ACCOUNT','Employé','Norsystec'),(8,1,'AYEDI HAJER','18','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(9,1,'MAJEBRI MOUNIRA','19','NO_ACCOUNT','Employé','Norsystec'),(10,1,'BELHADJ SAMIA','20','NO_ACCOUNT','Employé','Prod.Cable SET'),(11,1,'MAJDOUB ABDELMAJID','21','NO_ACCOUNT','Employé','Maintenance'),(12,1,'HALFEOUI SELMA','23','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(13,1,'REBEG HELA','24','NO_ACCOUNT','Employé','Prod.Cable SET'),(14,1,'BEN HNIA HAYET','26','NO_ACCOUNT','Employé','Norsystec'),(15,1,'KHELIFI AWATEF','28','NO_ACCOUNT','Employé','Norsystec'),(16,1,'KHELIFA OLFA','29','NO_ACCOUNT','Employé','Norsystec'),(17,1,'KHELIFI FATHIA','30','NO_ACCOUNT','Employé','Prod.Cable SET'),(18,1,'BEN NJIMA AICHA','31','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(19,1,'MEHRITHI SALAH','36','NO_ACCOUNT','EMPLOYE','Ressources Huamines'),(20,1,'BELHADJ FOLLA','42','NO_ACCOUNT','Employé','Prod.Cable SET'),(21,1,'BEN AMOR MONIA','47','NO_ACCOUNT','Employé','Norsystec'),(22,1,'KHELIFI MADIHA','51','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(23,1,'ELTAIEF MOUFIDA','53','NO_ACCOUNT','Employé','Norsystec'),(24,1,'ZALFENI AZIZA','56','NO_ACCOUNT','Employé','Norsystec'),(25,1,'NASR AHMED','58','58','Validateur Supérieur Hiérarchique','Prod. Cable WH-E'),(26,1,'RAOUEFI MONIA','60','NO_ACCOUNT','Employé','Norsystec'),(27,1,'KHELIFA NOUHA','65','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(28,1,'KHELIFI NEJIA','72','NO_ACCOUNT','Employé','Norsystec'),(29,1,'HAMDI KHADIJA','74','NO_ACCOUNT','Employé','Norsystec'),(30,1,'CHOUIGUI SAWSSEN','76','NO_ACCOUNT','Employé','Norsystec'),(31,1,'EL ARBI SAWSSEN','77','NO_ACCOUNT','Employé','Norsystec'),(32,1,'LTAIEF AMAL','83','NO_ACCOUNT','Employé','Norsystec'),(33,1,'CHOUIGUI AMIRA','84','NO_ACCOUNT','Employé','Norsystec'),(34,1,'KAZBOURI KHITEM','86','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(35,1,'BEN HNIA SONIA','87','NO_ACCOUNT','Employé','Norsystec'),(36,1,'BEN HNIA NAJEH','88','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(37,1,'BEN HNIA HALIMA','90','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(38,1,'MAJDOUB FRAJ','91','NO_ACCOUNT','Employé','Maintenance'),(39,1,'HAMDI RADHIA','95','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(40,1,'KHELIFA SONIA','100','NO_ACCOUNT','Employé','Norsystec'),(41,1,'ABDEOUI YOSRA','103','NO_ACCOUNT','Employé','Norsystec'),(42,1,'BOUKAMCHA SONIA','104','NO_ACCOUNT','Employé','Norsystec'),(43,1,'KESSEBI MADIHA','105','NO_ACCOUNT','Employé','Norsystec'),(44,1,'HRAIECH NORHEN','111','NO_ACCOUNT','Employé','Norsystec'),(45,1,'ERRAIED HADDA','112','NO_ACCOUNT','Employé','Norsystec'),(46,1,'Ines BAHLOUL','115','NO_ACCOUNT','Employé','Norsystec'),(47,1,'NAHERI MARWEN','118','NO_ACCOUNT','Employé','Logistique'),(48,1,'DHAYA IMEN','122','NO_ACCOUNT','Employé','Norsystec'),(49,1,'BOUZAABIA SALWA','128','NO_ACCOUNT','Employé','Norsystec'),(50,1,'RABBOUHI NAZIHA','129','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(51,1,'BOURAOUI FADOUA','136','NO_ACCOUNT','Employé','Norsystec'),(52,1,'ABID AYMEN','137','NO_ACCOUNT','Employé','Logistique'),(53,1,'AOUNI SIHEM','146','NO_ACCOUNT','Employé','Norsystec'),(54,1,'BEN SAAD AFIFA','150','NO_ACCOUNT','Employé','Norsystec'),(55,1,'AZIZI NOURA','152','NO_ACCOUNT','Employé','Norsystec'),(56,1,'HAMDI SANA','154','NO_ACCOUNT','Employé','Norsystec'),(57,1,'KHLIFA DHEKRA','157','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(58,1,'SAADLI MONIA','159','NO_ACCOUNT','Employé','Norsystec'),(59,1,'BEL HADJ EMNA','160','NO_ACCOUNT','Employé','Norsystec'),(60,1,'BEN HNIA SOUMAYA','161','NO_ACCOUNT','Employé','Norsystec'),(61,1,'AZIZI SIHEM','164','NO_ACCOUNT','Employé','Norsystec'),(62,1,'MESBEHI LAMIA','165','NO_ACCOUNT','Employé','Norsystec'),(63,1,'EJRIDI FOUZIA','171','NO_ACCOUNT','Employé','Norsystec'),(64,1,'CHALBIA FATMA','177','NO_ACCOUNT','Employé','Norsystec'),(65,1,'BOUZAABIA ASMA','179','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(66,1,'BEN FRADJ SAMIA','180','NO_ACCOUNT','Employé','Prod.Cable SET'),(67,1,'KHLIFA HANEN','187','NO_ACCOUNT','Employé','Prod.Cable SET'),(68,1,'AZZOUZ RADHIA','189','NO_ACCOUNT','Employé','Prod.Cable SET'),(69,1,'EL HOUIJ BESSA OUMAIMA','193','NO_ACCOUNT','Employé','Norsystec'),(70,1,'BEN KHLIFA NESRIN','194','NO_ACCOUNT','Employé','Norsystec'),(71,1,'ROMDHAN RIHAB','196','NO_ACCOUNT','Employé','Norsystec'),(72,1,'BRAHEM SAMIRA','197','NO_ACCOUNT','Employé','Prod.Cable SET'),(73,1,'BOUGEZZI LATIFA','198','NO_ACCOUNT','Employé','Norsystec'),(74,1,'AZZOUZ SOUHIR','199','NO_ACCOUNT','Employé','Prod.Cable SET'),(75,1,'BOUZAABIA HAJER','201','NO_ACCOUNT','Employé','Norsystec'),(76,1,'ABID MAHER','204','NO_ACCOUNT','Employé','Logistique'),(77,1,'KAHLOUL ASMA','208','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(78,1,'CHOUIGUI SIWAR','209','NO_ACCOUNT','Employé','Norsystec'),(79,1,'ZALFENI YAMINA','212','NO_ACCOUNT','Employé','Norsystec'),(80,1,'ABDELLAOUI SABRINE','215','NO_ACCOUNT','Employé','Norsystec'),(81,1,'DARBEL SAHAR','218','NO_ACCOUNT','Employé','Prod.Cable SET'),(82,1,'EL MANAA SLEMA AFEF','219','NO_ACCOUNT','Employé','Norsystec'),(83,1,'EL KHLIFI THOURAIA','221','NO_ACCOUNT','Employé','Norsystec'),(84,1,'BEN FRAJ INES','222','222','Validateur Supérieur Hiérarchique','Qualité'),(85,1,'HRAIECH HAIFA','223','NO_ACCOUNT','Employé','Norsystec'),(86,1,'BERRI HAIFA','225','NO_ACCOUNT','Employé','Norsystec'),(87,1,'ABID MAROUA','226','NO_ACCOUNT','Employé','Norsystec'),(88,1,'BOUMAIZA CHAIMA','227','NO_ACCOUNT','Employé','Norsystec'),(89,1,'BALHADJ BASMA','228','NO_ACCOUNT','Employé','Prod.Cable SET'),(90,1,'BEN FRADJ TAISIR','229','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(91,1,'BELHADJ HAIFA','302','NO_ACCOUNT','Employé','Prod.Cable SET'),(92,1,'KLII LAMIA','304','NO_ACCOUNT','Employé','Norsystec'),(93,1,'EKRAM BEN SAAD','307','NO_ACCOUNT','Employé','Norsystec'),(94,1,'KHLIFA YASMINE','311','NO_ACCOUNT','Employé','Qualité'),(95,1,'BEN ABDELGHANI WARDA','316','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(96,1,'HALFEOUI IMEN','323','NO_ACCOUNT','Employé','Norsystec'),(97,1,'CHOUIGUI DORSAF','324','NO_ACCOUNT','Employé','Prod.Cable SET'),(98,1,'KHLIFI AWATEF 2','326','NO_ACCOUNT','Employé','Norsystec'),(99,1,'KHLIFA SANA','328','NO_ACCOUNT','Employé','Prod.Cable SET'),(100,1,'HRAIECH CHOUROUK','330','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(101,1,'TOUMIA MAROUA','333','NO_ACCOUNT','Employé','Norsystec'),(102,1,'DHEKRA HRAIECH','335','NO_ACCOUNT','Employé','Norsystec'),(103,1,'GRIRA NEDIA','336','NO_ACCOUNT','Employé','Prod.Cable SET'),(104,1,'EL GHAMERI IMEN','338','NO_ACCOUNT','Employé','Norsystec'),(105,1,'ELWETI IMEN','339','NO_ACCOUNT','Employé','Norsystec'),(106,1,'SOUDENI LAZHAR','342','NO_ACCOUNT','Employé','Ressources Huamines'),(107,1,'BOUKARMA ECHTIOUI SIRINE','343','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(108,1,'HEDYEOUI SAID','344','NO_ACCOUNT','Employé','Ressources Huamines'),(109,1,'BELHADJ MILED SARRA','346','NO_ACCOUNT','Employé','Norsystec'),(110,1,'BILEL HAMDI','351','NO_ACCOUNT','Employé','Norsystec'),(111,1,'DHOUHA JARBOUA','352','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(112,1,'DORSAF ABDEOUI','353','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(113,1,'JIHEN EL MELKI','361','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(114,1,'SABRA AZIZI','362','NO_ACCOUNT','Employé','Prod.Cable SET'),(115,1,'HENI AZZOUZ','363','NO_ACCOUNT','Employé','Prod.Cable SET'),(116,1,'NAJOUA KHALFOUN','365','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(117,1,'NORHEN BEL HADJ','366','NO_ACCOUNT','Employé','Prod.Cable SET'),(118,1,'HAJER KALBOUSI','368','NO_ACCOUNT','Employé','Prod.Cable SET'),(119,1,'NOURHEN ABDEOUI','369','NO_ACCOUNT','Employé','Prod.Cable SET'),(120,1,'SABER ISSAOUI','370','NO_ACCOUNT','Employé','Logistique'),(121,1,'MAROUA REBBEG','371','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(122,1,'FATIMA ZEMZMI','374','NO_ACCOUNT','Employé','Prod.Cable SET'),(123,1,'JAMEL ZAARAOUI','377','NO_ACCOUNT','Employé','Maintenance'),(124,1,'SIHEM SAOUDI','378','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(125,1,'HIBA MDALLA','379','379','Employé','Qualité'),(126,1,'SAIDA HAMDI','380','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(127,1,'AWATEF SLAMA','381','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(128,1,'KHAOULA KHIARI','382','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(129,1,'TAYSIR KASEM','385','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(130,1,'AFEF BRINI','387','387','Validateur Supérieur Hiérarchique','Méthode'),(131,1,'FAHMI ABID','388','NO_ACCOUNT','Employé','Logistique'),(132,1,'MERIEM SOUIBGUI','391','NO_ACCOUNT','Employé','Prod.Cable SET'),(133,1,'MOUHAMED BEL HADJ','394','NO_ACCOUNT','Employé','Logistique'),(134,1,'AMIRA BEN HNIA','395','NO_ACCOUNT','Employé','Norsystec'),(135,1,'Fatma Hamdi','397','NO_ACCOUNT','Employé','Norsystec'),(136,1,'Sana Chaar','402','NO_ACCOUNT','Employé','Norsystec'),(137,1,'ZOUHOUR NASRI','405','NO_ACCOUNT','Employé','Norsystec'),(138,1,'DALANDA KHEDHER','407','NO_ACCOUNT','Employé','Norsystec'),(139,1,'HAJER AMMERI','408','NO_ACCOUNT','Employé','Norsystec'),(140,1,'MAROUA BEN NJIMA','411','NO_ACCOUNT','Employé','Norsystec'),(141,1,'SIHEM EL MHADHBI','412','NO_ACCOUNT','Employé','Norsystec'),(142,1,'SALMA BOUASKAR','415','NO_ACCOUNT','Employé','Norsystec'),(143,1,'ELHEM HOUIJ','418','NO_ACCOUNT','Employé','Norsystec'),(144,1,'SIRINE BEN ABDEL GHANI','420','NO_ACCOUNT','Employé','Norsystec'),(145,1,'HEDIL CHOUIGI','422','NO_ACCOUNT','Employé','Norsystec'),(146,1,'SAMEH ZALFENI','424','NO_ACCOUNT','Employé','Norsystec'),(147,1,'SABRIN ZAROUKI','430','NO_ACCOUNT','Employé','Prod.Cable SET'),(148,1,'CHAIMA BEN NJIMA','433','NO_ACCOUNT','Employé','Prod.Cable SET'),(149,1,'HOUDA BEN HNIA','437','NO_ACCOUNT','Employé','Norsystec'),(150,1,'KAWTHAR HADEJI','438','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(151,1,'AHLEM EL ANEBI','439','NO_ACCOUNT','Employé','Norsystec'),(152,1,'NESRIN HADEJI','441','NO_ACCOUNT','Employé','Norsystec'),(153,1,'SAMEH ELOURIMI','442','NO_ACCOUNT','Employé','Prod.Cable SET'),(154,1,'HANEN OUSIFI','445','NO_ACCOUNT','Employé','Prod.Cable SET'),(155,1,'MARIEM BEN HNIA','446','NO_ACCOUNT','Employé','Norsystec'),(156,1,'CHAHRAZED BELHADJ','447','NO_ACCOUNT','Employé','Norsystec'),(157,1,'OUMAIMA BEMRI','449','NO_ACCOUNT','Employé','Norsystec'),(158,1,'ATIKA ZALFENI','450','NO_ACCOUNT','Employé','Norsystec'),(159,1,'RIHAB EL KHLIFI','453','NO_ACCOUNT','Employé','Norsystec'),(160,1,'SALSABIL ESHILI','454','NO_ACCOUNT','Employé','Norsystec'),(161,1,'ROUA HEDIEOUI','457','NO_ACCOUNT','Employé','Norsystec'),(162,1,'AYMEN ELLOUETI','458','NO_ACCOUNT','Employé','Norsystec'),(163,1,'SAMIA BRAHEM','461','NO_ACCOUNT','Employé','Prod.Cable SET'),(164,1,'RANIA ESSEDIK','466','NO_ACCOUNT','Employé','Norsystec'),(165,1,'HNIA HAMDI','467','NO_ACCOUNT','Employé','Norsystec'),(166,1,'Ferjeni Bouallegue','468','NO_ACCOUNT','Employé','Norsystec'),(167,1,'SARRA EL BAGHDEDI','469','NO_ACCOUNT','Employé','Norsystec'),(168,1,'Houda Ben Njima','470','NO_ACCOUNT','Employé','Norsystec'),(169,1,'Yosra Nasri','472','NO_ACCOUNT','Employé','Norsystec'),(170,1,'INES BEN KHLIFA','474','NO_ACCOUNT','Employé','Norsystec'),(171,1,'HIBA HENI','475','NO_ACCOUNT','Employé','Norsystec'),(172,1,'WAFA ZID','479','NO_ACCOUNT','Employé','Prod.Cable SET'),(173,1,'WAJDI WECHTETI','482','NO_ACCOUNT','Employé','Norsystec'),(174,1,'CHAIMA HALFEOUI','485','NO_ACCOUNT','Employé','Norsystec'),(175,1,'NAJEH MALLAT','490','NO_ACCOUNT','Employé','Prod.Cable SET'),(176,1,'IKBEL MALLAT','494','NO_ACCOUNT','Employé','Norsystec'),(177,1,'Imen Mallat','499','NO_ACCOUNT','Employé','Norsystec'),(178,1,'Takoua Labeoui','501','NO_ACCOUNT','Employé','Norsystec'),(179,1,'Hanen Erezgui','502','NO_ACCOUNT','Employé','Norsystec'),(180,1,'Romdhana Zalfeni','506','NO_ACCOUNT','Employé','Norsystec'),(181,1,'FEIZA CHEBBI','516','NO_ACCOUNT','Employé','Qualité'),(182,1,'OUMAIMA ECHTIOUI','517','NO_ACCOUNT','Employé','Prod.Cable SET'),(183,1,'SAMAR HSIN','518','NO_ACCOUNT','Employé','Prod.Cable SET'),(184,1,'SAMIA MANSRI','519','NO_ACCOUNT','Employé','Norsystec'),(185,1,'Mounira Ammeri','525','NO_ACCOUNT','Employé','Ressources Huamines'),(186,1,'Wafa Toumia','527','NO_ACCOUNT','Employé','Norsystec'),(187,1,'Asma Ezneti','528','NO_ACCOUNT','Employé','Norsystec'),(188,1,'Rafika Edabbebi','529','NO_ACCOUNT','Employé','Norsystec'),(189,1,'Maram Hamda','538','NO_ACCOUNT','Employé','Norsystec'),(190,1,'Malek Ben Njima','539','NO_ACCOUNT','Employé','Norsystec'),(191,1,'Rim Barhoumi','544','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(192,1,'Emna ElHendeoui','547','NO_ACCOUNT','Employé','Prod.Cable SET'),(193,1,'Ibtissem Ifeoui','555','NO_ACCOUNT','Employé','Norsystec'),(194,1,'Ahmed Abid','558','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(195,1,'Imen Balghouthi','561','NO_ACCOUNT','Employé','Norsystec'),(196,1,'Latifa Saidi','566','NO_ACCOUNT','Employé','Norsystec'),(197,1,'Salwa Ben Hsin','570','NO_ACCOUNT','Employé','Norsystec'),(198,1,'Sabeh Mhamdi','573','NO_ACCOUNT','Employé','Norsystec'),(199,1,'Moez Bentiba','576','NO_ACCOUNT','Validateur Supérieur Hiérarchique','Norsystec'),(200,1,'Chirine Halfeoui','577','NO_ACCOUNT','Employé','Prod.Cable SET'),(201,1,'Saida Gessmi','582','NO_ACCOUNT','Employé','Norsystec'),(202,1,'Naima Ismain','583','NO_ACCOUNT','Employé','Norsystec'),(203,1,'Fatma Erbeihi','584','NO_ACCOUNT','Employé','Norsystec'),(204,1,'Islem Daouehi','594','NO_ACCOUNT','Employé','Norsystec'),(205,1,'Amal El Khlifi','595','NO_ACCOUNT','Employé','Norsystec'),(206,1,'Fouzia Hadeji','597','NO_ACCOUNT','Employé','Prod.Cable SET'),(207,1,'Mouna Kahloul','605','NO_ACCOUNT','Employé','Norsystec'),(208,1,'Souhir Grira','606','NO_ACCOUNT','Employé','Norsystec'),(209,1,'Yamina El Marzouki','607','NO_ACCOUNT','Employé','Prod.Cable SET'),(210,1,'Nesrin Zrega Elajmi','612','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(211,1,'Hanen Outai','614','NO_ACCOUNT','Employé','Prod.Cable SET'),(212,1,'Souad khedher','615','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(213,1,'Rim Bouallegue','617','NO_ACCOUNT','Employé','Prod.Cable SET'),(214,1,'Fathia Hamdi','618','NO_ACCOUNT','Employé','Norsystec'),(215,1,'chayma Khlifa','619','NO_ACCOUNT','Employé','Qualité'),(216,1,'Fatma Hamdi','624','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(217,1,'Rahma Sfaxi','633','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(218,1,'Zmorda Elhadj Sghaier','637','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(219,1,'Lobna Abbes','643','NO_ACCOUNT','Employé','Ressources Huamines'),(220,1,'Thouraya Ferjeoui','644','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(221,1,'Zaineb Elhnzouli','648','NO_ACCOUNT','Employé','Norsystec'),(222,1,'Fouzia Nasr','650','NO_ACCOUNT','Employé','Norsystec'),(223,1,'Nejma Gizeni','651','NO_ACCOUNT','Employé','Norsystec'),(224,1,'Jamila Elfakroun','656','NO_ACCOUNT','Employé','Prod.Cable SET'),(225,1,'Maroua Ayedi','657','NO_ACCOUNT','Employé','Norsystec'),(226,1,'Kawthar Elkrifi','659','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(227,1,'Mouna Bouraoui','667','NO_ACCOUNT','Employé','Prod.Cable SET'),(228,1,'Souhir Kahloun','668','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(229,1,'Rim Hadj Selem','673','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(230,1,'Latifa Hamdi','675','NO_ACCOUNT','Employé','Norsystec'),(231,1,'Haythem Said','684','684','Validateur Supérieur Hiérarchique','Prod.Cable SET'),(232,1,'Salwa Elsouli','688','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(233,1,'Rahma Hedyeoui','692','NO_ACCOUNT','Employé','Norsystec'),(234,1,'Ahlem Bouasker','695','NO_ACCOUNT','Employé','Prod.Cable SET'),(235,1,'Rami Ben Khlifa','697','NO_ACCOUNT','Employé','Norsystec'),(236,1,'Atef Harrabi','701','NO_ACCOUNT','Employé','Logistique'),(237,1,'Hanen Gassoumi','702','NO_ACCOUNT','Employé','Prod.Cable SET'),(238,1,'Rihab Kahloul','704','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(239,1,'Nedia Mnasri','705','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(240,1,'Saliha Azouzi','712','NO_ACCOUNT','Employé','Norsystec'),(241,1,'Najet Abbessi','713','NO_ACCOUNT','Employé','Norsystec'),(242,1,'Soumaya Khlifa','714','NO_ACCOUNT','Employé','Norsystec'),(243,1,'Chaima Dergech','715','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(244,1,'Chayma Bouzaienne','717','NO_ACCOUNT','Employé','Norsystec'),(245,1,'Ranim El Ghoul','718','NO_ACCOUNT','Employé','Norsystec'),(246,1,'Wiem Elhanzouli','720','NO_ACCOUNT','Employé','Norsystec'),(247,1,'Warda Ifeoui','721','NO_ACCOUNT','Employé','Norsystec'),(248,1,'Maysoun Ben Atya','725','NO_ACCOUNT','Employé','Norsystec'),(249,1,'Aymen Krifi','727','NO_ACCOUNT','Employé','Qualité'),(250,1,'Maher Badrouch','728','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(251,1,'Radhya Mesbehi','737','NO_ACCOUNT','Employé','Norsystec'),(252,1,'Ghofran Elhraiech','739','NO_ACCOUNT','Employé','Prod.Cable SET'),(253,1,'Zohra Ayed','746','NO_ACCOUNT','Employé','Prod.Cable SET'),(254,1,'Fatma Aouicheoui','750','NO_ACCOUNT','Employé','Prod.Cable SET'),(255,1,'wissal Chebi','751','NO_ACCOUNT','Employé','Norsystec'),(256,1,'Sawssen Addeli','755','NO_ACCOUNT','Employé','Norsystec'),(257,1,'Wissal Ben Njima','769','NO_ACCOUNT','Employé','Norsystec'),(258,1,'Mouhamed Zeidi','775','NO_ACCOUNT','Employé','Prod.Cable SET'),(259,1,'Monjia Saadli','776','NO_ACCOUNT','Employé','Norsystec'),(260,1,'Fedya Zalfeni','780','NO_ACCOUNT','Employé','Norsystec'),(261,1,'Wiem Zalfeni','792','NO_ACCOUNT','Employé','Norsystec'),(262,1,'Rabiaa Thleijia','795','NO_ACCOUNT','Employé','Norsystec'),(263,1,'Amira Amara','797','NO_ACCOUNT','Employé','Norsystec'),(264,1,'Soukaina Tiehi','809','NO_ACCOUNT','Employé','Norsystec'),(265,1,'Amal Mighri','810','NO_ACCOUNT','Employé','Norsystec'),(266,1,'Med Amin Ben Abdelghani','811','NO_ACCOUNT','Employé','Norsystec'),(267,1,'Atef Addeli','812','NO_ACCOUNT','Employé','Norsystec'),(268,1,'Rebeh Elghnoudi','814','NO_ACCOUNT','Employé','Norsystec'),(269,1,'Awatef Barhoumi','819','NO_ACCOUNT','Employé','Norsystec'),(270,1,'Rahma Taamallah','821','NO_ACCOUNT','Employé','Norsystec'),(271,1,'Chayma Abdelghani','829','NO_ACCOUNT','Employé','Norsystec'),(272,1,'Israa Essessi','830','NO_ACCOUNT','Employé','Prod.Cable SET'),(273,1,'Hajer Mtiraoui','833','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(274,1,'Rahma Elayari','839','NO_ACCOUNT','Employé','Norsystec'),(275,1,'Omar Karmous','842','NO_ACCOUNT','Employé','Norsystec'),(276,1,'Jihen Chmangui','849','NO_ACCOUNT','Employé','Norsystec'),(277,1,'Amira Barhoumi','850','NO_ACCOUNT','Employé','Norsystec'),(278,1,'Amal Farhani','851','NO_ACCOUNT','Employé','Norsystec'),(279,1,'Afef Elkhlifi','853','NO_ACCOUNT','Employé','Norsystec'),(280,1,'Samia Harrabi','854','NO_ACCOUNT','Employé','Prod.Cable SET'),(281,1,'Achraf Gessem','860','NO_ACCOUNT','Employé','Logistique'),(282,1,'Nawres Isseoui','861','NO_ACCOUNT','Employé','Prod.Cable SET'),(283,1,'Imen Abdellaoui','866','NO_ACCOUNT','Employé','Norsystec'),(284,1,'Abdelmonem Zaidi','871','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(285,1,'Saida Taam','873','NO_ACCOUNT','Employé','Prod.Cable SET'),(286,1,'Ala Abdeoui','879','NO_ACCOUNT','Employé','Prod.Cable SET'),(287,1,'Molka Hlel','883','NO_ACCOUNT','Employé','Norsystec'),(288,1,'Amina Essid','884','NO_ACCOUNT','Employé','Norsystec'),(289,1,'Sami Najleoui','885','NO_ACCOUNT','Employé','Maintenance'),(290,1,'Amira Enajleoui','886','NO_ACCOUNT','Employé','Norsystec'),(291,1,'Omar Edawdi','888','NO_ACCOUNT','Employé','Norsystec'),(292,1,'Asma Ezaliiti','889','NO_ACCOUNT','Employé','Norsystec'),(293,1,'Mouhamed Aziz Ameri','890','NO_ACCOUNT','Employé','Logistique'),(294,1,'Aida Enajleoui','891','NO_ACCOUNT','Employé','Norsystec'),(295,1,'Imed Zeidi','892','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(296,1,'Rihab Bougezzi','893','NO_ACCOUNT','Employé','Prod.Cable SET'),(297,1,'Maroua Mesbehi','894','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(298,1,'Soumaya Kechich','903','NO_ACCOUNT','Employé','Prod.Cable SET'),(299,1,'Samia Sbaii','905','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(300,1,'Rafika Balghouthi','912','NO_ACCOUNT','Employé','Norsystec'),(301,1,'Najoua Elousifi','915','NO_ACCOUNT','Employé','Norsystec'),(302,1,'Hayfa Boujlida','920','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(303,1,'Zahra Aiechi','922','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(304,1,'Rim Agoubi','923','NO_ACCOUNT','Employé','Prod.Cable SET'),(305,1,'Nahed Haddeji','926','NO_ACCOUNT','Employé','Prod.Cable SET'),(306,1,'Intissar Fdhily','929','NO_ACCOUNT','Employé','Prod.Cable SET'),(307,1,'Aya Khlifa','931','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(308,1,'Amir Elhaouem','933','NO_ACCOUNT','Employé','Logistique'),(309,1,'Bouthayna Ben hnia','935','NO_ACCOUNT','Employé','Prod.Cable SET'),(310,1,'Ichrak Elhattab','938','NO_ACCOUNT','Employé','Norsystec'),(311,1,'Aya Omezzin Bel hadj','939','NO_ACCOUNT','Employé','Norsystec'),(312,1,'Houda Hanzouli','945','NO_ACCOUNT','Employé','Norsystec'),(313,1,'Narjes Ayedi','948','NO_ACCOUNT','Employé','Prod.Cable SET'),(314,1,'Mariem Elkemti','950','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(315,1,'Amal Ifeoui','952','NO_ACCOUNT','Employé','Prod.Cable SET'),(316,1,'Mahmoud Azzouz','954','NO_ACCOUNT','Employé','Logistique'),(317,1,'Afef Debech','958','NO_ACCOUNT','Employé','Norsystec'),(318,1,'Jamila Ben Hsan','959','NO_ACCOUNT','Employé','Norsystec'),(319,1,'Sawssen Ben Hadj Mahmoud','961','NO_ACCOUNT','Employé','Prod.Cable SET'),(320,1,'Zaineb Tayen','964','NO_ACCOUNT','Employé','Norsystec'),(321,1,'Khouloud bouaskar','966','NO_ACCOUNT','Employé','Norsystec'),(322,1,'Manel Elouergmi','968','NO_ACCOUNT','Employé','Norsystec'),(323,1,'Senda Bouaskar','969','NO_ACCOUNT','Employé','Norsystec'),(324,1,'Gazi Baklouti','971','NO_ACCOUNT','Employé','Norsystec'),(325,1,'Henda Elhanzouli','972','NO_ACCOUNT','Employé','Norsystec'),(326,1,'Samah Dioueni','975','NO_ACCOUNT','Employé','Prod.Cable SET'),(327,1,'Abir Elothmani','978','NO_ACCOUNT','Employé','Prod.Cable SET'),(328,1,'Aiada Abdellaoui','980','NO_ACCOUNT','Employé','Norsystec'),(329,1,'Ikram Mesbehi','982','NO_ACCOUNT','Employé','Prod.Cable SET'),(330,1,'Med Ali Hraiech','984','NO_ACCOUNT','Employé','Norsystec'),(331,1,'Racha Selimi','985','NO_ACCOUNT','Employé','Norsystec'),(332,1,'Molka Ben Ahmed','988','NO_ACCOUNT','Employé','Norsystec'),(333,1,'Yosra Nasri','990','NO_ACCOUNT','Employé','Norsystec'),(334,1,'Helmi Bouzaabia','995','NO_ACCOUNT','Employé','Norsystec'),(335,1,'Monia Zneki','996','NO_ACCOUNT','Employé','Norsystec'),(336,1,'Majda Dhifellaoui','999','NO_ACCOUNT','Employé','Norsystec'),(337,1,'Radhia Ftiti','1001','NO_ACCOUNT','Employé','Norsystec'),(338,1,'Sawssen Zaibi','1006','NO_ACCOUNT','Employé','Norsystec'),(339,1,'Sahar Elsaadli','1011','NO_ACCOUNT','Employé','Prod.Cable SET'),(340,1,'Nermin Karmous','1015','NO_ACCOUNT','Employé','Norsystec'),(341,1,'Chiraz Elothmani','1018','NO_ACCOUNT','Employé','Norsystec'),(342,1,'Mouna Zaidi','1025','NO_ACCOUNT','Employé','Norsystec'),(343,1,'Sana Marzouki','1048','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(344,1,'Rakia Mbark','1049','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(345,1,'Samar Abdelghani','1055','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(346,1,'Amal Amaira','1063','NO_ACCOUNT','Employé','Prod.Cable SET'),(347,1,'Amal Hamdi','1068','NO_ACCOUNT','Employé','Norsystec'),(348,1,'Yosr Bouzaabia','1075','NO_ACCOUNT','Employé','Norsystec'),(349,1,'Faten Ali','1077','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(350,1,'ADEM BEN HMIDA','1083','NO_ACCOUNT','Employé','Logistique'),(351,1,'Samia Ksouda','1089','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(352,1,'Salma Mabrouki','1091','NO_ACCOUNT','Employé','Norsystec'),(353,1,'Elhem Abdellaoui','1093','NO_ACCOUNT','Employé','Norsystec'),(354,1,'Jamila Dhaouedi','1095','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(355,1,'Sana Souii','1111','NO_ACCOUNT','Employé','Prod.Cable SET'),(356,1,'Hayet BEN SAAD','1119','NO_ACCOUNT','Employé','Prod.Cable SET'),(357,1,'Hanin Labidi','1120','NO_ACCOUNT','Employé','Norsystec'),(358,1,'MAROUA MNED','1122','NO_ACCOUNT','Employé','Norsystec'),(359,1,'AMMAR HNAZLI','1124','NO_ACCOUNT','Employé','Norsystec'),(360,1,'YASSINE KHLIFA','1125','NO_ACCOUNT','Employé','Norsystec'),(361,1,'Ahlem Bannouri','1131','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(362,1,'Seifeddine Kmilete','1133','1133','Responsable RH','Ressources Huamines'),(363,1,'Asma Hbari','1139','NO_ACCOUNT','Employé','Norsystec'),(364,1,'Iselm Khobzi','1141','NO_ACCOUNT','Employé','Norsystec'),(365,1,'Sawssen Bouzaabia','1143','NO_ACCOUNT','Employé','Norsystec'),(366,1,'Houssemddine Bouasker','1152','NO_ACCOUNT','Employé','Prod.Cable SET'),(367,1,'Omezzine Ben Hmida','1157','NO_ACCOUNT','Employé','Prod.Cable SET'),(368,1,'Donia Karoui','1158','NO_ACCOUNT','Employé','Prod.Cable SET'),(369,1,'Omar Ben Chaabane','1161','NO_ACCOUNT','Employé','Norsystec'),(370,1,'Sameh Bouzaabia','1165','NO_ACCOUNT','Employé','Prod.Cable SET'),(371,1,'Jihene Bouzaabia','1166','NO_ACCOUNT','Employé','Norsystec'),(372,1,'Ons Ghribi','1167','NO_ACCOUNT','Employé','Prod.Cable SET'),(373,1,'Imen Ben Hafsia','1168','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(374,1,'Wafa Horchani','1171','NO_ACCOUNT','Employé','Norsystec'),(375,1,'Fattoum Yaacoubi','1173','NO_ACCOUNT','Employé','Norsystec'),(376,1,'Amel Chebli','1175','NO_ACCOUNT','Employé','Prod.Cable SET'),(377,1,'Mohamed Sayari','1176','NO_ACCOUNT','Employé','Maintenance'),(378,1,'Jawaher Frioui','1184','NO_ACCOUNT','Employé','Norsystec'),(379,1,'Mohamed Aziz Khlifa','1185','NO_ACCOUNT','Employé','Prod.Cable SET'),(380,1,'Hanadi Bouzaabia','1188','NO_ACCOUNT','Employé','Prod.Cable SET'),(381,1,'Rihab Yaacoubi','1189','NO_ACCOUNT','Employé','Prod.Cable SET'),(382,1,'Thouraya Henchiri','1190','NO_ACCOUNT','Employé','Prod.Cable SET'),(383,1,'Latifa Abdelghani','1192','NO_ACCOUNT','Employé','Norsystec'),(384,1,'Intissar Bouguezzi','1193','NO_ACCOUNT','Employé','Norsystec'),(385,1,'Hanen Abaidi','1194','NO_ACCOUNT','Employé','Norsystec'),(386,1,'Nassima Abdaoui','1195','NO_ACCOUNT','Employé','Norsystec'),(387,1,'chaima Abdaoui','1196','NO_ACCOUNT','Employé','Norsystec'),(388,1,'Fatma Mnissi','1197','NO_ACCOUNT','Employé','Norsystec'),(389,1,'Salma Khlifi','1202','NO_ACCOUNT','Employé','Prod.Cable SET'),(390,1,'Chaima Aini','1206','NO_ACCOUNT','Employé','Prod.Cable SET'),(391,1,'Arwa Zitouni','1207','NO_ACCOUNT','Employé','Prod.Cable SET'),(392,1,'Faiza Khlifi','1208','NO_ACCOUNT','Employé','Prod.Cable SET'),(393,1,'Marwa Ayed','1210','NO_ACCOUNT','Employé','Norsystec'),(394,1,'Souad Khlifi','1211','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(395,1,'Wissem Ghazouani','1213','NO_ACCOUNT','Employé','Ressources Huamines'),(396,1,'Imen Bouraoui','1224','NO_ACCOUNT','Employé','Prod.Cable SET'),(397,1,'Amal Bouzaabia','1229','NO_ACCOUNT','Employé','Prod.Cable SET'),(398,1,'Kawther Jaballah','1231','NO_ACCOUNT','Employé','Prod.Cable SET'),(399,1,'Mariem Baccouche','1232','NO_ACCOUNT','Employé','Prod.Cable SET'),(400,1,'Amani Fteiti','1233','NO_ACCOUNT','Employé','Norsystec'),(401,1,'Dhekra Khlifa','1236','NO_ACCOUNT','Employé','Norsystec'),(402,1,'Mariem Bouzaabia','1241','NO_ACCOUNT','Employé','Norsystec'),(403,1,'Rihab Baccouche','1243','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(404,1,'Takwa Zalfani','1246','NO_ACCOUNT','Employé','Norsystec'),(405,1,'Mariem Ben Njima','1247','NO_ACCOUNT','Employé','Norsystec'),(406,1,'Fatma Saoudi','1255','NO_ACCOUNT','Employé','Norsystec'),(407,1,'Nahida Kassebi','1256','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(408,1,'Seifeddine Abbadi','1258','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(409,1,'Souha Fhima','1261','NO_ACCOUNT','Employé','Logistique'),(410,1,'Mayssa Ben Ali','1262','NO_ACCOUNT','Employé','Logistique'),(411,1,'Anwar Ben Aicha','1264','NO_ACCOUNT','EMPLOYE','Direction'),(412,1,'Sami Ben Saad','1265','NO_ACCOUNT','Employé','Prod.Cable SET'),(413,1,'Oussama Khlifi','1267','NO_ACCOUNT','Employé','Prod.Cable SET'),(414,1,'Wiem Jouini','1269','NO_ACCOUNT','Employé','Prod.Cable SET'),(415,1,'Mariem Ben Hassen','1271','NO_ACCOUNT','Employé','Prod.Cable SET'),(416,1,'Samar Toumi','1272','NO_ACCOUNT','Employé','Prod.Cable SET'),(417,1,'Ines Yahyaoui','1273','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(418,1,'Sana Rebhi','1274','NO_ACCOUNT','Employé','Prod.Cable SET'),(419,1,'Chaima Guesem','1275','NO_ACCOUNT','Employé','Norsystec'),(420,1,'Sirine Ben Romdhane','1276','NO_ACCOUNT','Employé','Prod.Cable SET'),(421,1,'Haifa Bouraoui','1278','NO_ACCOUNT','Employé','Norsystec'),(422,1,'Seifeddine Salem','1280','NO_ACCOUNT','Employé','Norsystec'),(423,1,'Mohamed Houcine Azzouz','1281','NO_ACCOUNT','Employé','Norsystec'),(424,1,'Chaima Hassini','1282','NO_ACCOUNT','Employé','Norsystec'),(425,1,'Jihen Bouasker','1283','NO_ACCOUNT','Employé','Norsystec'),(426,1,'Lina Hamdi','1284','NO_ACCOUNT','Employé','Norsystec'),(427,1,'Maroua Chaabani','1286','NO_ACCOUNT','Employé','Norsystec'),(428,1,'Tayma Khlifa','1290','NO_ACCOUNT','Employé','Norsystec'),(429,1,'Amal Houas','1292','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(430,1,'Nadhem Hedyaoui','1293','NO_ACCOUNT','Employé','Prod.Cable SET'),(431,1,'Mohamed Mahmoud','1295','NO_ACCOUNT','Employé','Norsystec'),(432,1,'Mohamed Arif','1298','NO_ACCOUNT','Employé','Norsystec'),(433,1,'Fethi Hnazli','1299','NO_ACCOUNT','Employé','Norsystec'),(434,1,'Mohaned Ben Njima','1300','NO_ACCOUNT','Employé','Norsystec'),(435,1,'Nabil Sayhi','1301','NO_ACCOUNT','Employé','Norsystec'),(436,1,'Zohra Jaouadi','1302','NO_ACCOUNT','Employé','Ressources Huamines'),(437,1,'Raja Jeddi','1303','NO_ACCOUNT','Employé','Norsystec'),(438,1,'Syrine Bouattay','1305','NO_ACCOUNT','Employé','Méthode'),(439,1,'Chaima Allagui','1306','NO_ACCOUNT','Employé','Méthode'),(440,1,'Mariem Khabbacha','1309','NO_ACCOUNT','Employé','Qualité'),(441,1,'Ali Sghaier','1315','NO_ACCOUNT','Employé','Norsystec'),(442,1,'Ibtissem TLILI','1320','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(443,1,'Ramzi Kheder','1322','NO_ACCOUNT','Employé','Prod.Cable SET'),(444,1,'Samia Ezzi','1323','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(445,1,'Amal Hamdi','1324','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(446,1,'Henda Belgacem','1325','NO_ACCOUNT','Employé','Prod.Cable SET'),(447,1,'Bouthaina Hamdi','1327','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(448,1,'Rabiaa Khlifi','1328','NO_ACCOUNT','Employé','Norsystec'),(449,1,'Khalil Belghouthi','1373','NO_ACCOUNT','Employé','Logistique'),(450,1,'Houssemddine Lakhal','1376','1376','Validateur Supérieur Hiérarchique','Logistique'),(451,1,'Mohamed Bouraoui Trabelsi','1377','NO_ACCOUNT','Employé','Maintenance'),(452,1,'Makrem Selmi','1378','NO_ACCOUNT','Employé','Maintenance'),(453,1,'Rania Romdhane','1380','NO_ACCOUNT','Employé','Logistique'),(454,1,'Samah Haj Ali','1382','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(455,1,'Hanen Raisi','1383','NO_ACCOUNT','Employé','Prod.Cable SET'),(456,1,'Monia Abboud','1384','NO_ACCOUNT','Employé','Prod.Cable SET'),(457,1,'Kaisser Bouassida','1387','NO_ACCOUNT','Employé','Méthode'),(458,1,'Sami Sagaama','1388','NO_ACCOUNT','Employé','Méthode'),(459,1,'Marwa Bouzaabia','1389','NO_ACCOUNT','Employé','Prod.Cable SET'),(460,1,'Yosra Loussifi','1390','NO_ACCOUNT','Employé','Prod.Cable SET'),(461,1,'Ameni Amri','1391','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(462,1,'Radhia Ammar','1392','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(463,1,'Afef Aouichi','1393','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(464,1,'Hayet Chorfa','1394','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(465,1,'Hasna Bouyahya','1395','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(466,1,'Ridha Allouche','1396','1396','Sécurité','Ressources Huamines'),(467,1,'Wissemeddine KHAYATI','1399','NO_ACCOUNT','Employé','Logistique'),(468,1,'Sana Mhadhbi','1401','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(469,1,'Chaima Abdelghani','1402','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(470,1,'Maram Rached','1403','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(471,1,'Amina Bouraoui','1405','NO_ACCOUNT','Employé','Prod. Cable WH-E'),(472,1,'Yassine Znagui','1406','NO_ACCOUNT','Employé','Ressources Huamines'),(473,1,'Rabiaa Hamdi','1408','NO_ACCOUNT','Employé','Prod.Cable SET'),(474,1,'Khaled Achour','1409','NO_ACCOUNT','Employé','Qualité'),(475,1,'Karem Mahmoudi','1410','NO_ACCOUNT','Employé','Prod.Cable SET');
+/*!40000 ALTER TABLE `employe` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `historique_anomalie`
+-- Table structure for table `historique_anomalie`
 --
 
+DROP TABLE IF EXISTS `historique_anomalie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historique_anomalie` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
   `commentaire` varchar(255) DEFAULT NULL,
   `date_validation` datetime(6) DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
   `valide_par` varchar(255) DEFAULT NULL,
-  `anomalie_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
+  `anomalie_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK124m5ef5ymg5ljrmmjvolm4tc` (`anomalie_id`),
+  CONSTRAINT `FK124m5ef5ymg5ljrmmjvolm4tc` FOREIGN KEY (`anomalie_id`) REFERENCES `anomalie_pointage` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Structure de la table `historique_anomalie_seq`
+-- Dumping data for table `historique_anomalie`
 --
 
+LOCK TABLES `historique_anomalie` WRITE;
+/*!40000 ALTER TABLE `historique_anomalie` DISABLE KEYS */;
+/*!40000 ALTER TABLE `historique_anomalie` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `historique_anomalie_seq`
+--
+
+DROP TABLE IF EXISTS `historique_anomalie_seq`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historique_anomalie_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `next_val` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `historique_anomalie_seq`
+-- Dumping data for table `historique_anomalie_seq`
 --
 
-INSERT INTO `historique_anomalie_seq` (`next_val`) VALUES
-(1);
-
--- --------------------------------------------------------
+LOCK TABLES `historique_anomalie_seq` WRITE;
+/*!40000 ALTER TABLE `historique_anomalie_seq` DISABLE KEYS */;
+INSERT INTO `historique_anomalie_seq` VALUES (1);
+/*!40000 ALTER TABLE `historique_anomalie_seq` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `infermerie`
+-- Table structure for table `infermerie`
 --
 
+DROP TABLE IF EXISTS `infermerie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `infermerie` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date` date DEFAULT NULL,
   `motif` varchar(255) DEFAULT NULL,
   `statut` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKfmmbcqhp6yne4uhf8t36qt8sc` (`employe_id`),
+  CONSTRAINT `FKfmmbcqhp6yne4uhf8t36qt8sc` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `infermerie`
+-- Dumping data for table `infermerie`
 --
 
-INSERT INTO `infermerie` (`id`, `date`, `motif`, `statut`, `type`, `employe_id`) VALUES
-(1, '2025-08-04', '', 'Acceptée', 'Consultation', 448),
-(2, '2025-08-04', 'jknhdzg', 'Refusée', 'Autre', 554);
-
--- --------------------------------------------------------
+LOCK TABLES `infermerie` WRITE;
+/*!40000 ALTER TABLE `infermerie` DISABLE KEYS */;
+/*!40000 ALTER TABLE `infermerie` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Structure de la table `interrogatoire`
+-- Table structure for table `interrogatoire`
 --
 
+DROP TABLE IF EXISTS `interrogatoire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interrogatoire` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `date` date DEFAULT NULL,
   `date_conseil_discipline` date DEFAULT NULL,
   `date_debut_suspension` date DEFAULT NULL,
-  `duree_suspension` int(11) DEFAULT NULL,
+  `nombre_jours` int DEFAULT NULL,
   `punition_proposee` varchar(255) DEFAULT NULL,
-  `reponse` text DEFAULT NULL,
+  `reponse_employe` text,
   `sujet` varchar(255) DEFAULT NULL,
-  `employe_id` bigint(20) DEFAULT NULL,
-  `nombre_jours` int(11) DEFAULT NULL,
-  `reponse_employe` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `employe_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK51m3g3rgtu2bwjy2obdun2ls2` (`employe_id`),
+  CONSTRAINT `FK51m3g3rgtu2bwjy2obdun2ls2` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Déchargement des données de la table `interrogatoire`
+-- Dumping data for table `interrogatoire`
 --
 
-INSERT INTO `interrogatoire` (`id`, `date`, `date_conseil_discipline`, `date_debut_suspension`, `duree_suspension`, `punition_proposee`, `reponse`, `sujet`, `employe_id`, `nombre_jours`, `reponse_employe`) VALUES
-(1, '2025-08-01', NULL, NULL, NULL, 'Suspension temporaire du travail', NULL, 'RETRGTZEGRHT', 448, 2, 'gyuftdrx'),
-(3, '2025-07-31', NULL, NULL, NULL, 'Avertissement verbal', NULL, 'SDEFRGT', 554, NULL, NULL);
+LOCK TABLES `interrogatoire` WRITE;
+/*!40000 ALTER TABLE `interrogatoire` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interrogatoire` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- --------------------------------------------------------
-
---
--- Structure de la table `paie`
---
-
-CREATE TABLE `paie` (
-  `id` bigint(20) NOT NULL,
-  `date_paie` date DEFAULT NULL,
-  `mois` varchar(255) DEFAULT NULL,
-  `montant` double NOT NULL,
-  `employe_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `anomalie_paie`
---
-ALTER TABLE `anomalie_paie`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKbglujf7qbduuo2rvvcbl8muic` (`employe_id`);
-
---
--- Index pour la table `anomalie_pointage`
---
-ALTER TABLE `anomalie_pointage`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK12d69be0visqmdwqkkn0ofwjl` (`employe_id`);
-
---
--- Index pour la table `autorisation`
---
-ALTER TABLE `autorisation`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKjim3049anb7j1xu8b2xidtt8k` (`employe_id`);
-
---
--- Index pour la table `avance_salaire`
---
-ALTER TABLE `avance_salaire`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKaxd2m055u90ibyokeabca3df5` (`employe_id`);
-
---
--- Index pour la table `conge`
---
-ALTER TABLE `conge`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKlqg9rybgeokq9ibtk7ymycjeq` (`employe_id`);
-
---
--- Index pour la table `demande_document`
---
-ALTER TABLE `demande_document`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKk7en0m3h6v29mfrumq4in9935` (`employe_id`);
-
---
--- Index pour la table `emission`
---
-ALTER TABLE `emission`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK77tfsv532c30rhdoatyk1cyqv` (`employe_id`);
-
---
--- Index pour la table `employe`
---
-ALTER TABLE `employe`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `historique_anomalie`
---
-ALTER TABLE `historique_anomalie`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK124m5ef5ymg5ljrmmjvolm4tc` (`anomalie_id`);
-
---
--- Index pour la table `infermerie`
---
-ALTER TABLE `infermerie`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKfmmbcqhp6yne4uhf8t36qt8sc` (`employe_id`);
-
---
--- Index pour la table `interrogatoire`
---
-ALTER TABLE `interrogatoire`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK51m3g3rgtu2bwjy2obdun2ls2` (`employe_id`);
-
---
--- Index pour la table `paie`
---
-ALTER TABLE `paie`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKachhu6y621mgs6vi2v9my0717` (`employe_id`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `anomalie_paie`
---
-ALTER TABLE `anomalie_paie`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT pour la table `autorisation`
---
-ALTER TABLE `autorisation`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
-
---
--- AUTO_INCREMENT pour la table `conge`
---
-ALTER TABLE `conge`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
-
---
--- AUTO_INCREMENT pour la table `demande_document`
---
-ALTER TABLE `demande_document`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT pour la table `emission`
---
-ALTER TABLE `emission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT pour la table `employe`
---
-ALTER TABLE `employe`
-  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=555;
-
---
--- AUTO_INCREMENT pour la table `infermerie`
---
-ALTER TABLE `infermerie`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `interrogatoire`
---
-ALTER TABLE `interrogatoire`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT pour la table `paie`
---
-ALTER TABLE `paie`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `anomalie_paie`
---
-ALTER TABLE `anomalie_paie`
-  ADD CONSTRAINT `FKbglujf7qbduuo2rvvcbl8muic` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `anomalie_pointage`
---
-ALTER TABLE `anomalie_pointage`
-  ADD CONSTRAINT `FK12d69be0visqmdwqkkn0ofwjl` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `autorisation`
---
-ALTER TABLE `autorisation`
-  ADD CONSTRAINT `FKjim3049anb7j1xu8b2xidtt8k` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `avance_salaire`
---
-ALTER TABLE `avance_salaire`
-  ADD CONSTRAINT `FKaxd2m055u90ibyokeabca3df5` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `conge`
---
-ALTER TABLE `conge`
-  ADD CONSTRAINT `FKlqg9rybgeokq9ibtk7ymycjeq` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `demande_document`
---
-ALTER TABLE `demande_document`
-  ADD CONSTRAINT `FKk7en0m3h6v29mfrumq4in9935` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `emission`
---
-ALTER TABLE `emission`
-  ADD CONSTRAINT `FK77tfsv532c30rhdoatyk1cyqv` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `historique_anomalie`
---
-ALTER TABLE `historique_anomalie`
-  ADD CONSTRAINT `FK124m5ef5ymg5ljrmmjvolm4tc` FOREIGN KEY (`anomalie_id`) REFERENCES `anomalie_pointage` (`id`);
-
---
--- Contraintes pour la table `infermerie`
---
-ALTER TABLE `infermerie`
-  ADD CONSTRAINT `FKfmmbcqhp6yne4uhf8t36qt8sc` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `interrogatoire`
---
-ALTER TABLE `interrogatoire`
-  ADD CONSTRAINT `FK51m3g3rgtu2bwjy2obdun2ls2` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-
---
--- Contraintes pour la table `paie`
---
-ALTER TABLE `paie`
-  ADD CONSTRAINT `FKachhu6y621mgs6vi2v9my0717` FOREIGN KEY (`employe_id`) REFERENCES `employe` (`id`);
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-07-15 10:39:38

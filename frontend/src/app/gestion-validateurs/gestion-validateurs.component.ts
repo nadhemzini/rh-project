@@ -119,6 +119,9 @@ export class GestionValidateursComponent implements OnInit {
     this.selectedNewValidatorId = null;
     this.availableEmployees = [];
     
+    // Disable body scroll when modal opens
+    document.body.style.overflow = 'hidden';
+    
     // Load employees from the same zone
     this.validateurService.getEmployeesByZone(validator.zone, this.userRole).subscribe({
       next: (data) => {
@@ -135,6 +138,9 @@ export class GestionValidateursComponent implements OnInit {
     this.selectedValidator = null;
     this.selectedNewValidatorId = null;
     this.availableEmployees = [];
+    
+    // Re-enable body scroll when modal closes
+    document.body.style.overflow = '';
   }
   
   confirmChangeValidator() {
@@ -183,5 +189,12 @@ export class GestionValidateursComponent implements OnInit {
   
   getStatusClass(active: boolean) {
     return active ? 'badge-success' : 'badge-danger';
+  }
+
+  getRoleBadgeClass(role: string) {
+    if (role === 'Sécurité') {
+      return 'bg-warning text-dark';
+    }
+    return 'bg-primary text-white';
   }
 }
