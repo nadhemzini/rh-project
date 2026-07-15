@@ -60,10 +60,11 @@ public class CongeService {
         String zone = employe.getZone() != null ? employe.getZone().trim().toLowerCase() : "";
 
         List<String> emailsResponsables = new ArrayList<>();
-        if (zone.startsWith("administration")) {
+        if (zone.startsWith("administration")&&zone.startsWith("Direction")) {
             emailsResponsables = List.of(
-                    "sabri.chaarana@topnet.tn",
-                    "seifeddine.Kmilete@topnet.tn"
+                    "sabri.chaarana@kkt-whe-set.com",
+                    "seifeddine.Kmilete@topnet.tn",
+                    "anwar.benaicha@kkt-whe-set.com"
 
             );
         } else {
@@ -71,13 +72,14 @@ public class CongeService {
                 case "logistique":
                     emailsResponsables = List.of(
                             "Houssemeddine.lakhal@kkt-whe-set.com",
-                            "seifeddine.Kmilete@topnet.tn"
+                            "seifeddine.Kmilete@topnet.tn",
+                            "mayssa.benali@kkt-whe-set.com"
 
                     );
                     break;
                 case "qualité":
                     emailsResponsables = List.of(
-                            "hiba.mdalla@topnet.tn",
+                            "hiba.mdalla@kkt-whe-set.com",
                             "seifeddine.Kmilete@topnet.tn",
                             "helmi.ayedi@kkt-whe-set.com"
                     );
@@ -86,6 +88,13 @@ public class CongeService {
                     emailsResponsables = List.of(
                             "haythem.said@kkt-whe-set.com",
                             "seifeddine.Kmilete@topnet.tn"
+                    );
+                    break;
+                    case "Méthode":
+                    emailsResponsables = List.of(
+                            "afef.brini@kkt-whe-set.com",
+                            "seifeddine.Kmilete@topnet.tn",
+                            "Kaisser.bouassida@kkt-whe-set.com"
                     );
                     break;
                 case "maintenance":
@@ -100,6 +109,12 @@ public class CongeService {
                             "seifeddine.Kmilete@topnet.tn"
                     );
                     break;
+                case "Norsystec":
+                    emailsResponsables = List.of(
+                            "Bentiba-M@topnet.tn",
+                            "seifeddine.Kmilete@topnet.tn"
+                    );
+                    break;
                 case "av":
                     emailsResponsables = List.of(
                             "afef.brini@topnet.tn",
@@ -108,11 +123,23 @@ public class CongeService {
                     break;
                 case "prod. cable wh":
                     emailsResponsables = List.of(
-                            "ahmed.nasr@kkt-whe-set.com"
-                           
+                            "ahmed.nasr@kkt-whe-set.com",
+                            "seifeddine.Kmilete@topnet.tn"
                     );
                     break;
-            case "prod. couture":
+                case "Qualité":
+                    emailsResponsables = List.of(
+                            "hiba.mdalla@kkt-whe-set.com",
+                            "seifeddine.Kmilete@topnet.tn"
+                    );
+                    break;
+                case "Prod. Cable WH-E":
+                    emailsResponsables = List.of(
+                            "ahmed.nasr@kkt-whe-set.com",
+                            "seifeddine.Kmilete@topnet.tn"
+                    );
+                    break;
+                case "prod. couture":
                     emailsResponsables = List.of(
                             "Bentiba-M@topnet.tn"
                     );
